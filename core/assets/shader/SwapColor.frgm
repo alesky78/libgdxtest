@@ -1,0 +1,37 @@
+#ifdef GL_ES
+precision mediump float;
+#endif 
+
+// varying input variables from our vertex shader
+varying vec4 v_color;
+varying vec2 v_texCoords;
+
+// a special uniform for textures 
+uniform sampler2D u_texture;
+
+//Application is responsible to pass this values
+uniform float intensity;		//intensita dello swap, e' un range che va da 0 a 1 (0% a 100%), l'applicazione dovrebbe passare un valore che va da 0 a 1 e poi tornare a 0 ancora  
+						//per ritornare al colore originale
+
+
+
+void main(){
+	
+	////////////////////////////////////////////////
+	//colore standard che dovrebbe avere il fragment
+	vec4 finalColor = v_color * texture2D(u_texture, v_texCoords);
+
+	////////////////////////////////////////////////	
+	//genera il colore swap
+	float r = finalColor.r; 
+	float b = finalColor.b; 
+	float g = finalColor.g;
+
+	finalColor.r = r*(1.0f-intensity) + g*intensity;
+	finalColor.g = g*(1.0f-intensity) + b*intensity;	
+	finalColor.b = b*(1.0f-intensity) + r*intensity;
+
+	
+	// set the colour for this fragment|pixel
+	gl_FragColor = finalColor;
+}

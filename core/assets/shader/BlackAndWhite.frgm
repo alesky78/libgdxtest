@@ -1,0 +1,19 @@
+#ifdef GL_ES
+    precision mediump float;
+#endif
+
+varying vec4 v_color;
+varying vec2 v_texCoords;
+
+uniform sampler2D u_texture;
+uniform mat4 u_projTrans;
+
+
+void main() {
+        
+        vec4 color = v_color * texture2D(u_texture, v_texCoords);	//il colore eredita alpha dal frammento di base v_color
+        float gray = (color.r + color.g + color.b) / 3.0;
+        color.r = color.g = color.b = gray;
+
+        gl_FragColor = color;
+}

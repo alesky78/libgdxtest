@@ -1,0 +1,54 @@
+#ifdef GL_ES
+precision mediump float;
+#endif 
+
+//////////////////////////////
+//author: Alessandro
+//
+//effect: deforma l'immagine di una texture usando un noise 
+//
+
+
+// varying input variables from our vertex shader
+varying vec4 v_color;
+varying vec2 v_texCoords;
+
+// a special uniform for textures 
+uniform sampler2D u_texture;
+
+//Application is responsible to pass this values
+uniform float timePass;		//tempo passato usato per variare il rumore per la stessa coordinata
+uniform float intensity;	//intensita della deformazione 	
+
+vec2 random(vec2 st){
+    st = vec2( dot(st,vec2(127.1,311.7)),
+              dot(st,vec2(269.5,183.3)) );
+    return -1.0 + 2.0*fract(sin(st)*43758.5453123);
+}
+
+//Gradient noise
+float noise(vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+    vec2 u = f*f*(3.0-2.0*f);
+
+    return mix( mix( dot( random(i + vec2(0.0,0.0) ), f - vec2(0.0,0.0) ),
+                     dot( random(i + vec2(1.0,0.0) ), f - vec2(1.0,0.0) ), u.x),
+                mix( dot( random(i + vec2(0.0,1.0) ), f - vec2(0.0,1.0) ),
+                     dot( random(i + vec2(1.0,1.0) ), f - vec2(1.0,1.0) ), u.x), u.y);
+}
+
+
+void main(){
+	
+	////////////////////////////////////////////////
+	//deforma le coordinate 
+	vec2 newCoordinate = v_texCoords + intensity*noise(v_texCoords+timePass);
+
+	////////////////////////////////////////////////
+	//colore standard che dovrebbe avere il fragment	
+	vec4 finalColor = v_color * texture2D(u_texture, newCoordinate);
+	
+	// set the colour for this fragment|pixel
+	gl_FragColor = finalColor;
+}

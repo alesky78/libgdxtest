@@ -1,0 +1,35 @@
+#ifdef GL_ES
+precision mediump float;
+#endif 
+
+//////////////////////////////
+//author: Alessandro
+//
+//effect: crea una versione pixellata di una immagine 
+
+
+// varying input variables from our vertex shader
+varying vec4 v_color;
+varying vec2 v_texCoords;
+
+// a special uniform for textures 
+uniform sampler2D u_texture;
+uniform vec2 resolution;	//devono essere passate per calcolare quanto pixellare (larghezza,altezza)
+
+//Application is responsible to pass this values
+uniform float intensity;	//intensita della distorzione 	
+
+
+void main(){
+	
+	////////////////////////////////////////////////
+	//deforma le coordinate 	    
+	vec2 newCoordinate = v_texCoords - mod(v_texCoords, 1./resolution);
+ 
+	////////////////////////////////////////////////
+	//colore standard che dovrebbe avere il fragment	
+	vec4 finalColor = v_color * texture2D(u_texture, newCoordinate);
+	
+	// set the colour for this fragment|pixel
+	gl_FragColor = finalColor;
+}

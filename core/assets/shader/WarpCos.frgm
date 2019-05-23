@@ -1,0 +1,37 @@
+#ifdef GL_ES
+precision mediump float;
+#endif 
+
+//////////////////////////////
+//author: Alessandro
+//
+//effect: deforma l'immagine di una texture in maniera omogenea usando un coseno 
+
+
+// varying input variables from our vertex shader
+varying vec4 v_color;
+varying vec2 v_texCoords;
+
+// a special uniform for textures 
+uniform sampler2D u_texture;
+
+//Application is responsible to pass this values
+uniform float timePass;		//tempo passato usato per variare la fase
+uniform float intensity;	//intensita della distorzione 	
+
+
+void main(){
+	
+	////////////////////////////////////////////////
+	//deforma le coordinate 
+	float frequency=6.28;
+	float distortion= intensity * sin(frequency * v_texCoords.y + timePass);	
+	vec2 newCoordinate = vec2(v_texCoords.x+distortion, v_texCoords.y);
+	
+	////////////////////////////////////////////////
+	//colore standard che dovrebbe avere il fragment	
+	vec4 finalColor = v_color * texture2D(u_texture, newCoordinate);
+	
+	// set the colour for this fragment|pixel
+	gl_FragColor = finalColor;
+}

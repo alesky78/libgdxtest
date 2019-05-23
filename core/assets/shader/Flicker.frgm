@@ -1,0 +1,54 @@
+#ifdef GL_ES
+precision mediump float;
+#endif 
+
+//////////////////////////////
+//author: Alessandro
+//
+//effect: crea l'effetto di flicker tipo quello della televisione, e' possibile stabilire il colore con cui deve essere generato il fliker
+//sono implementati differenti tipi di effetto, scommentare quello desiderato
+
+
+// varying input variables from our vertex shader
+varying vec4 v_color;
+varying vec2 v_texCoords;
+
+// a special uniform for textures 
+uniform sampler2D u_texture;
+
+//Application is responsible to pass this values
+uniform float intensity;		//intensita dell effetto, e' un range che va da 0 a 1 (0% a 100%), l'applicazione dovrebbe passare un valore che va da 0 a 1 e poi tornare a 0 ancora  
+uniform float randomSid;		//viene utilizzato per generare un random casuale, per esempio si puo' passare il delta time dello sprite
+uniform vec3  effectColor;		//effect color usato per il colore delflikering  ex: (0.1f,0.4f,1.0f)  il fliker tendera' al blu, si possono anche usare colori negativi per sottarre i canali (-0.3f,0.4f,1.0f)
+
+// generate random value
+float random(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+
+void main(){
+	
+	////////////////////////////////////////////////
+	//colore standard che dovrebbe avere il fragment
+	vec4 finalColor = v_color * texture2D(u_texture, v_texCoords);
+
+	////////////////////////////////////////////////	
+	//genera il colore dell effetto secondo questi principi
+	// 1 - casuale ma dipendente dalla posizione del fragmento (random sid e' lo stesso per tutti fragment) bisogna aggiungere una altro elemento che da variazione a livello di singolo fragment
+	// 2 - il colore alpha viene copiato dalla texture originale in questo modo la texture originale non viene disegnata dove alpha e 0 
+	
+	//diversi tipi di effetto
+	float random_f = random(v_texCoords*randomSid);	//omogeneo, classico tv
+	//float random_f = random(vec2(0, v_texCoords.y)*randomSid); //righe orizzontali
+	//float random_f = random(vec2(0, v_texCoords.x)*randomSid); //righe verticali	
+	//float random_f = random(vec2(0, v_texCoords.y)*randomSid) * random(vec2(0, v_texCoords.x)*randomSid);	//righe orizzontali + righe verticali 
+	//float random_f = random(vec2(0, v_texCoords.y)*randomSid) * random(v_texCoords*randomSid); //righe orizzontali + omogeneo
+	
+	
+	vec4 effectColor = vec4(effectColor, finalColor.a )*random_f;
+	
+	
+	// set the colour for this fragment|pixel aggiungendo al colore normale, il colore delle'effetto amplificato dall'intensita
+	gl_FragColor = clamp( finalColor + effectColor*intensity, .0, 1.0 );
+}
