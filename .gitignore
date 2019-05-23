@@ -6,6 +6,11 @@
 
 #environment
 bin/
+.settings
+.project
+.classpath
+build/
+.gradle
 
 
 # BlueJ files
