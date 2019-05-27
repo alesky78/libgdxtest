@@ -45,7 +45,7 @@ public class LevelScreen extends BaseScreen {
 	//labels
 	private float timeElapsed;
 	private Label timeLabel;
-	private DecimalFormat df = new DecimalFormat("0.00");
+	private DecimalFormat df = new DecimalFormat("0,00");
 
 	boolean win;
 
