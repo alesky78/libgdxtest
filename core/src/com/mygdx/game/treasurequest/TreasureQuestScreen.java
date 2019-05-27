@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -56,6 +57,15 @@ public class TreasureQuestScreen extends BaseScreen {
 		player.storeAnimation("default", playerTex);
 		player.setEllipseBoundary();
 		mainStage.addActor(player);
+		
+		float t = 0.15f;
+		player.storeAnimation("down",GameUtils.parseSpriteSheet("treasurequest/general-48.png", 3, 4,new int[] {0, 1, 2}, t, PlayMode.LOOP_PINGPONG));
+		player.storeAnimation("left",GameUtils.parseSpriteSheet("treasurequest/general-48.png", 3, 4,new int[] {3, 4, 5}, t, PlayMode.LOOP_PINGPONG));
+		player.storeAnimation("right",GameUtils.parseSpriteSheet("treasurequest/general-48.png", 3, 4,new int[] {6, 7, 8}, t, PlayMode.LOOP_PINGPONG));
+		player.storeAnimation("up",GameUtils.parseSpriteSheet("treasurequest/general-48.png", 3, 4,new int[] {9, 10, 11}, t, PlayMode.LOOP_PINGPONG));
+		player.setSize(48,48);		//why this call????
+		
+		
 
 		key = new BaseActor();
 		key.setTexture( new Texture(Gdx.files.internal("treasurequest/key.png")) );
@@ -136,14 +146,31 @@ public class TreasureQuestScreen extends BaseScreen {
 
 		float playerSpeed = 200;
 		player.setVelocityXY(0,0);
-		if (Gdx.input.isKeyPressed(Keys.LEFT))
+		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 			player.setVelocityXY(-playerSpeed,0);
-		if (Gdx.input.isKeyPressed(Keys.RIGHT))
+			player.setActiveAnimation("left");	
+		}
+		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			player.setVelocityXY(playerSpeed,0);
-		if (Gdx.input.isKeyPressed(Keys.UP))
+			player.setActiveAnimation("right");			
+		}
+		if (Gdx.input.isKeyPressed(Keys.UP)){
 			player.setVelocityXY(0,playerSpeed);
-		if (Gdx.input.isKeyPressed(Keys.DOWN))
-			player.setVelocityXY(0,-playerSpeed);
+			player.setActiveAnimation("up");
+		}
+		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+			player.setVelocityXY(0,-playerSpeed);	
+			player.setActiveAnimation("down");
+		}
+		
+		if ( player.getSpeed() < 1 ){
+			player.pauseAnimation();
+			player.setAnimationFrame(1);
+		}else {
+			player.startAnimation();	
+		}
+		
+		
 
 		//collision wiht wall
 		for (BaseActor wall : wallList){

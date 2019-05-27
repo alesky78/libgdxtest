@@ -8,102 +8,100 @@ import java.util.HashMap;
 
 public class AnimatedActor extends BaseActor
 {
-    private float elapsedTime;
-    private Animation<TextureRegion> activeAnim;
-    private String activeName;
-    private HashMap<String,Animation<TextureRegion>> animationStorage;
 
-    private boolean pauseAnim;
-    
-    public AnimatedActor()
-    {
-        super();
-        elapsedTime = 0;
-        activeAnim = null;
-        activeName = null;
-        animationStorage = new HashMap<String,Animation<TextureRegion>>();
-        pauseAnim = false;
-    }
+	private float elapsedTime;
+	private String activeName;
+	private Animation<TextureRegion> activeAnim;
+	private HashMap<String,Animation<TextureRegion>> animationStorage;
 
-    public void storeAnimation(String name, Animation anim)
-    {
-        animationStorage.put(name, anim);
-        if (activeName == null)
-            setActiveAnimation(name);
-    }
+	private boolean pauseAnim;
 
-    public void storeAnimation(String name, Texture tex)
-    {
-        TextureRegion reg = new TextureRegion(tex);
-        TextureRegion[] frames = { reg };
-        Animation anim = new Animation(1.0f, frames);
-        storeAnimation(name, anim);
-    }
+	public AnimatedActor()
+	{
+		super();
+		pauseAnim = false;
+		elapsedTime = 0;
+		activeAnim = null;
+		activeName = null;
+		animationStorage = new HashMap<String,Animation<TextureRegion>>();
+		pauseAnim = false;
+	}
 
-    public void setActiveAnimation(String name)
-    {
-        if ( !animationStorage.containsKey(name) )
-        {
-            System.out.println("No animation: " + name);
-            return;
-        }
+	public void storeAnimation(String name, Animation anim)
+	{
+		animationStorage.put(name, anim);
+		if (activeName == null)
+			setActiveAnimation(name);
+	}
 
-        if ( name.equals(activeName) )
-            return; // already playing; no need to change...
-        
-        activeName = name;
-        activeAnim = animationStorage.get(name);
-        elapsedTime = 0;
+	public void storeAnimation(String name, Texture tex){
+		TextureRegion reg = new TextureRegion(tex);
+		TextureRegion[] frames = { reg };
+		Animation anim = new Animation(1.0f, frames);
+		storeAnimation(name, anim);
+	}
 
-        // if width or height not set, then set them...
-        if ( getWidth() == 0 || getHeight() == 0 )
-        {
-            Texture tex = activeAnim.getKeyFrame(0).getTexture();
-            setWidth( tex.getWidth() );
-            setHeight( tex.getHeight() );
-        }
-    }
+	public void setActiveAnimation(String name)
+	{
+		if ( !animationStorage.containsKey(name) ){
+			System.out.println("No animation: " + name);
+			return;
+		}
 
-    public String getAnimationName()
-    {  
-        return activeName;  
-    }
+		if ( name.equals(activeName) )
+			return; // already playing; no need to change...
 
-    public void pauseAnimation()
-    {  pauseAnim = true;  }
-    
-    public void startAnimation()
-    {  pauseAnim = false;  }
-    
-    public void setAnimationFrame(int n)
-    {  elapsedTime = n * activeAnim.getFrameDuration();  }
-    
-    public void act(float dt)
-    {
-        super.act( dt );
-        if (!pauseAnim)
-            elapsedTime += dt;
-    }
+			activeName = name;
+			activeAnim = animationStorage.get(name);
+			elapsedTime = 0;
 
-    public void draw(Batch batch, float parentAlpha) 
-    {
-        region.setRegion( activeAnim.getKeyFrame(elapsedTime) );
-        super.draw(batch, parentAlpha);
-    }
+			// if width or height not set, then set them...
+			if ( getWidth() == 0 || getHeight() == 0 ){
+				Texture tex = activeAnim.getKeyFrame(0).getTexture();
+				setWidth( tex.getWidth() );
+				setHeight( tex.getHeight() );
+			}
+	}
+	
 
-    public void copy(AnimatedActor original)
-    {
-        super.copy(original);
-        this.elapsedTime = 0;
-        this.animationStorage = original.animationStorage; // sharing a reference
-        this.activeName = new String(original.activeName);
-        this.activeAnim = this.animationStorage.get( this.activeName );
-    }
+	public String getAnimationName(){  
+		return activeName;  
+	}
 
-    public AnimatedActor clone()
-    {
-        AnimatedActor newbie = new AnimatedActor();
-        newbie.copy( this );
-        return newbie;
-    }   
+	public void pauseAnimation(){  
+		pauseAnim = true;  
+	}
+
+	public void startAnimation(){  
+		pauseAnim = false;  
+	}
+
+	public void setAnimationFrame(int n){  
+		elapsedTime = n * activeAnim.getFrameDuration();  
+	}
+
+	public void act(float dt){
+		super.act( dt );
+		if (!pauseAnim)
+			elapsedTime += dt;
+	}
+
+	public void draw(Batch batch, float parentAlpha) {
+		region.setRegion( activeAnim.getKeyFrame(elapsedTime) );
+		super.draw(batch, parentAlpha);
+	}
+
+	public void copy(AnimatedActor original){
+		super.copy(original);
+		this.elapsedTime = 0;
+		this.animationStorage = original.animationStorage; // sharing a reference
+		this.activeName = new String(original.activeName);
+		this.activeAnim = this.animationStorage.get( this.activeName );
+	}
+
+	public AnimatedActor clone(){
+		AnimatedActor newbie = new AnimatedActor();
+		newbie.copy( this );
+		return newbie;
+	}   
 }
