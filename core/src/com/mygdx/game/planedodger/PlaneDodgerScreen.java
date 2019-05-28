@@ -215,8 +215,14 @@ public class PlaneDodgerScreen extends BaseScreen {
 
 	public boolean keyDown(int keycode){
 
-		if (keycode == Keys.SPACE)
+		if (keycode == Keys.SPACE) {
 			player.setVelocityXY(0,300);
+		}
+		if (keycode == Keys.R) {
+			game.setScreen(new PlaneDodgerScreen((PlaneDodgerGame)game) );
+		}
+			
+		
 		return false;
 	}	
 
