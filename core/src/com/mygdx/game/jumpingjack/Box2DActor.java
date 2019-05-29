@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Box2DActor extends AnimatedActor {
 
 	final static protected float SCALA_FACTOR = 100.0f;
-	final static protected float SCALA_FACTOR2 = 200.0f;
+	final static protected float SCALA_FACTOR2 = SCALA_FACTOR * 2.0f;
 
 	protected BodyDef bodyDef;
 	protected Body body;
