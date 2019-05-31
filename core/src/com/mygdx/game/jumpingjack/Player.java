@@ -36,13 +36,13 @@ public class Player extends Box2DActor {
 		PolygonShape sensorShape = new PolygonShape();
 		
 		// center coordinates of sensor box - offset from body center
-		float x = 0;
-		float y = -20;
+		float x = getWidth()/2.0f;
+		float y = -15;
 		
 		// dimensions of sensor box
 		float w = getWidth() - 8;
 		float h = getHeight();
-		sensorShape.setAsBox( w/SCALA_FACTOR2, h/SCALA_FACTOR2, new Vector2(x/SCALA_FACTOR2, y/SCALA_FACTOR2), 0 );
+		sensorShape.setAsBox( w/SCALA_FACTOR_HALF, h/SCALA_FACTOR_HALF, new Vector2(x/SCALA_FACTOR_HALF, y/SCALA_FACTOR_HALF), 0 );
 		bottomSensor.shape = sensorShape;
 		
 		// create and attach this new fixture

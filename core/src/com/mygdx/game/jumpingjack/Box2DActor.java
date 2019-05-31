@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class Box2DActor extends AnimatedActor {
 
 	final static protected float SCALA_FACTOR = 100.0f;
-	final static protected float SCALA_FACTOR2 = SCALA_FACTOR * 2.0f;
+	final static protected float SCALA_FACTOR_HALF = SCALA_FACTOR * 2.0f;
 
 	protected BodyDef bodyDef;
 	protected Body body;
@@ -89,16 +89,16 @@ public class Box2DActor extends AnimatedActor {
 		setOriginCenter();
 		bodyDef.position.set( (getX() + getOriginX()) / SCALA_FACTOR, (getY() + getOriginY())/SCALA_FACTOR );
 		PolygonShape rect = new PolygonShape();
-		rect.setAsBox( getWidth()/SCALA_FACTOR2, getHeight()/SCALA_FACTOR2 );
+		rect.setAsBox( getWidth()/SCALA_FACTOR_HALF, getHeight()/SCALA_FACTOR_HALF );
 		fixtureDef.shape = rect;
 	}
 
 
 	public void setShapeCircle(){
 		setOriginCenter();
-		bodyDef.position.set( (getX() + getOriginX()) / 100, (getY() + getOriginY())/100 );
+		bodyDef.position.set( (getX() + getOriginX()) / SCALA_FACTOR, (getY() + getOriginY())/SCALA_FACTOR );
 		CircleShape circ = new CircleShape();
-		circ.setRadius( getWidth()/200 );
+		circ.setRadius( getWidth()/SCALA_FACTOR_HALF );
 		fixtureDef.shape = circ;
 	}
 

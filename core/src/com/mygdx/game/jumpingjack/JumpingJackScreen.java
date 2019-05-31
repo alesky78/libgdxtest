@@ -69,7 +69,7 @@ public class JumpingJackScreen extends BaseScreen {
 		crate.setDynamic();
 		crate.setShapeRectangle();
 		// set standard density, average friction, small restitution
-		crate.setPhysicsProperties(1, 0.5f, 0.1f);
+		crate.setPhysicsProperties(1.0f, 0.2f, 0.1f);
 		crate.initializePhysics(world);
 
 
@@ -82,7 +82,7 @@ public class JumpingJackScreen extends BaseScreen {
 		ball.setDynamic();
 		ball.setShapeCircle();
 		// set standard density, small friction, average restitution
-		ball.setPhysicsProperties(1, 0.1f, 0.5f);
+		ball.setPhysicsProperties(0.3f, 0.9f, 0.5f);
 		ball.initializePhysics(world);
 
 		Coin baseCoin = new Coin();
