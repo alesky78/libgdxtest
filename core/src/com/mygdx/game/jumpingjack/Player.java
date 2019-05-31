@@ -36,7 +36,7 @@ public class Player extends Box2DActor {
 		PolygonShape sensorShape = new PolygonShape();
 		
 		// center coordinates of sensor box - offset from body center
-		float x = getWidth()/2.0f;
+		float x = 0f;
 		float y = -15;
 		
 		// dimensions of sensor box
