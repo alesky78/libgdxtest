@@ -45,7 +45,7 @@ public class LevelScreen extends BaseScreen {
 	//labels
 	private float timeElapsed;
 	private Label timeLabel;
-	private DecimalFormat df = new DecimalFormat("0,00");
+	private DecimalFormat df = new DecimalFormat("#.##");
 
 	boolean win;
 
@@ -130,7 +130,7 @@ public class LevelScreen extends BaseScreen {
 
 		if(!winText.isVisible()){
 			timeElapsed += dt;
-			timeLabel.setText( "Time: " +  Float.parseFloat(df.format(timeElapsed)) );
+			timeLabel.setText( "Time: " + df.format(timeElapsed) );
 		}
 
 

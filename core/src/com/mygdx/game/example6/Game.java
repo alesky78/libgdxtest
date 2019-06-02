@@ -1,6 +1,7 @@
 package com.mygdx.game.example6;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -52,13 +53,18 @@ public class Game extends ApplicationAdapter {
 	//labels
 	private float timeElapsed;
 	private Label timeLabel;
-	private DecimalFormat df = new DecimalFormat("0.00");
+	private DecimalFormat df = new DecimalFormat("#.##");
+	DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+		
 	
 	boolean win;
 
 	@Override
 	public void create () {
 
+		dfs.setDecimalSeparator('.');
+		df.setDecimalFormatSymbols(dfs);
+		
 		//UI OBJECT
 		uiStage = new Stage();
 		
@@ -135,7 +141,7 @@ public class Game extends ApplicationAdapter {
 		
 		if(!winText.isVisible()){
 			timeElapsed += dt;
-			timeLabel.setText( "Time: " +  Float.parseFloat(df.format(timeElapsed)) );
+			timeLabel.setText( "Time: "+ df.format(timeElapsed) );
 		}
 
 		
