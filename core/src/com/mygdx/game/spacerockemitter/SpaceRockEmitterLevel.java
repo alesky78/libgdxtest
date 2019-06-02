@@ -42,8 +42,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	private BackGroundWrapAround background;
 	private BackGroundShader backgroundShader;	
 	private PhysicsActor spaceship;
-	private ParticleActor thruster;
-	private BaseActor thrusterAdjuster; 
+	private ThrusterActor thruster;
 	private Shield spaceshipShield;	
 
 	private PhysicsActor baseLaser;
@@ -135,7 +134,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		}
 
 		//truster
-		thrusterAdjuster.getTextureRegion().getTexture().dispose();
 		thruster.getParticleEffect().dispose();
 
 		//laser
@@ -233,16 +231,11 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		//LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --
 		background.setVelocity(spaceship.getVelocity());
 
-		thruster = new ParticleActor();
+		thruster = new ThrusterActor();
 		thruster.load("spacerockemitter/thruster.pfx", "spacerockemitter/");
-		thruster.stop();		
-		thrusterAdjuster = new BaseActor();
-		thrusterAdjuster.setTexture( new Texture(Gdx.files.internal("spacerockemitter/white4px.png")) );
-		thrusterAdjuster.addActor(thruster);
-		thrusterAdjuster.setPosition(-3,30);
-		thrusterAdjuster.setRotation(90);
-		thrusterAdjuster.setScale(0.45f);
-		spaceship.addActor(thrusterAdjuster);
+		thruster.stop();	
+		mainStage.addActor(thruster);
+
 
 		spaceshipShield = new Shield(spaceship,shader);
 
@@ -588,6 +581,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 					explosion.setPosition(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY());
 					explosionSound.play(audioVolume); 
 					mainStage.addActor(explosion);
+					thruster.stop();	
 
 					gamePhase = PHASE_PLAYER_DESTROIED;
 					PHASE_TIMER = 0;
@@ -641,8 +635,12 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 			roksOverlap(rockList, 0);
 
-		}
+		}//end phases end common logic starting for here 
 
+		
+		//adjust the rotation of the thruster based on the ship
+		thruster.setPosition(spaceship.getPositionCenterShiftToLeft());
+		thruster.setRotation(spaceship.getRotation()+180);
 
 		for (BaseActor ba : removeList){
 			ba.destroy();
@@ -666,7 +664,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 		for ( PhysicsActor laser : laserList ){
 			batch.draw(light, laser.getX()-light.getWidth()/2+laser.getOriginX(), laser.getY()-light.getHeight()/2+laser.getOriginY());
-			//batch.draw(spaceship.getTextureRegion(), laser.getX()-light.getWidth()/2+laser.getOriginX(), laser.getY()-light.getHeight()/2+laser.getOriginY());
 		}
 
 		batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA); // Normal rendering

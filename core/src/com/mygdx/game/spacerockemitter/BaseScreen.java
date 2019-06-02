@@ -79,15 +79,18 @@ public abstract class BaseScreen implements Screen, InputProcessor
 	}
 
 
-	public void togglePaused()
-	{  paused = !paused;  }
+	public void togglePaused(){  
+		paused = !paused;  
+	}
 
 	// methods required by Screen interface
-	public void resize(int width, int height) 
-	{    
+	public void resize(int width, int height) {
 		mainStage.getViewport().update(width, height, true); 
 		uiStage.getViewport().update(width, height, true);
+
 	}
+
+
 	public void pause()   {  }
 	public void resume()  {  }
 	public void dispose() {  }
