@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class Shield extends PhysicsActor {
 
-	private final int ROCK_MASS = 1;
 	private final int SHIELD_TTL = 4;	
 
 	private PhysicsActor spaceship;
@@ -22,7 +21,7 @@ public class Shield extends PhysicsActor {
 		this.spaceship = spaceship;
 		this.ShaderProgram = ShaderProgram;
 		active = false;
-		setScale(0f);			
+		//setScale(0f);			
 	}
 
 	public void activate(){
@@ -30,7 +29,7 @@ public class Shield extends PhysicsActor {
 		addAction(
 					Actions.sequence(Actions.parallel(
 													Actions.fadeIn(0.2f),
-													Actions.scaleTo(0.1f, 0.1f, 0.2f)
+													Actions.scaleTo(1f, 1f, 0.2f)
 												),
 									Actions.delay(SHIELD_TTL-0.4f),
 									Actions.parallel(

@@ -218,7 +218,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 		//SHIP
 		spaceship = new PhysicsActor();
-		Texture shipTex = new Texture(Gdx.files.internal("spacerockemitter/spaceship.png"));
+		Texture shipTex = new Texture(Gdx.files.internal("spacerockemitter/spaceship-1.png"));
 		shipTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		spaceship.storeAnimation( "default", shipTex );
 		spaceship.setPosition( mapWidth/2,mapHeight/2 );
@@ -288,11 +288,13 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		labelPoints = new Label(" points: "+points, game.skin, "default");
 		labelWarning = new Label("warning \nwave "+wave+" caming", game.skin, "title");		
 		immageLife = new Image[3];
+		Texture hearTex = new Texture(Gdx.files.internal("spacerockemitter/heart.png"));
+		hearTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		Table immageLifeTable = new Table();
 		immageLifeTable.setFillParent(false);
 		for (int i = 0; i < immageLife.length; i++) {
-			immageLife[i] = new Image(new TextureRegionDrawable(new TextureRegion(shipTex)));
+			immageLife[i] = new Image(new TextureRegionDrawable(new TextureRegion(hearTex)));
 			immageLifeTable.add(immageLife[i]);
 		}
 
