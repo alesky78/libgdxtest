@@ -25,8 +25,7 @@ public class UIGame extends Game {
 		
 		
 		//start screen
-		setScreen(new UIScreen(this));
-		
+		setScreen(new UIScreen(this));	
 	}
 
 	

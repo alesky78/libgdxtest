@@ -57,11 +57,23 @@ public class UIScreen extends AbstractScreen {
 		
 		//Progress Bar
 		ProgressBar progressBarHorizontal = new ProgressBar(0, 1, 0.1f, false, game.skin, "default-horizontal");
-		ProgressBar progressBarVertical = new ProgressBar(0, 1, 0.1f, true, game.skin, "default-vertical");		
-		ProgressBar progressBarBattery = new ProgressBar(0, 1, 0.1f, false, game.skin, "battery");		
-		ProgressBar progressBarSignal1 = new ProgressBar(0, 1, 0.1f, false, game.skin, "signal1");
-		ProgressBar progressBarSignal2 = new ProgressBar(0, 1, 0.1f, false, game.skin, "signal2");		
-		ProgressBar progressBarSignal3 = new ProgressBar(0, 1, 0.1f, false, game.skin, "signal3");	
+		progressBarHorizontal.setValue(0.5f);
+		
+		ProgressBar progressBarVertical = new ProgressBar(0, 1, 0.1f, true, game.skin, "default-vertical");
+		progressBarVertical.setValue(0.5f);
+		
+		ProgressBar progressBarBattery = new ProgressBar(0, 1, 0.1f, false, game.skin, "battery");
+	
+		progressBarBattery.setValue(1f);		
+		
+		ProgressBar progressBarSignal1 = new ProgressBar(0, 1, 0.01f, false, game.skin, "signal1");
+		progressBarSignal1.setValue(0.0f);			
+		
+		ProgressBar progressBarSignal2 = new ProgressBar(0, 1, 0.01f, false, game.skin, "signal2");
+		progressBarSignal2.setValue(0.0f);	
+		
+		ProgressBar progressBarSignal3 = new ProgressBar(0, 1, 0.01f, false, game.skin, "signal3");
+		progressBarSignal3.setValue(0.0f);			
 		
 		//Slider
 		Slider sliderHorizontal = new Slider(0, 1, 0.1f, false, game.skin, "default-horizontal");
@@ -102,7 +114,7 @@ public class UIScreen extends AbstractScreen {
 		uiTable.row();
 		uiTable.add(progressBarHorizontal);		
 		uiTable.add(progressBarVertical);		
-		uiTable.add(progressBarBattery).width(15);
+		uiTable.add(progressBarBattery).width(35);
 		uiTable.row();
 		uiTable.add(progressBarSignal1);		
 		uiTable.add(progressBarSignal2);		
