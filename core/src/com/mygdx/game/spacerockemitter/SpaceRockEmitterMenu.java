@@ -87,10 +87,10 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 			}
 			
 			audioVolume = MathUtils.clamp(audioVolume-dt, 0.0f, 1.0f); 
-			entryLoop.setVolume(MathUtils.clamp(audioVolume-dt, 0.0f, 1.0f));	
+			entryLoop.setVolume(audioVolume);	
 			
 			if(PHASE_TIMER > 2){
-				SpaceRockEmitterLevel tl = new SpaceRockEmitterLevel(game);
+				SpaceRockEmitterChoiseShip tl = new SpaceRockEmitterChoiseShip(game);
 				game.setScreen( tl );
 				entryLoop.pause();
 				dispose();				

@@ -10,10 +10,13 @@ public class PhysicsActor extends AnimatedActor
 	protected Vector2 acceleration;
 
 	// maximum speed
-	private float maxSpeed;
+	protected float maxSpeed;
 
 	// speed reduction, in pixels/second, when not accelerating
-	private float deceleration;
+	protected float deceleration;
+	
+	// acceleration impulse	added to the actual acceleration
+	protected float maxdAcceleration = 100f;	
 
 	// should image rotate to match velocity?
 	private boolean autoAngle;
@@ -27,8 +30,9 @@ public class PhysicsActor extends AnimatedActor
 		autoAngle = false;
 	}
 
+	
+	
 	// velocity methods
-
 	public void setVelocityXY(float vx, float vy){  velocity.set(vx,vy);  }
 	
 	public Vector2 getVelocity() {
@@ -89,6 +93,9 @@ public class PhysicsActor extends AnimatedActor
 		acceleration.add( amount * MathUtils.cosDeg(angle), amount * MathUtils.sinDeg(angle) );
 	}
 
+	public void addAccelerationAS(float angle){
+		acceleration.add( maxdAcceleration * MathUtils.cosDeg(angle), maxdAcceleration * MathUtils.sinDeg(angle) );
+	}	
 
 	public void accelerateForward(float speed)
 	{  setAccelerationAS( getRotation(), speed );  }

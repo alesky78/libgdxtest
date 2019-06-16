@@ -38,8 +38,8 @@ public class AnimatedActor extends BaseActor
 
 	public void storeAnimation(String name, Texture tex)
 	{
-		TextureRegion reg = new TextureRegion(tex);
-		TextureRegion[] frames = { reg };
+		region = new TextureRegion(tex);
+		TextureRegion[] frames = { region };
 		Animation anim = new Animation(1.0f, frames);
 		storeAnimation(name, anim);
 	}

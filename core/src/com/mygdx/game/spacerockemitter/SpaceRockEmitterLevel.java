@@ -41,7 +41,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 	private BackGroundWrapAround background;
 	private BackGroundShader backgroundShader;	
-	private PhysicsActor spaceship;
+	private SpaceShip spaceship;
 	private ThrusterActor thruster;
 	private Shield spaceshipShield;	
 
@@ -91,8 +91,10 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	// game world dimensions and data
 	final int mapWidth = 800;
 	final int mapHeight = 600;
+	
 	final int MAX_ACCELERATION = 150;
 	final int MAX_SPEED = 200;
+	final int MAX_DECELERATION = 100;	
 
 	
 	//shaders
@@ -101,8 +103,11 @@ public class SpaceRockEmitterLevel extends BaseScreen {
     ShaderProgram shader;
     
 	
-	public SpaceRockEmitterLevel(BaseGame g){
-		super(g);
+	public SpaceRockEmitterLevel(BaseGame g, SpaceShip spaceship){
+		super();
+		setGame(g);
+		this.spaceship = spaceship;
+		create();
 	}
 
 
@@ -216,16 +221,8 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		background.setPosition( 0, 0 );		
 		mainStage.addActor( background );
 
-		//SHIP
-		spaceship = new PhysicsActor();
-		Texture shipTex = new Texture(Gdx.files.internal("spacerockemitter/spaceship-1.png"));
-		shipTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		spaceship.storeAnimation( "default", shipTex );
+		//SHIP		
 		spaceship.setPosition( mapWidth/2,mapHeight/2 );
-		spaceship.setOriginCenter();
-		spaceship.setMaxSpeed(MAX_SPEED);
-		spaceship.setDeceleration(100);
-		spaceship.setEllipseBoundary();
 		mainStage.addActor(spaceship);
 
 		//LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --
@@ -553,7 +550,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			if (Gdx.input.isKeyPressed(Keys.RIGHT))
 				spaceship.rotateBy(-180 * dt);
 			if (Gdx.input.isKeyPressed(Keys.UP)){
-				spaceship.addAccelerationAS(spaceship.getRotation(), MAX_ACCELERATION);
+				spaceship.addAccelerationAS(spaceship.getRotation());
 				thruster.start();
 			}else{
 				thruster.stop();
@@ -734,11 +731,15 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		}
 
 		if (keycode == Keys.R){
-			this.dispose();
-			game.setScreen(new SpaceRockEmitterLevel(this.game));
-
+			dispose();
+			game.setScreen(new SpaceRockEmitterLevel(this.game,spaceship));
 		}
 
+		if (keycode == Keys.M){
+			dispose();
+			game.setScreen(new SpaceRockEmitterMenu(game));
+		}
+		
 		return false;
 	}	
 

@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public abstract class BaseScreen implements Screen, InputProcessor
-{
+public abstract class BaseScreen implements Screen, InputProcessor{
+	
 	protected BaseGame game;
 
 	protected Stage mainStage;
@@ -23,8 +23,7 @@ public abstract class BaseScreen implements Screen, InputProcessor
 
 	protected boolean paused;
 
-	public BaseScreen(BaseGame g)
-	{
+	public BaseScreen(BaseGame g){
 		game = g;
 
 		mainStage = new Stage( new FitViewport(viewWidth, viewHeight) );
@@ -41,12 +40,33 @@ public abstract class BaseScreen implements Screen, InputProcessor
 
 		create();
 	}
+	
+	public BaseScreen(){
 
-	public abstract void create();
+		mainStage = new Stage( new FitViewport(viewWidth, viewHeight) );
+		uiStage   = new Stage( new FitViewport(viewWidth, viewHeight) );
 
-	public abstract void update(float dt);
+		uiTable = new Table();
+		uiTable.setFillParent(true);
+		uiStage.addActor(uiTable);
 
-	public void postDrawMainStage(float dt){
+		paused = false;
+
+		InputMultiplexer im = new InputMultiplexer(this, uiStage, mainStage);
+		Gdx.input.setInputProcessor( im );
+
+	}
+	
+
+	public void setGame(BaseGame game) {
+		this.game = game;
+	}
+
+	protected abstract void create();
+
+	protected abstract void update(float dt);
+
+	protected void postDrawMainStage(float dt){
 	};
 
 	// this is the gameloop. update, then render.
