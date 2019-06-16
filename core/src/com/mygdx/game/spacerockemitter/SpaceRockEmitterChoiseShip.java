@@ -25,7 +25,7 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 	private float audioVolume;	
 	
 	private SpaceShip[] spaceShips;
-	private int SpaceShipsIndex = -1;
+	private int SpaceShipsIndex = 0;
 	
 	private Label name;	
 	private ProgressBar acceleartion;
@@ -41,7 +41,7 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 	@Override
 	public void create() {
 
-		spaceShips = new SpaceShip[2];
+		spaceShips = new SpaceShip[3];
 		
 		//create all the ship here
 		Texture shipTex = null;
@@ -52,7 +52,11 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 		
 		shipTex = new Texture(Gdx.files.internal("spacerockemitter/spaceship-1.png"));
 		shipTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		spaceShips[1] = new SpaceShip("cobra-mk1", 200, 250, 150, shipTex);		
+		spaceShips[1] = new SpaceShip("cobra-mk1", 100, 200, 150, shipTex);		
+		
+		shipTex = new Texture(Gdx.files.internal("spacerockemitter/spaceship-2.png"));
+		shipTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		spaceShips[2] = new SpaceShip("vertex-xt2", 150, 250, 220, shipTex);		
 		
 		//create all the UI elements		
 		Label title = new Label("Choose ship", game.skin, "title");	
@@ -76,6 +80,7 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 		final TextButton changeShip = new TextButton("Change Ship", game.skin, "default");
 		changeShip.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				SpaceShipsIndex++;
 				valorizeFields();
 				return true;
 			}
@@ -118,7 +123,7 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 		uiTable.row();
 		uiTable.add(speedLabel).right();
 		uiTable.add(speed);
-		uiTable.row().padTop(100);		
+		uiTable.row().pad(50);		
 		uiTable.add(selectAndStartGame);
 		uiTable.add(changeShip);		
 		
@@ -130,10 +135,8 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 	 */
 	private void valorizeFields() {
 		//verify if the index is good and update it
-		if(SpaceShipsIndex >= spaceShips.length-1){
+		if(SpaceShipsIndex > spaceShips.length-1){
 			SpaceShipsIndex = 0;
-		}else{
-			SpaceShipsIndex++;
 		}
 		
 		name.setText(spaceShips[SpaceShipsIndex].getName());
