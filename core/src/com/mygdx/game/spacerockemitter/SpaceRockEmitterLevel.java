@@ -91,10 +91,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	// game world dimensions and data
 	final int mapWidth = 800;
 	final int mapHeight = 600;
-	
-	final int MAX_ACCELERATION = 150;
-	final int MAX_SPEED = 200;
-	final int MAX_DECELERATION = 100;	
 
 	
 	//shaders
@@ -200,7 +196,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
         
 		
 		//simulated lights
-		camera = mainStage.getCamera();
 		batch = new SpriteBatch();
 		light = new Texture(Gdx.files.internal("spacerockemitter/spotLight.png"));
 		light.setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -673,11 +668,12 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	
 		if(shakeCamera){			
 		
+			Camera camera = mainStage.getCamera();
+			
 			if(shakeCameraDurationCounter <=shakeCameraDuration){
 				shakeCameraDurationCounter +=dt;
 				shakeCameraAngle = shakeCameraAngle + MathUtils.PI2*4*dt;
 				
-				Camera camera = mainStage.getCamera();
 				camera.position.set( camera.position.x+MathUtils.cos(shakeCameraAngle)/(1+shakeCameraDurationCounter*2),camera.position.y+MathUtils.sin(shakeCameraAngle)/(1+shakeCameraDurationCounter*2), 0 );
 				camera.update();			
 			}else{

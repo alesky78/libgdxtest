@@ -22,6 +22,7 @@ public class SpaceShip extends PhysicsActor {
 		setEllipseBoundary();
 	}
 	
+	
 	public float getSpeedRatio(){
 		return maxSpeed/MAX_SPEED;
 	}

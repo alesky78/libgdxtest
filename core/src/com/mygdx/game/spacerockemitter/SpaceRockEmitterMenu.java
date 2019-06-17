@@ -90,10 +90,10 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 			entryLoop.setVolume(audioVolume);	
 			
 			if(PHASE_TIMER > 2){
-				SpaceRockEmitterChoiseShip tl = new SpaceRockEmitterChoiseShip(game);
-				game.setScreen( tl );
 				entryLoop.pause();
-				dispose();				
+				dispose();		
+				SpaceRockEmitterChoiseShip tl = new SpaceRockEmitterChoiseShip(game);
+				game.setScreen( tl );				
 			}
 			
 			PHASE_TIMER = PHASE_TIMER +dt;
@@ -107,6 +107,7 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 		super.dispose();
 		backgroundTxt.dispose();
 		entryLoop.dispose();
+		gameOnSound.dispose();
 
 	}
 

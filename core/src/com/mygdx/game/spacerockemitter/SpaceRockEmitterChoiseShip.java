@@ -22,7 +22,6 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 	private final int PHASE_GAME_START = 1; 	
 	
 	private Texture backgroundTxt;
-	private float audioVolume;	
 	
 	private SpaceShip[] spaceShips;
 	private int SpaceShipsIndex = 0;
@@ -134,7 +133,7 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 	 * valorize the field of the ui when the ship change and manage the index
 	 */
 	private void valorizeFields() {
-		//verify if the index is good and update it
+		//verify if the index is valid or restart from the first ship
 		if(SpaceShipsIndex > spaceShips.length-1){
 			SpaceShipsIndex = 0;
 		}
@@ -161,13 +160,13 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 			if(PHASE_TIMER == 0){
 				uiStage.addAction(Actions.fadeOut(2.0f));
 			}
-			
-			audioVolume = MathUtils.clamp(audioVolume-dt, 0.0f, 1.0f); 
+			 
 			
 			if(PHASE_TIMER > 2){
+				dispose();				
 				SpaceRockEmitterLevel tl = new SpaceRockEmitterLevel(game,spaceShips[SpaceShipsIndex]);
 				game.setScreen( tl );
-				dispose();				
+
 			}
 			
 			PHASE_TIMER = PHASE_TIMER +dt;
