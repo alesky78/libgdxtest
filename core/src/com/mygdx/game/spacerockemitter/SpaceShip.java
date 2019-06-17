@@ -2,7 +2,6 @@ package com.mygdx.game.spacerockemitter;
 
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,10 +9,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Disposable;
 
-public class SpaceShip extends Group {
+public class SpaceShip extends Group implements Disposable {
 	
 	PhysicsActor shipPhysic;
+	ThrusterActor thruster;
 	
 	public static final float MAX_SPEED = 250;
 	public static final float MAX_ACCELEATION = 250; 	
@@ -30,9 +31,22 @@ public class SpaceShip extends Group {
 		shipPhysic.storeAnimation("default", shipTex);
 		shipPhysic.setOriginCenter();
 		shipPhysic.setEllipseBoundary();		
-		
 		addActor(shipPhysic);
+		
+		thruster = new ThrusterActor();
+		thruster.load("spacerockemitter/thruster.pfx", "spacerockemitter/");
+		thruster.stop();	
+		addActor(thruster);
 
+	}
+	
+	
+	public void act (float delta) {
+		super.act(delta);
+		
+		//adjust the rotation of the thruster based on the ship
+		thruster.setPosition(shipPhysic.getPositionCenterShiftToLeft());
+		thruster.setRotation(shipPhysic.getRotation()+180);
 	}
 	
 	////////////////////////////////////////////////
@@ -99,6 +113,17 @@ public class SpaceShip extends Group {
 		return shipPhysic.getPositionCenterShiftToLeft();
 	}	
 
+	//////////////////////////////////////////
+	//thruster logic
+	/////////////////////////////////////////
+	public void startThruster(){
+		thruster.start();		
+	}
+
+	public void stopThruster(){
+		thruster.stop();		
+	}
+	
 	////////////////////////////////////////////////
 	//UI methods  
 	///////////////////////////////////////////////
@@ -137,6 +162,30 @@ public class SpaceShip extends Group {
 	
 	public void clearActions () {
 		shipPhysic.clearActions();
+	}
+
+
+	////////////////////////////////////////////////
+	//Dispose all the resources
+	///////////////////////////////////////////////
+	@Override
+	public void dispose() {
+
+
+		Map<String,Animation<TextureRegion>> disposableAnimations;
+		TextureRegion[] disposableTextureRegions;
+		
+		//ship
+		disposableAnimations = shipPhysic.getAnimationStorage();
+		for (String key : disposableAnimations.keySet()) {
+			disposableTextureRegions = disposableAnimations.get(key).getKeyFrames();
+			for (TextureRegion textureRegion : disposableTextureRegions) {
+				textureRegion.getTexture().dispose();
+			}
+		}
+		
+		//truster
+		thruster.getParticleEffect().dispose();
 	}	
 
 }

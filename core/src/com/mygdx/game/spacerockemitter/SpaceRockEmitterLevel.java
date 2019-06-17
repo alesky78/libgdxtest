@@ -42,7 +42,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 	private BackGroundWrapAround background;
 	private SpaceShip spaceship;
-	private ThrusterActor thruster;
+
 	private Shield spaceshipShield;	
 
 	private PhysicsActor baseLaser;
@@ -109,18 +109,10 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	public void dispose() {
 		super.dispose();
 
+		spaceship.dispose();
 
 		Map<String,Animation<TextureRegion>> disposableAnimations;
 		TextureRegion[] disposableTextureRegions;
-
-		//ship
-		disposableAnimations = spaceship.getAnimationStorage();
-		for (String key : disposableAnimations.keySet()) {
-			disposableTextureRegions = disposableAnimations.get(key).getKeyFrames();
-			for (TextureRegion textureRegion : disposableTextureRegions) {
-				textureRegion.getTexture().dispose();
-			}
-		}
 
 		//background
 		for (PhysicsActor actor : background.getActors()) {
@@ -133,8 +125,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			}
 		}
 
-		//truster
-		thruster.getParticleEffect().dispose();
+
 
 		//laser
 		baseLaser.getTextureRegion().getTexture().dispose();
@@ -213,10 +204,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		//LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --
 		background.setVelocity(spaceship.getVelocity());
 
-		thruster = new ThrusterActor();
-		thruster.load("spacerockemitter/thruster.pfx", "spacerockemitter/");
-		thruster.stop();	
-		mainStage.addActor(thruster);
 
 
 		spaceshipShield = new Shield(spaceship,shader);
@@ -416,7 +403,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 			if(PHASE_TIMER == 0){
 				spaceship.setAccelerationXY(0,0);				
-				thruster.start();				
+				spaceship.startThruster();				
 				spaceship.addAction(Actions.sequence(
 						Actions.rotateTo(0, 1.5f),
 						Actions.moveTo(mapWidth/2-spaceship.getOriginX(), mapHeight/2-spaceship.getOriginY(),  2.0f) 
@@ -435,7 +422,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			if(PHASE_TIMER > 4){
 				gamePhase = PHASE_WARNING;
 				PHASE_TIMER = 0;
-				thruster.stop();
+				spaceship.stopThruster();
 			}			
 
 
@@ -536,9 +523,9 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 				spaceship.rotateBy(-180 * dt);
 			if (Gdx.input.isKeyPressed(Keys.UP)){
 				spaceship.addAccelerationAS();
-				thruster.start();
+				spaceship.startThruster();
 			}else{
-				thruster.stop();
+				spaceship.stopThruster();
 			}
 
 			for (PhysicsActor physicsActor : background.getActors()) {
@@ -565,7 +552,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 					explosion.setPosition(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY());
 					explosionSound.play(audioVolume); 
 					mainStage.addActor(explosion);
-					thruster.stop();	
+					spaceship.stopThruster();
 
 					gamePhase = PHASE_PLAYER_DESTROIED;
 					PHASE_TIMER = 0;
@@ -622,9 +609,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		}//end phases end common logic starting for here 
 
 		
-		//adjust the rotation of the thruster based on the ship
-		thruster.setPosition(spaceship.getPositionCenterShiftToLeft());
-		thruster.setRotation(spaceship.getRotation()+180);
+		
 
 		for (BaseActor ba : removeList){
 			ba.destroy();

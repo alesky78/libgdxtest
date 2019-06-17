@@ -179,6 +179,12 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 	public void dispose() {
 		super.dispose();
 		backgroundTxt.dispose();
+		
+		for (int i = 0; i < spaceShips.length; i++) {
+			if(i!=SpaceShipsIndex){
+				spaceShips[i].dispose();
+			}
+		}
 
 	}
 
