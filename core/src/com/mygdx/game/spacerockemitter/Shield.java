@@ -9,14 +9,14 @@ public class Shield extends PhysicsActor {
 
 	private final int SHIELD_TTL = 4;	
 
-	private PhysicsActor spaceship;
+	private SpaceShip spaceship;
 	private ShaderProgram ShaderProgram;
 	
 	private boolean active;  
 	
 	private float activeTime = 0;	
 	
-	public Shield(PhysicsActor spaceship, ShaderProgram ShaderProgram){ 
+	public Shield(SpaceShip spaceship, ShaderProgram ShaderProgram){ 
 		super();
 		this.spaceship = spaceship;
 		this.ShaderProgram = ShaderProgram;
@@ -90,7 +90,7 @@ public class Shield extends PhysicsActor {
 		
 		if ( bounceOff ){
 			//rockVelocity = new Vector2((2 * ROCK_MASS * spaceship.velocity.x) / (ROCK_MASS + ROCK_MASS), (2 * ROCK_MASS * spaceship.velocity.y) / (ROCK_MASS + ROCK_MASS));
-			rock.setVelocityXY(MathUtils.clamp(spaceship.velocity.x, 50, 200), MathUtils.clamp(spaceship.velocity.y, 50, 200));
+			rock.setVelocityXY(MathUtils.clamp(spaceship.getVelocity().x, 50, 200), MathUtils.clamp(spaceship.getVelocity().y, 50, 200));
 		}
 
 		return true;

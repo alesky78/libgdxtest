@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -40,7 +41,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	private final int PHASE_PLAYER_DESTROIED = 6;	
 
 	private BackGroundWrapAround background;
-	private BackGroundShader backgroundShader;	
 	private SpaceShip spaceship;
 	private ThrusterActor thruster;
 	private Shield spaceshipShield;	
@@ -61,8 +61,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	private Texture light;
 	private SpriteBatch batch;
 
-	//CAMERA SHAKE	
-	private Camera camera; 
+	//CAMERA SHAKE	 
 	private float shakeCameraAngle = 0;
 	private float shakeCameraDuration = 0.5f;	
 	private float shakeCameraDurationCounter = 0;	
@@ -199,15 +198,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		batch = new SpriteBatch();
 		light = new Texture(Gdx.files.internal("spacerockemitter/spotLight.png"));
 		light.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-
-
-		//BACKGROUND
-//		backgroundShader = new BackGroundShader();
-//		backgroundShader.setTexture( new Texture(Gdx.files.internal("spacerockemitter/space.png")));
-//		backgroundShader.setShaderProgram(new ShaderProgram(Gdx.files.internal("shader/passthrough.vrtx").readString(),Gdx.files.internal("shader/starfiled.frgm").readString()));
-//		backgroundShader.enableShader();
-//		mainStage.addActor( backgroundShader );		
-
 		
 		background = new BackGroundWrapAround();
 		Texture backgroundTex = new Texture(Gdx.files.internal("spacerockemitter/space.png"));
@@ -217,7 +207,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		mainStage.addActor( background );
 
 		//SHIP		
-		spaceship.setPosition( mapWidth/2,mapHeight/2 );
+		spaceship.setPosition( mapWidth/2-spaceship.getWidth()/2,mapHeight/2-spaceship.getHeight()/2 );
 		mainStage.addActor(spaceship);
 
 		//LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --
@@ -492,7 +482,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 					spaceship.setAccelerationXY(0, 0);
 					spaceship.setVelocity(0, 0);
 					spaceship.setRotation(0);
-					spaceship.setPosition( mapWidth/2,mapHeight/2 );
+					spaceship.setPosition( mapWidth/2-spaceship.getWidth()/2,mapHeight/2-spaceship.getHeight()/2 );
 
 
 					for (int i = 0; i < immageLife.length; i++) {
@@ -545,7 +535,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			if (Gdx.input.isKeyPressed(Keys.RIGHT))
 				spaceship.rotateBy(-180 * dt);
 			if (Gdx.input.isKeyPressed(Keys.UP)){
-				spaceship.addAccelerationAS(spaceship.getRotation());
+				spaceship.addAccelerationAS();
 				thruster.start();
 			}else{
 				thruster.stop();
@@ -691,7 +681,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	}
 
 
-	public void wraparound(BaseActor ba){
+	public void wraparound(Actor ba){
 		if ( ba.getX() + ba.getWidth() < 0 )
 			ba.setX( mapWidth );
 		if ( ba.getX() > mapWidth )

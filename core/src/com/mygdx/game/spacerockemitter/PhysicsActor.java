@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class PhysicsActor extends AnimatedActor
 {
-	protected Vector2 velocity;
-	protected Vector2 acceleration;
+	protected Vector2 velocity_V;
+	protected Vector2 acceleration_V;
 
 	// maximum speed
 	protected float maxSpeed;
@@ -16,15 +16,15 @@ public class PhysicsActor extends AnimatedActor
 	protected float deceleration;
 	
 	// acceleration impulse	added to the actual acceleration
-	protected float maxdAcceleration = 100f;	
+	protected float acceleration;	
 
 	// should image rotate to match velocity?
 	private boolean autoAngle;
 
 	public PhysicsActor()
 	{
-		velocity = new Vector2();
-		acceleration = new Vector2();
+		velocity_V = new Vector2();
+		acceleration_V = new Vector2();
 		maxSpeed = 9999;
 		deceleration = 0;
 		autoAngle = false;
@@ -33,26 +33,26 @@ public class PhysicsActor extends AnimatedActor
 	
 	
 	// velocity methods
-	public void setVelocityXY(float vx, float vy){  velocity.set(vx,vy);  }
+	public void setVelocityXY(float vx, float vy){  velocity_V.set(vx,vy);  }
 	
 	public Vector2 getVelocity() {
-		return velocity;
+		return velocity_V;
 	}
 	
 	public void setVelocity(Vector2 velocity) {
-		this.velocity = velocity;
+		this.velocity_V = velocity;
 	}
 	public void setVelocity(float vx, float vy)
-	{  velocity.set(vx,vy);  }	
+	{  velocity_V.set(vx,vy);  }	
 
 	public void addVelocityXY(float vx, float vy)
-	{  velocity.add(vx,vy);  }
+	{  velocity_V.add(vx,vy);  }
 
 	// set velocity from angle and speed
 	public void setVelocityAS(float angleDeg, float speed)
 	{
-		velocity.x = speed * MathUtils.cosDeg(angleDeg);
-		velocity.y = speed * MathUtils.sinDeg(angleDeg);
+		velocity_V.x = speed * MathUtils.cosDeg(angleDeg);
+		velocity_V.y = speed * MathUtils.sinDeg(angleDeg);
 	}
 
 	protected void rotationChanged () {
@@ -60,16 +60,32 @@ public class PhysicsActor extends AnimatedActor
 	}
 	
 	public float getSpeed()
-	{  return velocity.len();  }
+	{  return velocity_V.len();  }
 
 	public void setSpeed(float s)
-	{  velocity.setLength(s);  }
+	{  velocity_V.setLength(s);  }
 
 	public void setMaxSpeed(float ms)
 	{  maxSpeed = ms;  }
 
+	public float getMaxSpeed() {
+		return maxSpeed;
+	}
+	
+	public float getAcceleration() {
+		return acceleration;
+	}
+
+	public void setAcceleration(float acceleration) {
+		this.acceleration = acceleration;
+	}
+
+	public float getDeceleration() {
+		return deceleration;
+	}
+
 	public float getMotionAngle()
-	{  return MathUtils.atan2(velocity.y, velocity.x) * MathUtils.radiansToDegrees;  }
+	{  return MathUtils.atan2(velocity_V.y, velocity_V.x) * MathUtils.radiansToDegrees;  }
 
 	public void setAutoAngle(boolean b)
 	{  autoAngle = b;  }
@@ -77,24 +93,24 @@ public class PhysicsActor extends AnimatedActor
 	// acceleration methods
 
 	public void setAccelerationXY(float ax, float ay)
-	{  acceleration.set(ax,ay);  }
+	{  acceleration_V.set(ax,ay);  }
 
 	public void addAccelerationXY(float ax, float ay)
-	{  acceleration.add(ax,ay);  }
+	{  acceleration_V.add(ax,ay);  }
 
 	// set acceleration from angle and speed
 	public void setAccelerationAS(float angleDeg, float speed)
 	{
-		acceleration.x = speed * MathUtils.cosDeg(angleDeg);
-		acceleration.y = speed * MathUtils.sinDeg(angleDeg);
+		acceleration_V.x = speed * MathUtils.cosDeg(angleDeg);
+		acceleration_V.y = speed * MathUtils.sinDeg(angleDeg);
 	}
 
 	public void addAccelerationAS(float angle, float amount){
-		acceleration.add( amount * MathUtils.cosDeg(angle), amount * MathUtils.sinDeg(angle) );
+		acceleration_V.add( amount * MathUtils.cosDeg(angle), amount * MathUtils.sinDeg(angle) );
 	}
 
 	public void addAccelerationAS(float angle){
-		acceleration.add( maxdAcceleration * MathUtils.cosDeg(angle), maxdAcceleration * MathUtils.sinDeg(angle) );
+		acceleration_V.add( acceleration * MathUtils.cosDeg(angle), acceleration * MathUtils.sinDeg(angle) );
 	}	
 
 	public void accelerateForward(float speed)
@@ -108,10 +124,10 @@ public class PhysicsActor extends AnimatedActor
 		super.act(dt);
 
 		// apply acceleration
-		velocity.add( acceleration.x * dt, acceleration.y * dt );
+		velocity_V.add( acceleration_V.x * dt, acceleration_V.y * dt );
 
 		// decrease velocity when not accelerating
-		if (acceleration.len() < 0.01)
+		if (acceleration_V.len() < 0.01)
 		{
 			float decelerateAmount = deceleration * dt;
 			if ( getSpeed() < decelerateAmount )
@@ -125,7 +141,7 @@ public class PhysicsActor extends AnimatedActor
 			setSpeed(maxSpeed);
 
 		// apply velocity
-		moveBy( velocity.x * dt, velocity.y * dt );
+		moveBy( velocity_V.x * dt, velocity_V.y * dt );
 
 		// rotate image when moving
 		if (autoAngle && getSpeed() > 0.1 )
@@ -135,8 +151,8 @@ public class PhysicsActor extends AnimatedActor
 	public void copy(PhysicsActor original)
 	{
 		super.copy(original);
-		this.velocity = new Vector2(original.velocity);
-		this.acceleration = new Vector2(original.acceleration);
+		this.velocity_V = new Vector2(original.velocity_V);
+		this.acceleration_V = new Vector2(original.acceleration_V);
 		this.maxSpeed = original.maxSpeed;
 		this.deceleration = original.deceleration;
 		this.autoAngle = original.autoAngle;

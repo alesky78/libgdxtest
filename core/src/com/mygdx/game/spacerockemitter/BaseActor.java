@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 
@@ -184,7 +185,7 @@ public class BaseActor extends Group
 				target.getY() + target.getOriginY() - this.getOriginY());
 	}
 	
-	public void moveToCenterShiftToRight(BaseActor target){
+	public void moveToCenterShiftToRight(Actor target){
 		this.setPosition(
 				target.getX() + target.getOriginX() - this.getOriginX() + MathUtils.cosDeg(target.getRotation())*target.getWidth()/2,
 				target.getY() + target.getOriginY() - this.getOriginY() + MathUtils.sinDeg (target.getRotation())*target.getWidth()/2);

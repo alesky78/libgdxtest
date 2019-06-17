@@ -47,11 +47,11 @@ public class Rock extends PhysicsActor {
 	}
 
 	public void multVelocityX(float m){ 
-		velocity.x *= m; 
+		velocity_V.x *= m; 
 	}
 
 	public void multVelocityY(float m){ 
-		velocity.y *= m; 
+		velocity_V.y *= m; 
 	}	
 
 
@@ -65,8 +65,8 @@ public class Rock extends PhysicsActor {
 		Vector2 thisVelocity;
 		Vector2 rockVelocity;
 		if ( bounceOff ){
-			thisVelocity = new Vector2((2 * ROCK_MASS * rock.velocity.x) / (ROCK_MASS + ROCK_MASS), (2 * ROCK_MASS * rock.velocity.y) / (ROCK_MASS + ROCK_MASS));
-			rockVelocity = new Vector2((2 * ROCK_MASS * this.velocity.x) / (ROCK_MASS + ROCK_MASS), (2 * ROCK_MASS * this.velocity.y) / (ROCK_MASS + ROCK_MASS));
+			thisVelocity = new Vector2((2 * ROCK_MASS * rock.velocity_V.x) / (ROCK_MASS + ROCK_MASS), (2 * ROCK_MASS * rock.velocity_V.y) / (ROCK_MASS + ROCK_MASS));
+			rockVelocity = new Vector2((2 * ROCK_MASS * this.velocity_V.x) / (ROCK_MASS + ROCK_MASS), (2 * ROCK_MASS * this.velocity_V.y) / (ROCK_MASS + ROCK_MASS));
 
 			this.setVelocityXY(thisVelocity.x, thisVelocity.y);
 			rock.setVelocityXY(rockVelocity.x, rockVelocity.y);

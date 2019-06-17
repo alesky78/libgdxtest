@@ -46,7 +46,7 @@ public class BackGroundWrapAround extends Group
 		int pos = 0;
 		for (int x = 0; x < 2; x++) {
 			for (int y = 0; y < 2; y++) {
-				actors.get(pos).setPosition( x*tex.getWidth(), y*tex.getHeight() );
+				actors.get(pos).setPosition( ((float)x)*tex.getWidth(), ((float)y)*tex.getHeight() );
 				pos++;
 			}			
 		}
