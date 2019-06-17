@@ -55,6 +55,7 @@ public class SpaceShip extends Group implements Disposable {
 		shield.setOriginCenter();				
 		shield.setPosition(shipPhysic.getX()+shipPhysic.getOriginX()-shipPhysic.getOriginX(),shipPhysic.getY()+shipPhysic.getOriginY()-shipPhysic.getOriginY());
 		shield.setEllipseBoundary();
+		shield.setScale(shipPhysic.getWidth()/shield.getWidth(), shipPhysic.getHeight()/shield.getHeight());
 		addActor(shield);
 		
 

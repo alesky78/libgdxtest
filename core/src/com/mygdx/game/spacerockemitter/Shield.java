@@ -21,7 +21,6 @@ public class Shield extends PhysicsActor {
 		this.spaceship = target;
 		this.ShaderProgram = ShaderProgram;
 		active = false;
-		//setScale(0f);			
 	}
 
 	public void activate(){

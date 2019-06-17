@@ -102,21 +102,8 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		super.dispose();
 
 		spaceship.dispose();
-
-		Map<String,Animation<TextureRegion>> disposableAnimations;
-		TextureRegion[] disposableTextureRegions;
-
-		//background
-		for (PhysicsActor actor : background.getActors()) {
-			disposableAnimations = actor.getAnimationStorage();
-			for (String key : disposableAnimations.keySet()) {
-				disposableTextureRegions = disposableAnimations.get(key).getKeyFrames();
-				for (TextureRegion textureRegion : disposableTextureRegions) {
-					textureRegion.getTexture().dispose();
-				}
-			}
-		}
-
+		background.dispose();
+		
 		//laser
 		baseLaser.getTextureRegion().getTexture().dispose();
 		laserParticle.getParticleEffect().dispose();
@@ -154,11 +141,8 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		light = new Texture(Gdx.files.internal("spacerockemitter/spotLight.png"));
 		light.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		
+		//BACKGROUND
 		background = new BackGroundWrapAround();
-		Texture backgroundTex = new Texture(Gdx.files.internal("spacerockemitter/space.png"));
-		backgroundTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		background.storeAnimation( "default", backgroundTex );		
-		background.setPosition( 0, 0 );		
 		mainStage.addActor( background );
 
 		//SHIP		
@@ -168,7 +152,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		//LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --
 		background.setVelocity(spaceship.getVelocity());
 
-
+		//PREPARE LASER CLONE ENTITY
 		baseLaser = new PhysicsActor();
 		Texture laserTex = new Texture(Gdx.files.internal("spacerockemitter/laser.png"));
 		laserTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
