@@ -43,8 +43,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	private BackGroundWrapAround background;
 	private SpaceShip spaceship;
 
-	private Shield spaceshipShield;	
-
 	private PhysicsActor baseLaser;
 	private ParticleActor laserParticle;	
 
@@ -90,12 +88,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	// game world dimensions and data
 	final int mapWidth = 800;
 	final int mapHeight = 600;
-
-	
-	//shaders
-	String vertexShader;
-    String fragmentShader;
-    ShaderProgram shader;
     
 	
 	public SpaceRockEmitterLevel(BaseGame g, SpaceShip spaceship){
@@ -125,15 +117,9 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			}
 		}
 
-
-
 		//laser
 		baseLaser.getTextureRegion().getTexture().dispose();
 		laserParticle.getParticleEffect().dispose();
-
-
-		//shield
-		spaceshipShield.getTextureRegion().getTexture().dispose();
 
 		//rock
 		for (Texture texture : rockTexture) {
@@ -147,7 +133,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		light.dispose();
 		batch.dispose();
 
-
 		//sounds
 		laserSound.dispose();
 		explosionSound.dispose();	
@@ -155,10 +140,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		warningSound.dispose();
 		gameOverSound.dispose();
 		
-		
-		//shaders
-        shader.dispose();
-
 	}
 
 
@@ -167,23 +148,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	public void create() {
 
 		mainStage.setDebugAll(MAIN_SCENE_DEBUG);
-		
-		//create all the shaders
-        vertexShader = Gdx.files.internal("shader/passthrough.vrtx").readString();        
-        fragmentShader = Gdx.files.internal("shader/Flicker.frgm").readString();             
-        
-
-        shader = new ShaderProgram(vertexShader,fragmentShader);	
-        
-        if (!shader.isCompiled()) {
-            System.err.println(shader.getLog());
-            System.exit(0);
-        }
-
-        if (shader.getLog().length()!=0){
-            System.out.println(shader.getLog());
-        }
-        
 		
 		//simulated lights
 		batch = new SpriteBatch();
@@ -203,20 +167,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 		//LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --
 		background.setVelocity(spaceship.getVelocity());
-
-
-
-		spaceshipShield = new Shield(spaceship,shader);
-
-		Texture shieldTex = new Texture(Gdx.files.internal("spacerockemitter/shield.png"));		
-		
-		shieldTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		spaceshipShield.setTexture( shieldTex );
-		spaceshipShield.storeAnimation( "default", shieldTex );
-		spaceshipShield.setOriginCenter();				
-		spaceshipShield.setPosition(spaceship.getX()+spaceship.getOriginX()-spaceshipShield.getOriginX(),spaceship.getY()+spaceship.getOriginY()-spaceshipShield.getOriginY());
-		spaceshipShield.setEllipseBoundary();
-		mainStage.addActor(spaceshipShield);
 
 
 		baseLaser = new PhysicsActor();
@@ -278,22 +228,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		uiTable.row();
 		uiTable.add().height(150);      
 		uiTable.row();
-		uiTable.add(labelWarning).colspan(2).expand();
-
-		//NOT WORKING if remove expandX at line 293
-//		uiTable.pad(5);
-//		uiTable.add(labelPoints).left();
-//		uiTable.add().expandX();      		
-//		for (int i = 0; i < immageLife.length; i++) {
-//			immageLife[i] = new Image(new TextureRegionDrawable(new TextureRegion(shipTex)));
-//			uiTable.add(immageLife[i]);
-//		}		
-//		uiTable.row();
-//		uiTable.add().height(150);      
-//		uiTable.row();
-//		uiTable.add(labelWarning).colspan(5).expand();
-		
-		
+		uiTable.add(labelWarning).colspan(2).expand();	
 
 		//audio
 		laserSound = Gdx.audio.newSound(Gdx.files.internal("spacerockemitter/laser.wav"));
@@ -394,7 +329,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			generateRocks(wave);
 
 			//enable shield
-			spaceshipShield.activate();
+			spaceship.activateShield();
 
 			gamePhase = PHASE_GAME_ON;
 
@@ -503,7 +438,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 										)
 									);
 
-				spaceshipShield.activate();				
+				spaceship.activateShield();				
 			}
 			
 			PHASE_TIMER = PHASE_TIMER + dt;
@@ -543,10 +478,9 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			for ( Rock rock : rockList ){
 
 				//check if contact with shield
-				spaceshipShield.overlaps(rock, true);
-
-				//check if contact with ship only if shield is disable
-				if(!spaceshipShield.isActive() && spaceship.overlaps(rock, true)){
+				if(spaceship.isActiveShield()){
+					spaceship.overlapsShield(rock, true);					
+				}else if(!spaceship.isActiveShield() && spaceship.overlapsShip(rock, true)){ //check if contact with ship only if shield is disable
 					ParticleActor explosion = baseExplosion.clone();
 					explosion.start();					
 					explosion.setPosition(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY());

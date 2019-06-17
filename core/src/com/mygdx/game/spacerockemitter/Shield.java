@@ -9,16 +9,16 @@ public class Shield extends PhysicsActor {
 
 	private final int SHIELD_TTL = 4;	
 
-	private SpaceShip spaceship;
+	private PhysicsActor spaceship;
 	private ShaderProgram ShaderProgram;
 	
 	private boolean active;  
 	
 	private float activeTime = 0;	
 	
-	public Shield(SpaceShip spaceship, ShaderProgram ShaderProgram){ 
+	public Shield(PhysicsActor target, ShaderProgram ShaderProgram){ 
 		super();
-		this.spaceship = spaceship;
+		this.spaceship = target;
 		this.ShaderProgram = ShaderProgram;
 		active = false;
 		//setScale(0f);			
