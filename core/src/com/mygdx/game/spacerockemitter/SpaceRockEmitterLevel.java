@@ -90,7 +90,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	final int mapHeight = 600;
     
 	
-	public SpaceRockEmitterLevel(BaseGame g, SpaceShip spaceship){
+	public SpaceRockEmitterLevel(SpaceRockEmitterGame g, SpaceShip spaceship){
 		super();
 		setGame(g);
 		this.spaceship = spaceship;

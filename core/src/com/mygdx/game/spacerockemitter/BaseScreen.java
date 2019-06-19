@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public abstract class BaseScreen implements Screen, InputProcessor{
 	
-	protected BaseGame game;
+	protected SpaceRockEmitterGame game;
 
 	protected Stage mainStage;
 	protected Stage uiStage;
@@ -23,7 +23,7 @@ public abstract class BaseScreen implements Screen, InputProcessor{
 
 	protected boolean paused;
 
-	public BaseScreen(BaseGame g){
+	public BaseScreen(SpaceRockEmitterGame g){
 		game = g;
 
 		mainStage = new Stage( new FitViewport(viewWidth, viewHeight) );
@@ -58,7 +58,7 @@ public abstract class BaseScreen implements Screen, InputProcessor{
 	}
 	
 
-	public void setGame(BaseGame game) {
+	public void setGame(SpaceRockEmitterGame game) {
 		this.game = game;
 	}
 

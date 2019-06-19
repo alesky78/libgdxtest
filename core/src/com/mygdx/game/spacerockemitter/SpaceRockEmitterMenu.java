@@ -25,7 +25,7 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 	private Sound gameOnSound;		
 	private float audioVolume;	
 	
-	public SpaceRockEmitterMenu(BaseGame g) {
+	public SpaceRockEmitterMenu(SpaceRockEmitterGame g) {
 		super(g);
 	}
 

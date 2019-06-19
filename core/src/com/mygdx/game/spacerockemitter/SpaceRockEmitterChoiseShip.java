@@ -33,7 +33,7 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 	private Image shipImage;
 
 	
-	public SpaceRockEmitterChoiseShip(BaseGame g) {
+	public SpaceRockEmitterChoiseShip(SpaceRockEmitterGame g) {
 		super(g);
 	}
 
