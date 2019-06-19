@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class SpaceRockEmitterChoiseShip extends BaseScreen {
+public class SpaceRockEmitterChooseShip extends BaseScreen {
 
 	protected int gamePhase;
 	private float PHASE_TIMER = 0;	
@@ -33,7 +33,7 @@ public class SpaceRockEmitterChoiseShip extends BaseScreen {
 	private Image shipImage;
 
 	
-	public SpaceRockEmitterChoiseShip(SpaceRockEmitterGame g) {
+	public SpaceRockEmitterChooseShip(SpaceRockEmitterGame g) {
 		super(g);
 	}
 

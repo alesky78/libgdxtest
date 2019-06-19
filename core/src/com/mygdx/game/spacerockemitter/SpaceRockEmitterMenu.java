@@ -92,7 +92,7 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 			if(PHASE_TIMER > 2){
 				entryLoop.pause();
 				dispose();		
-				SpaceRockEmitterChoiseShip tl = new SpaceRockEmitterChoiseShip(game);
+				SpaceRockEmitterChooseShip tl = new SpaceRockEmitterChooseShip(game);
 				game.setScreen( tl );				
 			}
 			
