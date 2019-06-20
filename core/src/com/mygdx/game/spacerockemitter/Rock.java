@@ -1,7 +1,6 @@
 package com.mygdx.game.spacerockemitter;
 
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 
 public class Rock extends PhysicsActor {

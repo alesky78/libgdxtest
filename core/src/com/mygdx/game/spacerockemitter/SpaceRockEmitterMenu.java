@@ -1,6 +1,5 @@
 package com.mygdx.game.spacerockemitter;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,16 +33,18 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 
 		audioVolume = 0.50f;
 		
-		entryLoop = Gdx.audio.newMusic(Gdx.files.internal("spacerockemitter/entry_loop.wav"));
+		
+		entryLoop = game.assetManager.get(AssetCatalog.MUSIC_MENU_LOOP);
+		
 		entryLoop.setLooping(true);
 		entryLoop.setVolume(audioVolume);
 
 		
-		gameOnSound = Gdx.audio.newSound(Gdx.files.internal("spacerockemitter/game on.wav"));
+		gameOnSound = game.assetManager.get(AssetCatalog.SOUND_GAME_ON);
 		
 		Label title = new Label("Space Rocker", game.skin, "title");	
 		
-		backgroundTxt = new Texture(Gdx.files.internal("spacerockemitter/space.png"));
+		backgroundTxt = game.assetManager.get(AssetCatalog.TEXTURE_SPACE_BACKGROUND);
 		TextureRegionDrawable background =  new TextureRegionDrawable(new TextureRegion(backgroundTxt));
 		
 		final TextButton startGame = new TextButton("start game", game.skin, "default");
@@ -90,8 +91,7 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 			entryLoop.setVolume(audioVolume);	
 			
 			if(PHASE_TIMER > 2){
-				entryLoop.pause();
-				dispose();		
+				entryLoop.stop();
 				SpaceRockEmitterChooseShip tl = new SpaceRockEmitterChooseShip(game);
 				game.setScreen( tl );				
 			}
@@ -105,10 +105,6 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 
 	public void dispose() {
 		super.dispose();
-		backgroundTxt.dispose();
-		entryLoop.dispose();
-		gameOnSound.dispose();
-
 	}
 
 

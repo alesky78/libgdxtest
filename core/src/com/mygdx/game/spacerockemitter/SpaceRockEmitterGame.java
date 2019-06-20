@@ -1,9 +1,7 @@
 package com.mygdx.game.spacerockemitter;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class SpaceRockEmitterGame extends Game {
@@ -11,19 +9,20 @@ public class SpaceRockEmitterGame extends Game {
 	// used to store resources common to multiple screens
 	public Skin skin;
 	public AssetManager assetManager; 
+	public AssetCatalog assetCatalog;
 	
 	@Override
 	public void create() {
+				
+		assetCatalog = new AssetCatalog();
+		assetCatalog.init();
 
-		skin = new Skin();
-		
-		//LOAD THE UI		
 		assetManager = new AssetManager();
-		assetManager.load("spacerockemitter/quantum-horizon-ui.atlas", TextureAtlas.class);
+		assetCatalog.loadAssetsManagerQueue(assetManager);
 		assetManager.finishLoading();
-		
-		TextureAtlas atlas = assetManager.get("spacerockemitter/quantum-horizon-ui.atlas", TextureAtlas.class);
-		skin = new Skin(Gdx.files.internal("spacerockemitter/quantum-horizon-ui.json"), atlas);
+
+		//prepare the UI skin
+		skin = assetManager.get(AssetCatalog.UI_JSON, Skin.class);
 		
 		SpaceRockEmitterMenu scene = new SpaceRockEmitterMenu(this);
         setScreen( scene );

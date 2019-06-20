@@ -1,10 +1,7 @@
 package com.mygdx.game.spacerockemitter;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -45,22 +42,19 @@ public class SpaceRockEmitterChooseShip extends BaseScreen {
 		//create all the ship here
 		Texture shipTex = null;
 		
-		shipTex = new Texture(Gdx.files.internal("spacerockemitter/spaceship-0.png"));
-		shipTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		spaceShips[0] = new SpaceShip("xj-32", 200, 180, 200, shipTex);
+		shipTex = game.assetManager.get(AssetCatalog.TEXTURE_SHIP_0);
+		spaceShips[0] = new SpaceShip("xj-32", 200, 180, 200, shipTex, game.assetManager);
 		
-		shipTex = new Texture(Gdx.files.internal("spacerockemitter/spaceship-1.png"));
-		shipTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		spaceShips[1] = new SpaceShip("cobra-mk1", 100, 200, 150, shipTex);		
+		shipTex = game.assetManager.get(AssetCatalog.TEXTURE_SHIP_1);;
+		spaceShips[1] = new SpaceShip("cobra-mk1", 100, 200, 150, shipTex, game.assetManager);		
 		
-		shipTex = new Texture(Gdx.files.internal("spacerockemitter/spaceship-2.png"));
-		shipTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		spaceShips[2] = new SpaceShip("vertex-xt2", 150, 250, 220, shipTex);		
+		shipTex = game.assetManager.get(AssetCatalog.TEXTURE_SHIP_2);
+		spaceShips[2] = new SpaceShip("vertex-xt2", 150, 250, 220, shipTex, game.assetManager);		
 		
 		//create all the UI elements		
 		Label title = new Label("Choose ship", game.skin, "title");	
 		
-		backgroundTxt = new Texture(Gdx.files.internal("spacerockemitter/space.png"));
+		backgroundTxt = game.assetManager.get(AssetCatalog.TEXTURE_SPACE_BACKGROUND);
 		TextureRegionDrawable background =  new TextureRegionDrawable(new TextureRegion(backgroundTxt));
 		
 		final TextButton selectAndStartGame = new TextButton("Select Ship", game.skin, "default");
@@ -163,7 +157,6 @@ public class SpaceRockEmitterChooseShip extends BaseScreen {
 			 
 			
 			if(PHASE_TIMER > 2){
-				dispose();				
 				SpaceRockEmitterLevel tl = new SpaceRockEmitterLevel(game,spaceShips[SpaceShipsIndex]);
 				game.setScreen( tl );
 
@@ -178,14 +171,6 @@ public class SpaceRockEmitterChooseShip extends BaseScreen {
 
 	public void dispose() {
 		super.dispose();
-		backgroundTxt.dispose();
-		
-		for (int i = 0; i < spaceShips.length; i++) {
-			if(i!=SpaceShipsIndex){
-				spaceShips[i].dispose();
-			}
-		}
-
 	}
 
 

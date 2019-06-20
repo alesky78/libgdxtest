@@ -3,25 +3,22 @@ package com.mygdx.game.spacerockemitter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.Disposable;
 
-public class BackGroundWrapAround extends Group  implements Disposable
-{
+public class BackGroundWrapAround extends Group{
 	
 	private List<PhysicsActor> actors;
 	private Texture tex;
 	private Vector2 velocity;
 
-	public BackGroundWrapAround(){
+	public BackGroundWrapAround(AssetManager assetManager){
 		actors = new ArrayList<PhysicsActor>();
 		PhysicsActor actor;
 		for (int i = 0; i < 4; i++) {
@@ -30,7 +27,7 @@ public class BackGroundWrapAround extends Group  implements Disposable
 			addActor(actor);
 		}
 		
-		Texture backgroundTex = new Texture(Gdx.files.internal("spacerockemitter/space.png"));
+		Texture backgroundTex = assetManager.get(AssetCatalog.TEXTURE_SPACE_BACKGROUND);
 		backgroundTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		storeAnimation( "default", backgroundTex );		
 		setPosition( 0, 0 );		
@@ -76,24 +73,6 @@ public class BackGroundWrapAround extends Group  implements Disposable
 
 	}
 
-	@Override
-	public void dispose() {
-
-		Map<String,Animation<TextureRegion>> disposableAnimations;
-		TextureRegion[] disposableTextureRegions;
-
-		//background
-		for (PhysicsActor actor : getActors()) {
-			disposableAnimations = actor.getAnimationStorage();
-			for (String key : disposableAnimations.keySet()) {
-				disposableTextureRegions = disposableAnimations.get(key).getKeyFrames();
-				for (TextureRegion textureRegion : disposableTextureRegions) {
-					textureRegion.getTexture().dispose();
-				}
-			}
-		}
-		
-	}
 		
 	
 }

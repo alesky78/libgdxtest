@@ -18,15 +18,20 @@ public class ThrusterActor extends Actor {
 
 	public ThrusterActor(){
 		super();
-		pe = new ParticleEffect();
 	}
 
 
-	public void load(String pfxFile, String imageDirectory){ 
+	public void load(String pfxFile, String imageDirectory){
+		pe = new ParticleEffect();
 		pe.load(Gdx.files.internal(pfxFile), Gdx.files.internal(imageDirectory)); 
 	}
 
 	
+	public void setParticleEffect(ParticleEffect pe) {
+		this.pe = pe;
+	}
+
+
 	public ParticleEffect getParticleEffect() {
 		return pe;
 	}

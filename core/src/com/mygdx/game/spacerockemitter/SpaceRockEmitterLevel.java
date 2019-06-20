@@ -2,7 +2,6 @@ package com.mygdx.game.spacerockemitter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -12,10 +11,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -100,33 +97,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 	public void dispose() {
 		super.dispose();
-
-		spaceship.dispose();
-		background.dispose();
-		
-		//laser
-		baseLaser.getTextureRegion().getTexture().dispose();
-		laserParticle.getParticleEffect().dispose();
-
-		//rock
-		for (Texture texture : rockTexture) {
-			texture.dispose();
-		}
-
-		//explosion
-		baseExplosion.getParticleEffect().dispose();
-
-		//light
-		light.dispose();
-		batch.dispose();
-
-		//sounds
-		laserSound.dispose();
-		explosionSound.dispose();	
-		spaceLoop.dispose();
-		warningSound.dispose();
-		gameOverSound.dispose();
-		
 	}
 
 
@@ -138,11 +108,11 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		
 		//simulated lights
 		batch = new SpriteBatch();
-		light = new Texture(Gdx.files.internal("spacerockemitter/spotLight.png"));
-		light.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		light = game.assetManager.get(AssetCatalog.TEXTURE_SPOT_LIGHT);
+
 		
 		//BACKGROUND
-		background = new BackGroundWrapAround();
+		background = new BackGroundWrapAround(game.assetManager);
 		mainStage.addActor( background );
 
 		//SHIP		
@@ -154,8 +124,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 		//PREPARE LASER CLONE ENTITY
 		baseLaser = new PhysicsActor();
-		Texture laserTex = new Texture(Gdx.files.internal("spacerockemitter/laser.png"));
-		laserTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		Texture laserTex = game.assetManager.get(AssetCatalog.TEXTURE_LASER);
 		baseLaser.setTexture( laserTex );
 		baseLaser.storeAnimation( "default", laserTex );
 		baseLaser.setOriginCenter();		
@@ -165,7 +134,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		baseLaser.setAutoAngle(true);
 
 		laserParticle = new ParticleActor();
-		laserParticle.load("spacerockemitter/laser.pfx", "spacerockemitter/");		
+		laserParticle.setParticleEffect(game.assetManager.get(AssetCatalog.PARTICLE_LASER));
 
 		laserList = new ArrayList<PhysicsActor>();
 		removeList = new ArrayList<BaseActor>();
@@ -174,13 +143,14 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 
 		rockTexture = new Texture[4];
-		for (int i = 0; i < rockTexture.length; i++) {
-			rockTexture[i] =  new Texture(Gdx.files.internal("spacerockemitter/rock" + (i%4) + ".png"));
-		}
+		rockTexture[0] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_0);
+		rockTexture[1] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_1);
+		rockTexture[2] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_2);
+		rockTexture[3] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_3);		
 
 
 		baseExplosion = new ParticleActor();
-		baseExplosion.load("spacerockemitter/explosion.pfx", "spacerockemitter/");
+		baseExplosion.setParticleEffect(game.assetManager.get(AssetCatalog.PARTICLE_EXPLOSION));
 
 
 		//////////////
@@ -191,8 +161,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		labelPoints = new Label(" points: "+points, game.skin, "default");
 		labelWarning = new Label("warning \nwave "+wave+" caming", game.skin, "title");		
 		immageLife = new Image[3];
-		Texture hearTex = new Texture(Gdx.files.internal("spacerockemitter/heart.png"));
-		hearTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		Texture hearTex = game.assetManager.get(AssetCatalog.TEXTURE_HEART);
 
 		Table immageLifeTable = new Table();
 		immageLifeTable.setFillParent(false);
@@ -215,12 +184,12 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		uiTable.add(labelWarning).colspan(2).expand();	
 
 		//audio
-		laserSound = Gdx.audio.newSound(Gdx.files.internal("spacerockemitter/laser.wav"));
-		explosionSound = Gdx.audio.newSound(Gdx.files.internal("spacerockemitter/explosion.wav"));
-		spaceLoop = Gdx.audio.newMusic(Gdx.files.internal("spacerockemitter/theme_loop.wav"));
-		warningSound = Gdx.audio.newSound(Gdx.files.internal("spacerockemitter/warning.wav"));
-		gameOverSound = Gdx.audio.newSound(Gdx.files.internal("spacerockemitter/game over.wav"));
-
+		spaceLoop = game.assetManager.get(AssetCatalog.MUSIC_LEVEL_LOOP);
+		laserSound = game.assetManager.get(AssetCatalog.SOUND_LASER); 
+		explosionSound = game.assetManager.get(AssetCatalog.SOUND_EXPLOSION);
+		warningSound = game.assetManager.get(AssetCatalog.SOUND_WARNING);
+		gameOverSound = game.assetManager.get(AssetCatalog.SOUND_GAME_OVER);
+		
 		audioVolume = 0.50f;
 		spaceLoop.setLooping(true);
 		spaceLoop.setVolume(audioVolume);
@@ -625,7 +594,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		}
 
 		if (keycode == Keys.M){
-			dispose();
+			spaceLoop.stop();
 			game.setScreen(new SpaceRockEmitterMenu(game));
 		}
 		
