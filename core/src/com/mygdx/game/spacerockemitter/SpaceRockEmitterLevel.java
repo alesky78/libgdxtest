@@ -300,12 +300,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			}			
 
 
-			PHASE_TIMER = PHASE_TIMER + dt;
-			for (PhysicsActor physicsActor : background.getActors()) {
-				wraparound( physicsActor );
-			}
-
-			wraparound( spaceship );		
+			PHASE_TIMER = PHASE_TIMER + dt;	
 
 			if(PHASE_TIMER > 4){
 				gamePhase = PHASE_WARNING;
@@ -416,18 +411,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 				spaceship.stopThruster();
 			}
 
-			for (PhysicsActor physicsActor : background.getActors()) {
-				wraparound( physicsActor );
-			}
-
-			wraparound( spaceship );
-
-
-			for ( PhysicsActor rock : rockList ){
-				wraparound( rock );
-			}
-
-
 			for ( Rock rock : rockList ){
 
 				//check if contact with shield
@@ -485,29 +468,49 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			}
 			newRocks.clear();
 
-			for ( PhysicsActor laser : laserList ){
-				wraparound( laser );
-				if ( !laser.isVisible() )
-					removeList.add( laser );
-			}
 
 			roksOverlap(rockList, 0);
 
 		}//end phases end common logic starting for here 
 
 		
+		wrapAroundAllActors();		
 		
-
 		for (BaseActor ba : removeList){
 			ba.destroy();
 		}
 
-
-
-
-
 	}
 
+
+	private void wrapAroundAllActors() {
+		for (PhysicsActor physicsActor : background.getActors()) {
+			wraparound( physicsActor );
+		}
+
+		wraparound( spaceship );	
+		
+		for ( PhysicsActor laser : laserList ){
+			wraparound( laser );
+			if ( !laser.isVisible() )
+				removeList.add( laser );
+		}
+		
+		for ( PhysicsActor rock : rockList ){
+			wraparound( rock );
+		}
+	}
+
+	public void wraparound(Actor ba){
+		if ( ba.getX() + ba.getWidth() < 0 )
+			ba.setX( mapWidth );
+		if ( ba.getX() > mapWidth )
+			ba.setX( -ba.getWidth() );
+		if ( ba.getY() + ba.getHeight() < 0 )
+			ba.setY( mapHeight );
+		if ( ba.getY() > mapHeight )
+			ba.setY( -ba.getHeight() );
+	}	
 
 
 	@Override
@@ -553,16 +556,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	}
 
 
-	public void wraparound(Actor ba){
-		if ( ba.getX() + ba.getWidth() < 0 )
-			ba.setX( mapWidth );
-		if ( ba.getX() > mapWidth )
-			ba.setX( -ba.getWidth() );
-		if ( ba.getY() + ba.getHeight() < 0 )
-			ba.setY( mapHeight );
-		if ( ba.getY() > mapHeight )
-			ba.setY( -ba.getHeight() );
-	}
+
 
 	public boolean keyDown(int keycode)
 	{
@@ -575,13 +569,14 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			laserFx.start();
 			laserFx.setPosition(laser.getWidth(), laser.getHeight()/2);
 			laser.addActor(laserFx);
-
-
-			laserList.add(laser);
-			laser.setParentList(laserList);
-			mainStage.addActor(laser);
 			laser.addAction(
 					Actions.sequence(Actions.fadeOut(0.1f), Actions.delay(0.9f),Actions.fadeOut(0.3f), Actions.visible(false)) );
+			laser.setParentList(laserList);
+			
+			laserList.add(laser);
+
+			mainStage.addActor(laser);
+
 
 			laserSound.play(audioVolume);
 
