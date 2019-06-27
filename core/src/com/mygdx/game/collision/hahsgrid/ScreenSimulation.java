@@ -16,10 +16,16 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 
 public class ScreenSimulation implements Screen {
 
+	private static final int NEARBY_COLLISION = 1;
+	private static final int POTENTIAL_COLLISION = 2;	
+	private int COLLISION_ALGHORITM = 2;	
+	private int AMOUNT_ENTITY = 100;
+	
 	// game world dimensions
 	final int worldWidth = 800;
 	final int worldHeight = 600;
@@ -31,7 +37,7 @@ public class ScreenSimulation implements Screen {
 	
 	private List<BaseActor> entitites;
 	
-	private CollisionGrid grid;
+	private SpatialHashGrid grid;
 	
 	private Label checkCollisionLabel;
 	
@@ -39,7 +45,7 @@ public class ScreenSimulation implements Screen {
 		
 		mainStage = new Stage(new FitViewport(worldWidth, worldHeight));
 		uiStage = new Stage(new FitViewport(worldWidth, worldHeight));
-		grid = new CollisionGrid(maxsize);
+		grid = new SpatialHashGrid(maxsize);
 		
 		BitmapFont font = new BitmapFont();
 		LabelStyle style = new LabelStyle( font, Color.RED );
@@ -58,7 +64,7 @@ public class ScreenSimulation implements Screen {
 		BaseActor entity;
 		
 		
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < AMOUNT_ENTITY; i++) {
 			float width = MathUtils.random(10, maxsize);
 			float height = MathUtils.random(10, maxsize);			
 			float speedx = MathUtils.random(-180, 180);	
@@ -88,7 +94,12 @@ public class ScreenSimulation implements Screen {
 	public void render(float delta) {
 
 		//uso il reset della grigli perche ce il wraparound dopo che ho ricalcolato gli indici
-		//se voglio togliere il reset, devo portare il wrap around nel act del actor
+		//se voglio togliere il reset:
+		// ogni entita prima dell update dovrebbe deregistrarsi dalla griglia 
+		// ogni movimento deve essere all'interno del metodo act 
+		//		-- il wrap around nel act del actor
+		//		-- i movimenti dovuti alle collisioni dovrebbero essere qui!!!! come gestirli questi
+		//
 		grid.resetGrid();
 		
 		//draw main stage and centre the camera		
@@ -96,15 +107,43 @@ public class ScreenSimulation implements Screen {
         uiStage.act(delta);
 
         int hitChecked = 0;
+        
         //manage collision
-        List<BaseActor> colliders;
-        for (BaseActor baseActor : entitites) {
-        	colliders = grid.getNearby(baseActor);
-        	for (BaseActor baseActor2 : colliders) {
-        		baseActor.overlaps(baseActor2);
-        		hitChecked++;
-			}
+        switch (COLLISION_ALGHORITM) {
+        	case NEARBY_COLLISION:
+                List<BaseActor> colliders;
+                for (BaseActor baseActor : entitites) {
+                	colliders = grid.getNearby(baseActor);
+                	for (BaseActor baseActor2 : colliders) {
+                		// con questso algoritmo le colissioni sono controllate bidirezionalmente a --> b e dopo b --> a
+                		baseActor.overlaps(baseActor2);
+                		hitChecked++;
+        			}
+        		}
+				break;
+			case POTENTIAL_COLLISION:
+				for (List<BaseActor> actors : grid.getPotentialCollision()) {
+					for (int a = 0; a < actors.size()-1; a++) {
+						for (int b = a+1; b < actors.size(); b++) {
+	                		// con questso algoritmo le colissioni sono controllate una sola volta quindi bisogna implementera un overlap che risolva in una sola volta a --> b come b --> a
+							if(actors.get(a).getBoundingRectangle().overlaps(actors.get(b).getBoundingRectangle())){
+								if(Intersector.overlapConvexPolygons(actors.get(a).getBoundingPoligon(), actors.get(b).getBoundingPoligon())){
+									actors.get(a).setHit(true);
+									actors.get(b).setHit(true);
+								}
+							}
+														
+	                		hitChecked++;
+						}
+					}
+				}
+				
+				break;	
+			default:
+				break;
 		}
+        
+
         
         checkCollisionLabel.setText("check effettuati:"+hitChecked);
         

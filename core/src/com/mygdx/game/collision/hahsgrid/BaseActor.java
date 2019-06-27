@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class BaseActor extends Actor {
@@ -15,9 +16,9 @@ public class BaseActor extends Actor {
 	public float velocityX;
 	public float velocityY;
 	
-	public CollisionGrid grid;
+	public SpatialHashGrid grid;
 	
-	private boolean hit= false;
+	protected boolean hit= false;
 
 	public BaseActor(float width,float height,Texture t){
 		super();
@@ -37,8 +38,12 @@ public class BaseActor extends Actor {
 		
 	}
 
-	public void setGrid(CollisionGrid grid) {
+	public void setGrid(SpatialHashGrid grid) {
 		this.grid = grid;
+	}
+	
+	public void setHit(boolean hit) {
+		this.hit = hit;
 	}
 
 	public Polygon getBoundingPoligon(){
@@ -48,13 +53,19 @@ public class BaseActor extends Actor {
 		return boundingPolygon;
 	}
 	
+	public Rectangle getBoundingRectangle(){
+		return getBoundingPoligon().getBoundingRectangle();
+	}
+	
+	
+	
 	public void overlaps(BaseActor other){
 		Polygon poly1 = this.getBoundingPoligon();
 		Polygon poly2 = other.getBoundingPoligon();
 		
-		//if a high level check hit enter in the detail check
-		if (poly1.getBoundingRectangle().overlaps(poly2.getBoundingRectangle()) ) {
-			if(Intersector.overlapConvexPolygons(poly1, poly2)) {
+
+		if (poly1.getBoundingRectangle().overlaps(poly2.getBoundingRectangle()) ) {		//check middle level
+			if(Intersector.overlapConvexPolygons(poly1, poly2)) {	//check detail level
 				hit = true;				
 			}
 			
@@ -64,7 +75,6 @@ public class BaseActor extends Actor {
 
 	
 	public void act(float dt){
-		grid.removeFromGrid(this);
 		
 		super.act( dt );
 		moveBy( velocityX * dt, velocityY * dt );
