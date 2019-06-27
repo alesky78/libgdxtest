@@ -9,15 +9,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
 
 public class ScreenSimulation implements Screen {
 
@@ -41,11 +40,15 @@ public class ScreenSimulation implements Screen {
 	
 	private Label checkCollisionLabel;
 	
+	private CollisionResolver colliderResolver;
+	
 	public ScreenSimulation() {
 		
 		mainStage = new Stage(new FitViewport(worldWidth, worldHeight));
 		uiStage = new Stage(new FitViewport(worldWidth, worldHeight));
 		grid = new SpatialHashGrid(maxsize);
+		
+		colliderResolver = new CollisionResolver();
 		
 		BitmapFont font = new BitmapFont();
 		LabelStyle style = new LabelStyle( font, Color.RED );
@@ -62,14 +65,20 @@ public class ScreenSimulation implements Screen {
 		
 		entitites = new ArrayList<>();
 		BaseActor entity;
-		
-		
+
 		for (int i = 0; i < AMOUNT_ENTITY; i++) {
+			
 			float width = MathUtils.random(10, maxsize);
 			float height = MathUtils.random(10, maxsize);			
 			float speedx = MathUtils.random(-180, 180);	
 			float speedy = MathUtils.random(-180, 180);			
-			entity = new BaseActor( width, height, pixmaptex);
+			
+			if(i%2==0) {
+				entity = new Actor1( width, height, pixmaptex);				
+			}else {
+				entity = new Actor2( width, height, pixmaptex);
+			}
+
 			entity.velocityX = speedx;
 			entity.velocityY = speedy;
 			entity.setX(MathUtils.random(0, worldWidth)); 
@@ -125,14 +134,8 @@ public class ScreenSimulation implements Screen {
 				for (List<BaseActor> actors : grid.getPotentialCollision()) {
 					for (int a = 0; a < actors.size()-1; a++) {
 						for (int b = a+1; b < actors.size(); b++) {
-	                		// con questso algoritmo le colissioni sono controllate una sola volta quindi bisogna implementera un overlap che risolva in una sola volta a --> b come b --> a
-							if(actors.get(a).getBoundingRectangle().overlaps(actors.get(b).getBoundingRectangle())){
-								if(Intersector.overlapConvexPolygons(actors.get(a).getBoundingPoligon(), actors.get(b).getBoundingPoligon())){
-									actors.get(a).setHit(true);
-									actors.get(b).setHit(true);
-								}
-							}
-														
+							// con questso algoritmo le colissioni sono controllate una sola volta quindi bisogna implementera un overlap che risolva in una sola volta a --> b come b --> a
+							colliderResolver.overlaps( actors.get(a), actors.get(b));
 	                		hitChecked++;
 						}
 					}
