@@ -40,8 +40,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	private BackGroundWrapAround background;
 	private SpaceShip spaceship;
 
-	private PhysicsActor baseLaser;
-	private ParticleActor laserParticle;	
+	private PoolLaser poolLaser;	
 
 	private ParticleActor baseExplosion;	
 
@@ -122,19 +121,8 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		//LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --
 		background.setVelocity(spaceship.getVelocity());
 
-		//PREPARE LASER CLONE ENTITY
-		baseLaser = new PhysicsActor();
-		Texture laserTex = game.assetManager.get(AssetCatalog.TEXTURE_LASER);
-		baseLaser.setTexture( laserTex );
-		baseLaser.storeAnimation( "default", laserTex );
-		baseLaser.setOriginCenter();		
-		baseLaser.setMaxSpeed(400);
-		baseLaser.setDeceleration(0);
-		baseLaser.setRectangleBoundary();
-		baseLaser.setAutoAngle(true);
-
-		laserParticle = new ParticleActor();
-		laserParticle.setParticleEffect(game.assetManager.get(AssetCatalog.PARTICLE_LASER));
+		//PREPARE LASER pool
+		poolLaser = new PoolLaser(game.assetManager);
 
 		laserList = new ArrayList<PhysicsActor>();
 		removeList = new ArrayList<BaseActor>();
@@ -430,8 +418,8 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 				//check if contact with laser
 				for (PhysicsActor laser : laserList) {
-					if ( laser.overlaps(rock, false) )
-					{
+					if ( laser.overlaps(rock, false) ){
+						
 						rock.removeLife();
 						
 						shakeCamera = true;
@@ -446,6 +434,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 						}
 
 						removeList.add( laser );
+						
 
 						ParticleActor explosion = baseExplosion.clone();
 						explosion.start();					
@@ -474,7 +463,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		}//end phases end common logic starting for here 
 
 		
-		wrapAroundAllActors();		
+		wrapAroundAndRemoveAllActors();		
 		
 		for (BaseActor ba : removeList){
 			ba.destroy();
@@ -483,7 +472,12 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	}
 
 
-	private void wrapAroundAllActors() {
+	/**
+	 * this method perform the wrap around and remove the actor 
+	 * that must be deleted because no more visible
+	 * 
+	 */
+	private void wrapAroundAndRemoveAllActors() {
 		for (PhysicsActor physicsActor : background.getActors()) {
 			wraparound( physicsActor );
 		}
@@ -512,7 +506,23 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			ba.setY( -ba.getHeight() );
 	}	
 
+	public void roksOverlap(List<Rock> rocks, int index){
 
+		if(index == rocks.size()-1 || rocks.size() == 0){
+			return;
+		}
+
+		Rock rock = rocks.get(index);
+		for (int i = index+1; i < rocks.size(); i++) {
+			rock.overlaps(rocks.get(i), true);
+		}
+
+		roksOverlap(rocks, index+1);
+
+	}
+
+	
+	
 	@Override
 	public void postDrawMainStage(float dt) {
 				
@@ -562,21 +572,11 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	{
 		if (keycode == Keys.SPACE && gamePhase == PHASE_GAME_ON)
 		{
-			PhysicsActor laser = baseLaser.clone();	
-			laser.moveToCenterShiftToRight( spaceship );
-			laser.setVelocityAS( spaceship.getRotation(), 400 );
-			ParticleActor laserFx = laserParticle.clone();
-			laserFx.start();
-			laserFx.setPosition(laser.getWidth(), laser.getHeight()/2);
-			laser.addActor(laserFx);
-			laser.addAction(
-					Actions.sequence(Actions.fadeOut(0.1f), Actions.delay(0.9f),Actions.fadeOut(0.3f), Actions.visible(false)) );
+			PhysicsActor laser = poolLaser.obtain(spaceship);
 			laser.setParentList(laserList);
 			
 			laserList.add(laser);
-
 			mainStage.addActor(laser);
-
 
 			laserSound.play(audioVolume);
 
@@ -596,21 +596,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		return false;
 	}	
 
-	public void roksOverlap(List<Rock> rocks, int index){
-
-		if(index == rocks.size()-1 || rocks.size() == 0){
-			return;
-		}
-
-		Rock rock = rocks.get(index);
-		for (int i = index+1; i < rocks.size(); i++) {
-			rock.overlaps(rocks.get(i), true);
-		}
-
-		roksOverlap(rocks, index+1);
-
-	}
-
+	
 
 
 }

@@ -57,10 +57,9 @@ public class ParticleActor extends Actor {
 	{
 		super.act( dt );
 		pe.update( dt );
-		if ( pe.isComplete() && !pe.getEmitters().first().isContinuous() )
-		{
-			pe.dispose();
+		if ( pe.isComplete() && !pe.getEmitters().first().isContinuous() ){
 			this.remove();
+			pe.dispose();
 		}
 	}
 

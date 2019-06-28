@@ -17,15 +17,15 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Pool;
 
 
-public class BaseActor extends Group
+public class BaseActor extends Group implements Pool.Poolable
 {
 	public TextureRegion region;
 	public Polygon boundingPolygon;
 
 	private ArrayList<? extends BaseActor> parentList;
-
 
 
 	
@@ -36,6 +36,12 @@ public class BaseActor extends Group
 		boundingPolygon = null;
 		parentList = null;
 	}
+	
+
+	public void setParentList(ArrayList<? extends BaseActor> pl){ 
+		parentList = pl; 
+	}
+	
 
 	public void setTexture(Texture t)
 	{ 
@@ -97,10 +103,6 @@ public class BaseActor extends Group
 		boundingPolygon.setRotation( getRotation() );
 		boundingPolygon.setScale(getScaleX(), getScaleY());		
 		return boundingPolygon;
-	}
-
-	public void setParentList(ArrayList<? extends BaseActor> pl){ 
-		parentList = pl; 
 	}
 
 	/**
@@ -203,7 +205,16 @@ public class BaseActor extends Group
 	public void destroy()
 	{
 		remove(); // removes self from Stage
-		if (parentList != null)
-			parentList.remove(this);
+		
+		if (parentList != null) { // removes from the active list
+			parentList.remove(this);			
+		}
+
+	}
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
 	}	
 }
