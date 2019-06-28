@@ -40,9 +40,10 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	private BackGroundWrapAround background;
 	private SpaceShip spaceship;
 
-	private PoolLaser poolLaser;	
-
-	private ParticleActor baseExplosion;	
+	private LaserPool poolLaser;	
+	private ParticleActorPool explosionPool;
+	
+	private ParticleEffectManager particleEffectManager;
 
 	private ArrayList<PhysicsActor> laserList;
 	private ArrayList<Rock> rockList;
@@ -104,12 +105,27 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	public void create() {
 
 		mainStage.setDebugAll(MAIN_SCENE_DEBUG);
+
+		//entity management list
+		laserList = new ArrayList<PhysicsActor>();
+		removeList = new ArrayList<BaseActor>();
+		rockList = new ArrayList<Rock>();
+
+		
+		//prepare the manager of the particle effects
+		particleEffectManager = new ParticleEffectManager();
+		particleEffectManager.addParticleEffect(ParticleEffectManager.LASER, game.assetManager.get(AssetCatalog.PARTICLE_LASER));
+		particleEffectManager.addParticleEffect(ParticleEffectManager.EXPLOSION, game.assetManager.get(AssetCatalog.PARTICLE_EXPLOSION));		
+
+		//PREPARE the pools
+		poolLaser = new LaserPool(game.assetManager,particleEffectManager);
+		explosionPool = new ParticleActorPool(particleEffectManager, true, ParticleEffectManager.EXPLOSION);
+		
 		
 		//simulated lights
 		batch = new SpriteBatch();
 		light = game.assetManager.get(AssetCatalog.TEXTURE_SPOT_LIGHT);
 
-		
 		//BACKGROUND
 		background = new BackGroundWrapAround(game.assetManager);
 		mainStage.addActor( background );
@@ -121,24 +137,11 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		//LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --
 		background.setVelocity(spaceship.getVelocity());
 
-		//PREPARE LASER pool
-		poolLaser = new PoolLaser(game.assetManager);
-
-		laserList = new ArrayList<PhysicsActor>();
-		removeList = new ArrayList<BaseActor>();
-
-		rockList = new ArrayList<Rock>();
-
-
 		rockTexture = new Texture[4];
 		rockTexture[0] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_0);
 		rockTexture[1] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_1);
 		rockTexture[2] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_2);
 		rockTexture[3] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_3);		
-
-
-		baseExplosion = new ParticleActor();
-		baseExplosion.setParticleEffect(game.assetManager.get(AssetCatalog.PARTICLE_EXPLOSION));
 
 
 		//////////////
@@ -405,9 +408,8 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 				if(spaceship.isActiveShield()){
 					spaceship.overlapsShield(rock, true);					
 				}else if(!spaceship.isActiveShield() && spaceship.overlapsShip(rock, true)){ //check if contact with ship only if shield is disable
-					ParticleActor explosion = baseExplosion.clone();
-					explosion.start();					
-					explosion.setPosition(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY());
+					ParticleActorPoolable explosion = explosionPool.obtain(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY()) ;
+
 					explosionSound.play(audioVolume); 
 					mainStage.addActor(explosion);
 					spaceship.stopThruster();
@@ -435,11 +437,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 						removeList.add( laser );
 						
-
-						ParticleActor explosion = baseExplosion.clone();
-						explosion.start();					
-						explosion.setPosition(rock.getX()+rock.getOriginX(), rock.getY()+rock.getOriginY());
-
+						ParticleActorPoolable explosion = explosionPool.obtain(rock.getX()+rock.getOriginX(), rock.getY()+rock.getOriginY()) ;
 						explosionSound.play(audioVolume); 
 
 						mainStage.addActor(explosion);

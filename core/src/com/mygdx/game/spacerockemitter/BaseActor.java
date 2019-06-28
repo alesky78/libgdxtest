@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Pool;
 
 
-public class BaseActor extends Group implements Pool.Poolable
+public class BaseActor extends Group
 {
 	public TextureRegion region;
 	public Polygon boundingPolygon;
@@ -212,9 +212,4 @@ public class BaseActor extends Group implements Pool.Poolable
 
 	}
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}	
 }

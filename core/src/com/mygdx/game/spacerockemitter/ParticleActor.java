@@ -1,6 +1,5 @@
 package com.mygdx.game.spacerockemitter;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
@@ -8,30 +7,26 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 
-public class ParticleActor extends Actor {
+public class ParticleActor<T extends ParticleEffect> extends Actor {
 
-
-	private ParticleEffect pe;
-
+	protected T pe;
+	protected boolean autoDestroy;	
 
 	public ParticleActor(){
 		super();
-
+		autoDestroy = true;
 	}
 
-	public void load(String pfxFile, String imageDirectory){
-		pe = new ParticleEffect();		
-		pe.load(Gdx.files.internal(pfxFile), Gdx.files.internal(imageDirectory)); 
+	public ParticleActor(boolean autoDestroy){
+		super();
+		this.autoDestroy = autoDestroy;
 	}
-
-	public void setParticleEffect(ParticleEffect pe) {
+	
+	
+	public void setParticleEffect(T pe) {
 		this.pe = pe;
 	}	
 	
-	public ParticleEffect getParticleEffect() {
-		return pe;
-	}
-
 
 	public void start(){ 
 		pe.start(); 
@@ -53,26 +48,23 @@ public class ParticleActor extends Actor {
 		}
 	}
 
-	public void act(float dt)
-	{
+	public void act(float dt){
 		super.act( dt );
 		pe.update( dt );
-		if ( pe.isComplete() && !pe.getEmitters().first().isContinuous() ){
-			this.remove();
-			pe.dispose();
+		if (autoDestroy &&  pe.isComplete() && !pe.getEmitters().first().isContinuous() ){
+			destroy();
 		}
 	}
+	
+	public void destroy() {
+		this.remove();
+	}		
 
 	public void draw(Batch batch, float parentAlpha){ 
 		super.draw(batch, parentAlpha);
 		pe.draw(batch); 
 	}
 
-	public ParticleActor clone(){
-		ParticleActor newbie = new ParticleActor();
-		newbie.pe = new ParticleEffect(this.pe);
-		return newbie;
-	}
 	
 	public void moveToCenterShiftToRight(BaseActor target){
 		this.setPosition(

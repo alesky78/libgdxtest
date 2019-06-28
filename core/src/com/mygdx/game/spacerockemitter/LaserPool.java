@@ -5,32 +5,38 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Pool;
 
-public class PoolLaser {
+public class LaserPool {
 	
 	private AssetManager assetManager;
+	private ParticleEffectManager particleEffectManager;
 	
-	private ParticleActor laserFx;
 	
 	private final Pool<Laser> bulletPool = new Pool<Laser>() {
 		@Override
 		protected Laser newObject() {
-			return newInstance();
+			return newInstanceLaser();
 		}
 	};
-	    
+
+	private final Pool<ParticleActorPoolable>particleEffectPool = new Pool<ParticleActorPoolable>() {
+		@Override
+		protected ParticleActorPoolable newObject() {
+			return newInstanceParticle();
+		}
+
+	};
 	    
 	
-	public PoolLaser(AssetManager assetManager) {
+	public LaserPool(AssetManager assetManager,ParticleEffectManager particleEffectManager) {
 		super();
 		
 		this.assetManager = assetManager;
-		
-		laserFx = new ParticleActor();
-		laserFx.setParticleEffect(assetManager.get(AssetCatalog.PARTICLE_LASER));
+		this.particleEffectManager = particleEffectManager;
 	}
 	
 	
-	private Laser newInstance() {
+	
+	private Laser newInstanceLaser() {
 		Laser laser = new Laser();
 		Texture laserTex = assetManager.get(AssetCatalog.TEXTURE_LASER);
 		laser.setTexture( laserTex );
@@ -44,25 +50,30 @@ public class PoolLaser {
 				
 		return laser;
 	}
+
+	private ParticleActorPoolable newInstanceParticle() {
+		return new ParticleActorPoolable(particleEffectPool, false);
+	}
 	
 	
 	public Laser obtain(SpaceShip spaceship) {
 		
 		//get the laser from the pool and configure the position based on the ship
-		Laser laser = (Laser) bulletPool.obtain();
+		Laser laser = bulletPool.obtain();
 		laser.moveToCenterShiftToRight( spaceship );
 		laser.setVelocityAS( spaceship.getRotation(), 400 );
 		laser.setVisible(true);
 		laser.clearActions();
 		laser.getColor().a = 1.0f;//reset the alpha to 1 becouse the previous execution set it to 0
 		laser.addAction(Actions.sequence(Actions.fadeOut(0.2f), Actions.delay(1.f), Actions.visible(false)) );
-		
-		//reinitializelaser effect
-		laser.clearChildren();
-		ParticleActor laserParticle = laserFx.clone();
+		 
+		//get the particle from the pool and configure it		
+		ParticleActorPoolable laserParticle = particleEffectPool.obtain();
+		laserParticle.setParticleEffect(particleEffectManager.getPooledParticleEffect(ParticleEffectManager.LASER));
 		laserParticle.setPosition(laser.getWidth(), laser.getHeight()/2);
 		laserParticle.start();
 		laser.addActor(laserParticle);
+		laser.setLaserParticleFX(laserParticle);
 
 		return laser;
 	}
