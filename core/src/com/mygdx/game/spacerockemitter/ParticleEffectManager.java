@@ -15,7 +15,7 @@ public class ParticleEffectManager {
 	public static final int EXPLOSION = 1;	
 
 	private static final int POOL_START_CAPACITY = 5;
-	private static final int POOL_MAX_CAPACITY = 20;	
+	private static final int POOL_MAX_CAPACITY = 30;	
 	
 	// create intmaps for effects and pools
 	private IntMap<ParticleEffectPool> particleEffectPool;
