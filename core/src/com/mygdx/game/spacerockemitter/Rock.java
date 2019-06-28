@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Rock extends PhysicsActor {
 
-	private final int ROCK_MASS = 1;
+	private int ROCK_MASS = 1;
 	private int life;
 	private int size;	
 
@@ -25,7 +25,7 @@ public class Rock extends PhysicsActor {
 	}
 
 
-	public boolean isDisotried(){
+	public boolean isDistoried(){
 		return life <= 0;
 	}
 
@@ -44,15 +44,6 @@ public class Rock extends PhysicsActor {
 	public void setSize(int size) {
 		this.size = size;
 	}
-
-	public void multVelocityX(float m){ 
-		velocity_V.x *= m; 
-	}
-
-	public void multVelocityY(float m){ 
-		velocity_V.y *= m; 
-	}	
-
 
 	public boolean overlaps(Rock rock, boolean bounceOff){
 

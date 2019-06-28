@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -28,7 +27,6 @@ public class BackGroundWrapAround extends Group{
 		}
 		
 		Texture backgroundTex = assetManager.get(AssetCatalog.TEXTURE_SPACE_BACKGROUND);
-		backgroundTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		storeAnimation( "default", backgroundTex );		
 		setPosition( 0, 0 );		
 		

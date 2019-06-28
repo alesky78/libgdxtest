@@ -24,7 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class SpaceRockEmitterLevel extends BaseScreen {
 
 	// activate the graphic DEBUG
-	private final boolean MAIN_SCENE_DEBUG = false;
+	private final boolean MAIN_SCENE_DEBUG = true;
 	private final boolean UI_TABLE_DEBUG = false;	
 
 	protected int gamePhase;
@@ -45,12 +45,13 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	
 	private ParticleEffectManager particleEffectManager;
 
+	private RockGenerator rockGenerator;
 	private ArrayList<PhysicsActor> laserList;
 	private ArrayList<Rock> rockList;
 	private List<Rock> newRocks = new ArrayList<Rock>();	
 	private ArrayList<BaseActor> removeList;
 
-	private Texture[] rockTexture;
+
 
 	//LIGHT SIMULATION
 	private Texture light;
@@ -110,7 +111,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		laserList = new ArrayList<PhysicsActor>();
 		removeList = new ArrayList<BaseActor>();
 		rockList = new ArrayList<Rock>();
-
+		rockGenerator = new RockGenerator(game.assetManager);
 		
 		//prepare the manager of the particle effects
 		particleEffectManager = new ParticleEffectManager();
@@ -126,23 +127,17 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		batch = new SpriteBatch();
 		light = game.assetManager.get(AssetCatalog.TEXTURE_SPOT_LIGHT);
 
-		//BACKGROUND
-		background = new BackGroundWrapAround(game.assetManager);
-		mainStage.addActor( background );
-
 		//SHIP		
 		spaceship.setPosition( mapWidth/2-spaceship.getWidth()/2,mapHeight/2-spaceship.getHeight()/2 );
+		spaceship.setVisible(true);
+
+		//BACKGROUND
+		background = new BackGroundWrapAround(game.assetManager);
+		 mainStage.addActor( background );
+		background.setVelocity(spaceship.getVelocity()); //LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --	
+
+		//add the ship after the background
 		mainStage.addActor(spaceship);
-
-		//LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --
-		background.setVelocity(spaceship.getVelocity());
-
-		rockTexture = new Texture[4];
-		rockTexture[0] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_0);
-		rockTexture[1] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_1);
-		rockTexture[2] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_2);
-		rockTexture[3] = game.assetManager.get(AssetCatalog.TEXTURE_ROCK_3);		
-
 
 		//////////////
 		// UI STAGE //
@@ -174,7 +169,9 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		uiTable.row();
 		uiTable.add(labelWarning).colspan(2).expand();	
 
-		//audio
+		//////////////
+		// AUDIO
+		//////////////
 		spaceLoop = game.assetManager.get(AssetCatalog.MUSIC_LEVEL_LOOP);
 		laserSound = game.assetManager.get(AssetCatalog.SOUND_LASER); 
 		explosionSound = game.assetManager.get(AssetCatalog.SOUND_EXPLOSION);
@@ -186,52 +183,11 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		spaceLoop.setVolume(audioVolume);
 
 
+		//START GAME PHASE
 		gamePhase = PHASE_WARNING;
 
 
 	}
-
-
-	private void generateRocks(int numRocks ) {
-		for (int n = 0; n < numRocks; n++){
-			Rock rock = new Rock(2,2);
-			Texture rockTex = rockTexture[n%4];
-			rockTex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-			rock.storeAnimation( "default", rockTex );
-			rock.setPosition(800 * MathUtils.random(), 600 * MathUtils.random() );
-			rock.setOriginCenter();
-			rock.setEllipseBoundary();
-			rock.setAutoAngle(false);
-			float speedUp = MathUtils.random(0.0f, 1.0f);
-			rock.setVelocityAS( 360 * MathUtils.random(), 75 + 50*speedUp );
-			rock.addAction( Actions.forever( Actions.rotateBy(360, 2 - speedUp) ) );
-			mainStage.addActor(rock);
-			rockList.add(rock);
-			rock.setParentList(rockList);
-		}
-	}
-
-
-	private void generateLittleRock(Rock rock) {
-		Rock littleRock;
-		int rockAmount = 2;
-		int distance = 5;
-		for (int n = 0; n < rockAmount; n++){
-			littleRock = new Rock(rock.getSize()-1, rock.getSize()-1);
-			littleRock.setPosition(rock.getX()+ distance*MathUtils.cosDeg(360/2*n), rock.getY()+ distance*MathUtils.sinDeg(360/2*n));
-			littleRock.storeAnimation( "default", rock.getTextureRegion().getTexture() );
-			littleRock.setScale(0.5f, 0.5f);
-			littleRock.setOriginCenter();			
-			littleRock.setEllipseBoundary();
-			littleRock.setAutoAngle(false);
-			float speedUp = MathUtils.random(0.0f, 1.0f);
-			littleRock.setVelocityAS( 360 * MathUtils.random(), 75 + 50*speedUp );
-			littleRock.addAction( Actions.forever( Actions.rotateBy(360, 2 - speedUp) ) );
-			newRocks.add(littleRock);			
-		}
-
-	}
-
 
 
 
@@ -270,7 +226,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 		}else if(gamePhase == PHASE_PREPARE_WAVE){
 			spaceLoop.play();
-			generateRocks(wave);
+			rockGenerator.generateNewRocks(wave, rockList, mainStage);
 
 			//enable shield
 			spaceship.activateShield();
@@ -283,11 +239,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			if(PHASE_TIMER == 0){
 				spaceship.setAccelerationXY(0,0);				
 				spaceship.startThruster();				
-				spaceship.addAction(Actions.sequence(
-						Actions.rotateTo(0, 1.5f),
-						Actions.moveTo(mapWidth/2-spaceship.getOriginX(), mapHeight/2-spaceship.getOriginY(),  2.0f) 
-						)
-						);
+				spaceship.addAction(Actions.sequence(Actions.rotateTo(0, 1.5f),Actions.moveTo(mapWidth/2-spaceship.getOriginX(), mapHeight/2-spaceship.getOriginY(), 2.0f) ));
 			}			
 
 
@@ -426,11 +378,11 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 						
 						shakeCamera = true;
 
-						if(rock.isDisotried()){
+						if(rock.isDistoried()){
 							removeList.add( rock );		
 							//regenerate little rock from the big rock
 							if(rock.getSize() > 1){
-								generateLittleRock(rock);								
+								rockGenerator.generateSplitRock(rock, newRocks); 								
 							}
 
 						}

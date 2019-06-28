@@ -2,7 +2,7 @@ package com.mygdx.game.spacerockemitter;
 
 
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,7 +17,6 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.Pool;
 
 
 public class BaseActor extends Group
@@ -25,7 +24,7 @@ public class BaseActor extends Group
 	public TextureRegion region;
 	public Polygon boundingPolygon;
 
-	private ArrayList<? extends BaseActor> parentList;
+	private List<? extends BaseActor> parentList;
 
 
 	
@@ -38,7 +37,7 @@ public class BaseActor extends Group
 	}
 	
 
-	public void setParentList(ArrayList<? extends BaseActor> pl){ 
+	public void setParentList(List<? extends BaseActor> pl){ 
 		parentList = pl; 
 	}
 	

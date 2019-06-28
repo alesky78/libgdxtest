@@ -29,7 +29,6 @@ public class ParticleActorPoolable extends ParticleActor<PooledEffect>  implemen
 	@Override
 	public void reset() {
 		pe.free(); 
-		pe = null; 
 	}
 
 
