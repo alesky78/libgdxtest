@@ -10,6 +10,8 @@ public class CollisionResolver {
 		System.out.println("enter");
 		if(actor1 instanceof Actor1 && actor2 instanceof Actor2) {
 			overlaps((Actor1)actor1,(Actor2)actor2);
+		}else if(actor1 instanceof Actor2 && actor2 instanceof Actor1) {
+			overlaps((Actor1)actor2,(Actor2)actor1);
 		}else if(actor1 instanceof Actor1 && actor2 instanceof Actor1) {
 			overlaps((Actor1)actor1,(Actor1)actor2);
 		}else if(actor1 instanceof Actor2 && actor2 instanceof Actor2) {

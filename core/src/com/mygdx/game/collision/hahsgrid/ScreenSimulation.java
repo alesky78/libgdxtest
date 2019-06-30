@@ -36,7 +36,7 @@ public class ScreenSimulation implements Screen {
 	
 	private List<BaseActor> entitites;
 	
-	private SpatialHashGrid grid;
+	private SpatialHashGrid<BaseActor> grid;
 	
 	private Label checkCollisionLabel;
 	
@@ -46,7 +46,7 @@ public class ScreenSimulation implements Screen {
 		
 		mainStage = new Stage(new FitViewport(worldWidth, worldHeight));
 		uiStage = new Stage(new FitViewport(worldWidth, worldHeight));
-		grid = new SpatialHashGrid(maxsize);
+		grid = new SpatialHashGrid<BaseActor>(maxsize);
 		
 		colliderResolver = new CollisionResolver();
 		

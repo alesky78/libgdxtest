@@ -6,8 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.collision.hahsgrid.SpatialHashGrid.GridIndexable;
 
 
 /**
@@ -53,10 +52,10 @@ import com.badlogic.gdx.math.Rectangle;
  * @author Alessandro
  *
  */
-public class SpatialHashGrid {
+public class SpatialHashGrid<T extends GridIndexable> {
 
 	//implementation of the grid by hash map
-	private HashMap<String, List<BaseActor>> grid;
+	private HashMap<String, List<T>> grid;
 	
 	//contain the hash of the bucket with more that 1 object inside
 	private HashSet<String> bucketsPotentialCollision;
@@ -66,34 +65,9 @@ public class SpatialHashGrid {
 
 	public SpatialHashGrid(int bucketsSize){
 		this.bucketsSize = bucketsSize;
-		grid = new HashMap<String, List<BaseActor>>();
+		grid = new HashMap<String, List<T>>();
 		bucketsPotentialCollision = new HashSet<String>();		
 
-	}
-
-	/**
-	 * generate the index for this entity, this code is dependent 
-	 * 
-	 * @param entity
-	 * @return
-	 */
-	private List<String> generateIndex(BaseActor entity){
-		List<String> index = new ArrayList<>();
-
-		Rectangle rect = entity.getBoundingPoligon().getBoundingRectangle();
-		
-		int minX = MathUtils.floor(rect.getX()/bucketsSize);
-		int maxX = MathUtils.floor((rect.getX()+rect.getWidth()) /bucketsSize);		
-		int minY = MathUtils.floor(rect.getY()/bucketsSize);
-		int maxY = MathUtils.floor((rect.getY()+rect.getHeight()) /bucketsSize);		
-
-		for (int x = minX; x <= maxX; x++) {
-			for (int y = minY; y <= maxY; y++) {
-				index.add(x +"-"+y);
-			}
-		}
-
-		return index;
 	}
 
 
@@ -108,16 +82,16 @@ public class SpatialHashGrid {
 		this.bucketsSize = bucketsSize;
 	}	
 	
-	public void addToGrid(BaseActor entity) {
+	public void addToGrid(T entity) {
 		
-		List<String> index = generateIndex(entity);
-		List<BaseActor> bucketList;
+		List<String> index = entity.generateIndex(bucketsSize);
+		List<T> bucketList;
 		
 		for (String key : index) {
 			
 			bucketList = grid.get(key);
 			if(bucketList==null) {
-				bucketList = new LinkedList<BaseActor>();
+				bucketList = new LinkedList<T>();
 				grid.put(key, bucketList);
 			}
 			
@@ -132,10 +106,10 @@ public class SpatialHashGrid {
 	}	
 	
 	
-	public void removeFromGrid(BaseActor entity) {
+	public void removeFromGrid(T entity) {
 		
-		List<String> index = generateIndex(entity);
-		List<BaseActor> bucketList;
+		List<String> index = entity.generateIndex(bucketsSize);
+		List<T> bucketList;
 		
 		for (String key : index) {
 			bucketList = grid.get(key); 
@@ -163,11 +137,11 @@ public class SpatialHashGrid {
 	 * 
 	 * @return
 	 */
-	public List<BaseActor>  getNearby(BaseActor target) {
+	public List<T>  getNearby(T target) {
 		
-		List<BaseActor> nearList = new LinkedList<>();
-		List<BaseActor> bucketList;		
-		List<String> index = generateIndex(target);
+		List<T> nearList = new LinkedList<>();
+		List<T> bucketList;		
+		List<String> index = target.generateIndex(bucketsSize);
 				
 		for (String key : index) {
 			bucketList = grid.get(key);
@@ -188,9 +162,9 @@ public class SpatialHashGrid {
 	 * 
 	 * @return
 	 */
-	public  List<List<BaseActor>>  getPotentialCollision() {
+	public  List<List<T>>  getPotentialCollision() {
 		
-		List<List<BaseActor>> potentialCollisions = new ArrayList<>();	 
+		List<List<T>> potentialCollisions = new ArrayList<>();	 
 		 
 		//put in the list only the bucket with more that one object
 		 for (String key : bucketsPotentialCollision) {
@@ -201,6 +175,20 @@ public class SpatialHashGrid {
 	}
 	
 		
+	/**
+	 * object that implement this interface can be managed in the grid
+	 * 
+	 */
+	static public interface GridIndexable {
+		
+		/**
+		 * generate the index for this entity, this code is dependent
+		 * 
+		 * @param bucketsSize
+		 * @return
+		 */
+		public List<String> generateIndex(int bucketsSize);
+	}	
 		
 
 }

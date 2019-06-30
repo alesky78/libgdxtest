@@ -1,15 +1,19 @@
 package com.mygdx.game.collision.hahsgrid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class BaseActor extends Actor {
+public class BaseActor extends Actor implements SpatialHashGrid.GridIndexable {
 
 	public TextureRegion region;
 	public Polygon boundingPolygon;
@@ -38,6 +42,26 @@ public class BaseActor extends Actor {
 		
 	}
 
+	@Override
+	public List<String> generateIndex(int bucketsSize) {
+		List<String> index = new ArrayList<>();
+		Rectangle rect = getBoundingPoligon().getBoundingRectangle();
+		
+		int minX = MathUtils.floor(rect.getX()/bucketsSize);
+		int maxX = MathUtils.floor((rect.getX()+rect.getWidth()) /bucketsSize);		
+		int minY = MathUtils.floor(rect.getY()/bucketsSize);
+		int maxY = MathUtils.floor((rect.getY()+rect.getHeight()) /bucketsSize);		
+
+		for (int x = minX; x <= maxX; x++) {
+			for (int y = minY; y <= maxY; y++) {
+				index.add(x +"-"+y);
+			}
+		}
+
+		return index;
+	}
+	
+	
 	public void setGrid(SpatialHashGrid grid) {
 		this.grid = grid;
 	}
@@ -95,7 +119,8 @@ public class BaseActor extends Actor {
 		if ( isVisible() )
 			batch.draw( region, getX(), getY(), getOriginX(), getOriginY(),getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation() );
 	}
-	
+
+
 	
 }
 
