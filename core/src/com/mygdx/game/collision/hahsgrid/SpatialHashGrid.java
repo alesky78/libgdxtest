@@ -119,12 +119,12 @@ public class SpatialHashGrid<T extends GridIndexable> {
 				bucketList.remove(entity); 
 			
 				if(bucketList.isEmpty()) {
-					grid.remove(key);					
+					grid.remove(key);							
 				}
 				
 				//correct the potential collision
-				if(bucketList.size()>1){
-					bucketsPotentialCollision.remove(key);					
+				if(bucketList.size()<2){
+					bucketsPotentialCollision.remove(key);
 				}
 			}
 			
