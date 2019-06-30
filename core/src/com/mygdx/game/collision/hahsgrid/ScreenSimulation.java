@@ -109,7 +109,7 @@ public class ScreenSimulation implements Screen {
 		//		-- il wrap around nel act del actor
 		//		-- i movimenti dovuti alle collisioni dovrebbero essere qui!!!! come gestirli questi
 		//
-		grid.resetGrid();
+		grid.reset();
 		
 		//draw main stage and centre the camera		
         mainStage.act(delta);		
