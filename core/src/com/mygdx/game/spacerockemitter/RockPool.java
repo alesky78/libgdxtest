@@ -12,21 +12,12 @@ import com.badlogic.gdx.utils.Pool;
 public class RockPool {
 
 	private Texture[] rockTexture;
+	private SpatialHashGrid<BaseActor> spatialGrid;	
 	
 	private static final int MAX_SIZE = 4; 
 	
-	public RockPool(AssetManager assetManager) {
-	
-		rockTexture = new Texture[4];
-		rockTexture[0] = assetManager.get(AssetCatalog.TEXTURE_ROCK_0);
-		rockTexture[1] = assetManager.get(AssetCatalog.TEXTURE_ROCK_1);
-		rockTexture[2] = assetManager.get(AssetCatalog.TEXTURE_ROCK_2);
-		rockTexture[3] = assetManager.get(AssetCatalog.TEXTURE_ROCK_3);	
-	}
-	
-	
-	
-	private final Pool<Rock> pool = new Pool<Rock>() {
+
+	private final Pool<Rock> pool = new Pool<Rock>(50) {
 		@Override
 		protected Rock newObject() {
 			return new Rock(0, 0);
@@ -34,12 +25,27 @@ public class RockPool {
 	};
 	
 	
+	
+	public RockPool(SpatialHashGrid<BaseActor> spatialGrid, AssetManager assetManager) {
+	
+		rockTexture = new Texture[4];
+		rockTexture[0] = assetManager.get(AssetCatalog.TEXTURE_ROCK_0);
+		rockTexture[1] = assetManager.get(AssetCatalog.TEXTURE_ROCK_1);
+		rockTexture[2] = assetManager.get(AssetCatalog.TEXTURE_ROCK_2);
+		rockTexture[3] = assetManager.get(AssetCatalog.TEXTURE_ROCK_3);	
+		
+		this.spatialGrid = spatialGrid;
+	}
+	
+	
+	
+	
 	public List<Rock> generateNewRocks(int numRocks) {
 		
 		List<Rock> rockList = new ArrayList<>();
 		for (int n = 0; n < numRocks; n++){
 			
-			Rock rock =  pool.obtain();
+			Rock rock =  pool.obtain();			
 			rock.setLife(2);
 			rock.setSize(MathUtils.random(3, MAX_SIZE));
 			Texture rockTex = rockTexture[n%4];
@@ -54,6 +60,7 @@ public class RockPool {
 			rock.addAction( Actions.forever( Actions.rotateBy(360, 2 - speedUp) ) );
 			rockList.add(rock);
 			rock.setPool(pool);
+			rock.setGrid(spatialGrid);
 		}
 		
 		return rockList;
@@ -71,7 +78,7 @@ public class RockPool {
 		while(amount>0) {
 			actualSize = MathUtils.random(1, amount);
 			amount -= actualSize;
-			littleRock =  pool.obtain();
+			littleRock =  pool.obtain();		
 			littleRock.setLife(actualSize); //energy equal the size
 			littleRock.setSize(actualSize);
 			littleRock.setPosition(rock.getX()+ distance*MathUtils.cosDeg(360/2*iteration), rock.getY()+ distance*MathUtils.sinDeg(360/2*iteration));
@@ -84,6 +91,8 @@ public class RockPool {
 			littleRock.setVelocityAS( 360 * MathUtils.random(), 75 + 50*speedUp );
 			littleRock.addAction( Actions.forever( Actions.rotateBy(360, 2 - speedUp) ) );
 			littleRock.setPool(pool);
+			littleRock.setGrid(spatialGrid);
+			littleRock.setParentList(null);
 			
 			newRocks.add(littleRock);					
 			

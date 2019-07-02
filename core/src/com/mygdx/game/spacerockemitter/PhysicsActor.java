@@ -121,8 +121,7 @@ public class PhysicsActor extends AnimatedActor
 
 	public void act(float dt) 
 	{
-		super.act(dt);
-
+	
 		// apply acceleration
 		velocity_V.add( acceleration_V.x * dt, acceleration_V.y * dt );
 
@@ -146,6 +145,9 @@ public class PhysicsActor extends AnimatedActor
 		// rotate image when moving
 		if (autoAngle && getSpeed() > 0.1 )
 			setRotation( getMotionAngle() );
+		
+		//complete the act of the hierarchy
+		super.act(dt);		
 	}
 
 	public void copy(PhysicsActor original)

@@ -9,9 +9,10 @@ public class LaserPool {
 	
 	private AssetManager assetManager;
 	private ParticleEffectManager particleEffectManager;
+	private SpatialHashGrid<BaseActor> spatialGrid;
 	
 	
-	private final Pool<Laser> bulletPool = new Pool<Laser>() {
+	private final Pool<Laser> pool = new Pool<Laser>(50) {
 		@Override
 		protected Laser newObject() {
 			return newInstanceLaser();
@@ -27,9 +28,10 @@ public class LaserPool {
 	};
 	    
 	
-	public LaserPool(AssetManager assetManager,ParticleEffectManager particleEffectManager) {
+	public LaserPool(SpatialHashGrid<BaseActor> spatialGrid, AssetManager assetManager,ParticleEffectManager particleEffectManager) {
 		super();
 		
+		this.spatialGrid = spatialGrid;
 		this.assetManager = assetManager;
 		this.particleEffectManager = particleEffectManager;
 	}
@@ -46,7 +48,6 @@ public class LaserPool {
 		laser.setDeceleration(0);
 		laser.setRectangleBoundary();
 		laser.setAutoAngle(true);
-		laser.setPool(bulletPool);
 				
 		return laser;
 	}
@@ -59,7 +60,10 @@ public class LaserPool {
 	public Laser obtain(SpaceShip spaceship) {
 		
 		//get the laser from the pool and configure the position based on the ship
-		Laser laser = bulletPool.obtain();
+		Laser laser = pool.obtain();	
+		laser.setPool(pool);
+		laser.setGrid(spatialGrid);
+		
 		laser.moveToCenterShiftToRight( spaceship );
 		laser.setVelocityAS( spaceship.getRotation(), 400 );
 		laser.setVisible(true);
@@ -74,6 +78,7 @@ public class LaserPool {
 		laserParticle.start();
 		laser.addActor(laserParticle);
 		laser.setLaserParticleFX(laserParticle);
+		laser.setGrid(spatialGrid);
 
 		return laser;
 	}

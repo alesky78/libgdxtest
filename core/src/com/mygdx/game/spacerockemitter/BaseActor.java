@@ -1,7 +1,6 @@
 package com.mygdx.game.spacerockemitter;
 
-
-
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
@@ -14,19 +13,20 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 
-public class BaseActor extends Group
-{
+public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
+	
 	public TextureRegion region;
 	public Polygon boundingPolygon;
 
-	private List<? extends BaseActor> parentList;
+	protected List<? extends BaseActor> parentList;
 
-
+	public SpatialHashGrid<BaseActor> grid;
 	
 	public BaseActor()
 	{
@@ -36,7 +36,30 @@ public class BaseActor extends Group
 		parentList = null;
 	}
 	
+	public void setGrid(SpatialHashGrid<BaseActor> grid) {
+		this.grid = grid;
+	}
 
+
+	public List<String> generateIndex(int bucketsSize) {
+		List<String> index = new ArrayList<>();
+		Rectangle rect = boundingPolygon.getBoundingRectangle();
+		
+		int minX = MathUtils.floor(rect.getX()/bucketsSize);
+		int maxX = MathUtils.floor((rect.getX()+rect.getWidth()) /bucketsSize);		
+		int minY = MathUtils.floor(rect.getY()/bucketsSize);
+		int maxY = MathUtils.floor((rect.getY()+rect.getHeight()) /bucketsSize);		
+
+		for (int x = minX; x <= maxX; x++) {
+			for (int y = minY; y <= maxY; y++) {
+				index.add(x +"-"+y);
+			}
+		}
+
+		return index;
+	}
+	
+	
 	public void setParentList(List<? extends BaseActor> pl){ 
 		parentList = pl; 
 	}
@@ -130,6 +153,10 @@ public class BaseActor extends Group
 	public void act(float dt)
 	{
 		super.act( dt );
+		if(grid!=null){
+			grid.addToGrid(this);			
+		}
+
 	}
 
 	public void draw(Batch batch, float parentAlpha) 
@@ -204,10 +231,6 @@ public class BaseActor extends Group
 	public void destroy()
 	{
 		remove(); // removes self from Stage
-		
-		if (parentList != null) { // removes from the active list
-			parentList.remove(this);			
-		}
 
 	}
 

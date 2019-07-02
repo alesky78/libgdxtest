@@ -39,8 +39,10 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	private LaserPool poolLaser;
 	private RockPool poolRock;	
 	private ParticleActorPool poolExplosion;
-	
+
 	private ParticleEffectManager particleEffectManager;
+
+	private SpatialHashGrid<BaseActor> spatialGrid;
 
 	private ArrayList<PhysicsActor> laserList;
 	private ArrayList<Rock> rockList;
@@ -59,8 +61,8 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	private float shakeCameraDuration = 0.5f;	
 	private float shakeCameraDurationCounter = 0;	
 	private boolean shakeCamera = false;	
-		
-	
+
+
 	//UI
 	private Label labelPoints;
 	private Label labelWarning;
@@ -83,8 +85,8 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	// game world dimensions and data
 	final int mapWidth = 800;
 	final int mapHeight = 600;
-    
-	
+
+
 	public SpaceRockEmitterLevel(SpaceRockEmitterGame g, SpaceShip spaceship){
 		super();
 		setGame(g);
@@ -104,22 +106,25 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 		mainStage.setDebugAll(MAIN_SCENE_DEBUG);
 
+
+		//game spatial grid used for the collision resolver
+		spatialGrid = new SpatialHashGrid<BaseActor>(100);
+
 		//entity management list
 		laserList = new ArrayList<PhysicsActor>();
 		removeList = new ArrayList<BaseActor>();
 		rockList = new ArrayList<Rock>();
-		
+
 		//prepare the manager of the particle effects
 		particleEffectManager = new ParticleEffectManager();
 		particleEffectManager.addParticleEffect(ParticleEffectManager.LASER, game.assetManager.get(AssetCatalog.PARTICLE_LASER));
 		particleEffectManager.addParticleEffect(ParticleEffectManager.EXPLOSION, game.assetManager.get(AssetCatalog.PARTICLE_EXPLOSION));		
 
 		//PREPARE the pools
-		poolLaser = new LaserPool(game.assetManager,particleEffectManager);
+		poolLaser = new LaserPool(spatialGrid,game.assetManager,particleEffectManager);
 		poolExplosion = new ParticleActorPool(particleEffectManager, true, ParticleEffectManager.EXPLOSION);
-		poolRock = new RockPool(game.assetManager);
-		
-		
+		poolRock = new RockPool(spatialGrid,game.assetManager);
+
 		//simulated lights
 		batch = new SpriteBatch();
 		light = game.assetManager.get(AssetCatalog.TEXTURE_SPOT_LIGHT);
@@ -127,14 +132,17 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		//SHIP		
 		spaceship.setPosition( mapWidth/2-spaceship.getWidth()/2,mapHeight/2-spaceship.getHeight()/2 );
 		spaceship.setVisible(true);
+		spaceship.setGrid(spatialGrid);
 
 		//BACKGROUND
 		background = new BackGroundWrapAround(game.assetManager);
-		 mainStage.addActor( background );
-		background.setVelocity(spaceship.getVelocity()); //LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --	
+		background.setVelocity(spaceship.getVelocity()); //LINK SHIPT VELOCITY TO BACKGROUND -- SAME OBJECT --		
+		mainStage.addActor( background );
 
-		//add the ship after the background
+		//add the ship after the background other way during the draw the ship is cover by the undergorund
 		mainStage.addActor(spaceship);
+
+
 
 		//////////////
 		// UI STAGE //
@@ -156,7 +164,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		if(UI_TABLE_DEBUG){
 			uiTable.debugAll();	
 		}
-		
+
 		//WORKING
 		uiTable.pad(5);
 		uiTable.add(labelPoints).left();
@@ -174,7 +182,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		explosionSound = game.assetManager.get(AssetCatalog.SOUND_EXPLOSION);
 		warningSound = game.assetManager.get(AssetCatalog.SOUND_WARNING);
 		gameOverSound = game.assetManager.get(AssetCatalog.SOUND_GAME_OVER);
-		
+
 		audioVolume = 0.50f;
 		spaceLoop.setLooping(true);
 		spaceLoop.setVolume(audioVolume);
@@ -190,8 +198,6 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 
 	public void update(float dt) {
-
-		removeList.clear();		
 
 		if(gamePhase == PHASE_WARNING){
 
@@ -223,14 +229,14 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 		}else if(gamePhase == PHASE_PREPARE_WAVE){
 			spaceLoop.play();
-			
+
 			for (Rock rock : poolRock.generateNewRocks(wave)) {
 				rockList.add(rock);
 				rock.setParentList(rockList);
 				mainStage.addActor(rock);
 
 			} ;
-			
+
 
 			//enable shield
 			spaceship.activateShield();
@@ -287,7 +293,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			PHASE_TIMER = PHASE_TIMER + dt;
 
 		}else if(gamePhase == PHASE_PLAYER_DESTROIED){
-			
+
 			//start of the phase
 			if(PHASE_TIMER == 0){
 				spaceship.setVisible(false);
@@ -313,33 +319,33 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 					gamePhase = PHASE_GAME_OVER;
 					PHASE_TIMER = 0;
 				}
-				
+
 			}
 
 			//end of the phase
 			if(PHASE_TIMER > 2){
 				gamePhase = PHASE_GAME_ON;
 				PHASE_TIMER = 0;
-				
+
 				spaceship.clearActions();
 				spaceship.setVisible(true);
 				spaceship.getColor().sub(0, 0, 0, 1);
 				spaceship.addAction(Actions.sequence(
-										Actions.fadeIn(0.4f),
-										Actions.fadeOut(0.4f), 
-										Actions.fadeIn(0.4f),
-										Actions.fadeOut(0.4f),
-										Actions.fadeIn(0.4f)										
-										)
-									);
+						Actions.fadeIn(0.4f),
+						Actions.fadeOut(0.4f), 
+						Actions.fadeIn(0.4f),
+						Actions.fadeOut(0.4f),
+						Actions.fadeIn(0.4f)										
+						)
+						);
 
 				spaceship.activateShield();				
 			}
-			
+
 			PHASE_TIMER = PHASE_TIMER + dt;
-			
+
 		}else if(gamePhase == PHASE_GAME_ON){
-		
+
 			if(rockList.isEmpty()){
 				gamePhase = PHASE_WAVE_DESTROIED;
 				PHASE_TIMER = 0;
@@ -357,50 +363,107 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 				spaceship.stopThruster();
 			}
 
-		
+
 
 		}//end phases end common logic starting for here 
 
-		
-		//manage all the collision
+
+		//manage all the collision and clear the lists
+		//spatialGrid.debugGrid();
 		manageTheCollision();
-		
-		
-		wrapAroundAndRemoveAllActors();		
-		
+		spatialGrid.reset();		
+		System.out.println("rockList size:"+rockList.size());
+		System.out.println("laserList size:"+laserList.size());
+
+
+		//destroy elegible entities
 		for (BaseActor ba : removeList){
 			ba.destroy();
 		}
+		removeList.clear();		
+
+
+		//add the new entity in the game
+		for (Rock rock : newRocks) {
+			rock.setParentList(rockList);
+			rockList.add(rock);
+			mainStage.addActor(rock);
+		}
+		newRocks.clear();
+
+		wrapAroundAndRemoveAllActors();		
+
+
 
 	}
 
 
+	/**
+	 * manage the collision using the potential collision,
+	 * in this way the collision will be never rechecked more that one time: If match A-->B i will never need to match B-->A
+	 */
 	private void manageTheCollision() {
-		
-		
-		//manager rock whit laser and ships
-		for ( Rock rock : rockList ){
+		for (List<BaseActor> actors : spatialGrid.getPotentialCollision()) {
+			for (int a = 0; a < actors.size()-1; a++) {
+				for (int b = a+1; b < actors.size(); b++) {
 
-			//check if contact with shield
-			if(spaceship.isActiveShield()){
-				spaceship.overlapsShield(rock, true);					
-			}else if(!spaceship.isActiveShield() && spaceship.overlapsShip(rock, true)){ //check if contact with ship only if shield is disable
-				ParticleActorPoolable explosion = poolExplosion.obtain(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY()) ;
+					//verify and manage the overlaps in both the direction A-->B and B-->A
+					overlaps( actors.get(a), actors.get(b));
 
-				explosionSound.play(audioVolume); 
-				mainStage.addActor(explosion);
-				spaceship.stopThruster();
+				}
+			}
+		}
+	}
 
-				gamePhase = PHASE_PLAYER_DESTROIED;
-				PHASE_TIMER = 0;
+
+	/**
+	 * note that  case A --> B must be managed as B --> A  
+	 * 
+	 *  this are the combinations:
+	 *  
+	 *  ROCK & ROCK
+	 *  ROCK & LASER
+	 *  ROCK & SHIELD
+	 *  ROCK & SHIP
+	 *  
+	 *  all the other must not managed
+	 * 
+	 * @param actorA
+	 * @param actorB
+	 */
+	private void overlaps(BaseActor actorA, BaseActor actorB) {
+
+		//TODO maage same entity collide more that one time
+		//I found another important point to manage the same entity could be collided two times
+		//esample immagine a laser that touch two rocks or a rock that touch two laser
+		//then the removal list could contain more that one time the same entity
+		//to decide how to manage for example i should introduced flag on the status of validity of an entity!!!!
+		//and in case the entity is already collided skip the next collision
+		//check this task here
+
+
+		if(actorA instanceof Rock && actorB instanceof Rock){ //ROCK and ROCK
+
+			((Rock)actorA).overlaps((Rock)actorB, true);
+
+		}else if(actorA instanceof Rock && actorB instanceof Laser || actorA instanceof Laser && actorB instanceof Rock ){ //ROCK and LASER
+
+			Rock rock; 
+			Laser laser;
+
+			if(actorA instanceof Laser){
+				laser = (Laser)actorA;
+				rock = (Rock)actorB; 
+			}else{
+				laser = (Laser)actorB;
+				rock = (Rock)actorA; 				
 			}
 
-			//check if contact with laser
-			for (PhysicsActor laser : laserList) {
-				if ( laser.overlaps(rock, false) ){
-					
+			//TODO avoid same collision multiple time
+			if(!removeList.contains(laser) && !removeList.contains(rock)){
+
+				if(laser.overlaps(rock, false)){
 					rock.removeLife();
-					
 					shakeCamera = true;
 
 					if(rock.isDistoried()){
@@ -408,36 +471,61 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 						//regenerate little rock from the big rock
 						if(rock.getSize() > 1){
 							newRocks.addAll(poolRock.generateSplitRock(rock)); 								
-						}
-
+						}						
 					}
 
-					removeList.add( laser );
-					
+					removeList.add( laser );		
+
 					ParticleActorPoolable explosion = poolExplosion.obtain(rock.getX()+rock.getOriginX(), rock.getY()+rock.getOriginY()) ;
 					explosionSound.play(audioVolume); 
 
 					mainStage.addActor(explosion);
 					points += 1;
-					labelPoints.setText(" points: "+points);						
+					labelPoints.setText(" points: "+points);				
 
-				}	
+				}
+				
 			}
+
+		}else if(actorA instanceof Rock && actorB instanceof Shield || actorA instanceof Shield && actorB instanceof Rock ){ //ROCK and SHIELD
+
+			if(spaceship.isActiveShield()){
+				if(actorB instanceof Rock){
+					spaceship.overlapsShield((Rock)actorB, true);
+				}else{
+					if(actorB instanceof Rock){
+						spaceship.overlapsShield((Rock)actorA, true);
+					}
+				}
+
+			}
+
+		}else if(actorA instanceof Rock && actorB instanceof Shield || actorA instanceof Shield && actorB instanceof Rock ){ //ROCK and SHIP
+			//ERROR the ship entity is not a shield but a physyc actor.... i must customize the entity in a different way!!!
+
+			//			if(!spaceship.isActiveShield()){
+			//				if(actorB instanceof Rock){
+			//					spaceship.overlapsShip((Rock)actorB, true);
+			//				}else{
+			//					if(actorB instanceof Rock){
+			//						spaceship.overlapsShip((Rock)actorA, true);
+			//					}
+			//				}
+			//				
+			//				
+			//				ParticleActorPoolable explosion = poolExplosion.obtain(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY()) ;
+			//
+			//				explosionSound.play(audioVolume); 
+			//				mainStage.addActor(explosion);
+			//				spaceship.stopThruster();
+			//
+			//				gamePhase = PHASE_PLAYER_DESTROIED;
+			//				PHASE_TIMER = 0;
+			//				
+			//			}
+
 		}
 
-		//verify all the intra rock collisions
-		roksOverlap(rockList, 0);	
-		
-		//add the new rock now
-		for (Rock rock : newRocks) {
-			rock.setParentList(rockList);
-			rockList.add(rock);
-			mainStage.addActor(rock);
-		}
-		newRocks.clear();
-		
-
-		
 	}
 
 
@@ -452,13 +540,13 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		}
 
 		wraparound( spaceship );	
-		
+
 		for ( PhysicsActor laser : laserList ){
 			wraparound( laser );
 			if ( !laser.isVisible() )
 				removeList.add( laser );
 		}
-		
+
 		for ( PhysicsActor rock : rockList ){
 			wraparound( rock );
 		}
@@ -475,29 +563,14 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			ba.setY( -ba.getHeight() );
 	}	
 
-	public void roksOverlap(List<Rock> rocks, int index){
 
-		if(index == rocks.size()-1 || rocks.size() == 0){
-			return;
-		}
 
-		Rock rock = rocks.get(index);
-		for (int i = index+1; i < rocks.size(); i++) {
-			rock.overlaps(rocks.get(i), true);
-		}
-
-		roksOverlap(rocks, index+1);
-
-	}
-
-	
-	
 	@Override
 	public void postDrawMainStage(float dt) {
-				
+
 		//lighting
 		batch.begin();
-		
+
 		batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA); // Blend with background
 
 		for ( PhysicsActor laser : laserList ){
@@ -506,18 +579,18 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 		batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA); // Normal rendering
 		batch.end();
-		
-		
+
+
 		//camera shake explosion
-	
+
 		if(shakeCamera){			
-		
+
 			Camera camera = mainStage.getCamera();
-			
+
 			if(shakeCameraDurationCounter <=shakeCameraDuration){
 				shakeCameraDurationCounter +=dt;
 				shakeCameraAngle = shakeCameraAngle + MathUtils.PI2*4*dt;
-				
+
 				camera.position.set( camera.position.x+MathUtils.cos(shakeCameraAngle)/(1+shakeCameraDurationCounter*2),camera.position.y+MathUtils.sin(shakeCameraAngle)/(1+shakeCameraDurationCounter*2), 0 );
 				camera.update();			
 			}else{
@@ -531,7 +604,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 		}
 
-		
+
 	}
 
 
@@ -541,9 +614,9 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	{
 		if (keycode == Keys.SPACE && gamePhase == PHASE_GAME_ON)
 		{
-			PhysicsActor laser = poolLaser.obtain(spaceship);
+			Laser laser = poolLaser.obtain(spaceship);
 			laser.setParentList(laserList);
-			
+
 			laserList.add(laser);
 			mainStage.addActor(laser);
 
@@ -561,11 +634,11 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			spaceLoop.stop();
 			game.setScreen(new SpaceRockEmitterMenu(game));
 		}
-		
+
 		return false;
 	}	
 
-	
+
 
 
 }

@@ -66,8 +66,7 @@ public class AnimatedActor extends BaseActor
 		return activeName;  
 	}
 
-	public void act(float dt)
-	{
+	public void act(float dt){
 		super.act( dt );
 		elapsedTime += dt;
 	}

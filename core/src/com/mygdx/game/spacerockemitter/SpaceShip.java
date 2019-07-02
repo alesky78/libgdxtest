@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+
 public class SpaceShip extends Group {
 	
 	private PhysicsActor shipPhysic;
@@ -54,7 +55,10 @@ public class SpaceShip extends Group {
 
 	}
 
-	
+	public void setGrid(SpatialHashGrid<BaseActor> grid) {
+		shipPhysic.setGrid(grid);
+		shield.setGrid(grid);
+	}	
 	
 	public void act (float delta) {
 		super.act(delta);

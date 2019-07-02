@@ -11,7 +11,7 @@ public class Rock extends PhysicsActor  implements Pool.Poolable {
 	private int size;	
 
 	private Pool<Rock> pool;
-
+	
 	public Rock(int life,int size){ 
 		super(); 
 		this.life = life;
@@ -80,12 +80,17 @@ public class Rock extends PhysicsActor  implements Pool.Poolable {
 
 	public void destroy(){
 		super.destroy();
-		pool.free(this);
+		clearActions();
+		parentList.remove(this);			
+		parentList = null;
+		grid = null;			
+		pool.free(this);	
 	}	
 	
 	@Override
 	public void reset() {
-		clearActions();
+
+
 	}
 
 }

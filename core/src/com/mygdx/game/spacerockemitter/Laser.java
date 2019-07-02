@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Pool;
 public class Laser extends PhysicsActor  implements Pool.Poolable {
 
 	private Pool<Laser> poolLaser;
-	
+
 	private ParticleActorPoolable laserParticleFX;
 
 	public Laser(){
@@ -22,15 +22,21 @@ public class Laser extends PhysicsActor  implements Pool.Poolable {
 
 	public void destroy(){
 		super.destroy();
-		poolLaser.free(this);
-		laserParticleFX.destroy();
+		clearActions();
+		parentList.remove(this);			
+		parentList = null;
+		grid = null;	 
+		//free the effect actor associate		
+		laserParticleFX.destroy();		
+		laserParticleFX = null;
+		clearChildren();
+		poolLaser.free(this);		
 	}	
 	
 	
 	@Override
 	public void reset() {
-		//free the effect actor associate
-		clearChildren();
+
 	}		
 	
 }
