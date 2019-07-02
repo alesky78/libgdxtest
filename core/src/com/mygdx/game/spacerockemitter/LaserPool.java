@@ -67,9 +67,8 @@ public class LaserPool {
 		
 		//position the laser on the Est of the ship
 		Vector2 position = ActorCoordinateUtils.getPositionEst(spaceship);
-		laser.setAccelerationXY(position.x-laser.getOriginX(), position.y-laser.getOriginY());
+		laser.setPosition(position.x-laser.getOriginX(),position.y-laser.getOriginY());
 		
-		//laser.moveToCenterShiftToRight( spaceship );
 		laser.setVelocityAS( spaceship.getRotation(), 400 );
 		laser.setVisible(true);
 		laser.clearActions();
