@@ -62,7 +62,7 @@ public class SpaceShip extends Group {
 		super.act(delta);
 
 		//adjust the rotation of the thruster based on the ship
-		thruster.setPosition(GameUtils.getPositionWest(shipPhysic));
+		thruster.setPosition(ActorCoordinateUtils.getPositionWest(shipPhysic));
 		thruster.setRotation(shipPhysic.getRotation()+180);
 	}
 
