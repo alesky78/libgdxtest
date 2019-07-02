@@ -31,7 +31,7 @@ public class SpaceShip extends Group {
 		shipPhysic.setMaxSpeed(MathUtils.clamp(maxSpeed, 50, MAX_SPEED));
 		shipPhysic.setAcceleration(MathUtils.clamp(acceleration, 50, MAX_ACCELEATION));
 		shipPhysic.setDeceleration(MathUtils.clamp(deceleration, 50, MAX_DECELERATION));
-		shipPhysic.storeAnimation("default", shipTex);
+		shipPhysic.setTexture(shipTex);
 		shipPhysic.setOriginCenter();
 		shipPhysic.setEllipseBoundary();		
 		addActor(shipPhysic);
@@ -45,7 +45,6 @@ public class SpaceShip extends Group {
 		//shield data
 		shield = new Shield(shipPhysic,assetManager.get(AssetCatalog.SHADER_FLICKER));
 		shield.setTexture( assetManager.get(AssetCatalog.TEXTURE_SHIP_SHILED) );
-		shield.storeAnimation( "default", assetManager.get(AssetCatalog.TEXTURE_SHIP_SHILED)  );
 		shield.setOriginCenter();				
 		shield.setPosition(shipPhysic.getX()+shipPhysic.getOriginX()-shipPhysic.getOriginX(),shipPhysic.getY()+shipPhysic.getOriginY()-shipPhysic.getOriginY());
 		shield.setEllipseBoundary();
@@ -172,10 +171,6 @@ public class SpaceShip extends Group {
 
 	public float getDecelerationRatio(){
 		return shipPhysic.getDeceleration()/MAX_DECELERATION;
-	}
-
-	public Map<String, Animation<TextureRegion>> getAnimationStorage() {
-		return shipPhysic.getAnimationStorage(); 
 	}
 
 	public TextureRegion getTextureRegion() {

@@ -40,9 +40,7 @@ public class LaserPool {
 	
 	private Laser newInstanceLaser() {
 		Laser laser = new Laser();
-		Texture laserTex = assetManager.get(AssetCatalog.TEXTURE_LASER);
-		laser.setTexture( laserTex );
-		laser.storeAnimation( "default", laserTex );
+		laser.setTexture( assetManager.get(AssetCatalog.TEXTURE_LASER) );
 		laser.setOriginCenter();		
 		laser.setMaxSpeed(400);
 		laser.setDeceleration(0);

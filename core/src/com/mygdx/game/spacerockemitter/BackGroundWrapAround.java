@@ -39,10 +39,7 @@ public class BackGroundWrapAround extends Group{
 	private void storeAnimation(String name, Texture tex){
 		this.tex = tex;
 		for (PhysicsActor physicsActor : actors) {
-			TextureRegion reg = new TextureRegion(tex);
-			TextureRegion[] frames = { reg };
-			Animation anim = new Animation(1.0f, frames);			
-			physicsActor.storeAnimation(name, anim);
+			physicsActor.setTexture(tex);
 		}		
 		
 	}

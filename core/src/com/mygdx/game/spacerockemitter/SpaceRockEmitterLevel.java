@@ -363,17 +363,13 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 				spaceship.stopThruster();
 			}
 
-
-
 		}//end phases end common logic starting for here 
 
 
 		//manage all the collision and clear the lists
-		//spatialGrid.debugGrid();
 		manageTheCollision();
 		spatialGrid.reset();		
-		System.out.println("rockList size:"+rockList.size());
-		System.out.println("laserList size:"+laserList.size());
+
 
 
 		//destroy elegible entities
@@ -501,6 +497,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			}
 
 		}else if(actorA instanceof Rock && actorB instanceof Shield || actorA instanceof Shield && actorB instanceof Rock ){ //ROCK and SHIP
+			//TODO implement the ship contact
 			//ERROR the ship entity is not a shield but a physyc actor.... i must customize the entity in a different way!!!
 
 			//			if(!spaceship.isActiveShield()){

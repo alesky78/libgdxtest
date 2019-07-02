@@ -4,7 +4,7 @@ package com.mygdx.game.spacerockemitter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-public class PhysicsActor extends AnimatedActor 
+public class PhysicsActor extends BaseActor 
 {
 	protected Vector2 velocity_V;
 	protected Vector2 acceleration_V;

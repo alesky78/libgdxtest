@@ -48,8 +48,7 @@ public class RockPool {
 			Rock rock =  pool.obtain();			
 			rock.setLife(2);
 			rock.setSize(MathUtils.random(3, MAX_SIZE));
-			Texture rockTex = rockTexture[n%4];
-			rock.storeAnimation( "default", rockTex );
+			rock.setTexture( rockTexture[n%4]);
 			rock.setScale((float)rock.getSize()/MAX_SIZE, (float)rock.getSize()/MAX_SIZE);
 			rock.setPosition(800 * MathUtils.random(), 600 * MathUtils.random() );
 			rock.setOriginCenter();
@@ -82,7 +81,7 @@ public class RockPool {
 			littleRock.setLife(actualSize); //energy equal the size
 			littleRock.setSize(actualSize);
 			littleRock.setPosition(rock.getX()+ distance*MathUtils.cosDeg(360/2*iteration), rock.getY()+ distance*MathUtils.sinDeg(360/2*iteration));
-			littleRock.storeAnimation( "default",rockTexture[MathUtils.random(0, rockTexture.length-1)] );	
+			littleRock.setTexture(rockTexture[MathUtils.random(0, rockTexture.length-1)]);	
 			littleRock.setScale((float)actualSize/MAX_SIZE, (float)actualSize/MAX_SIZE);
 			littleRock.setOriginCenter();			
 			littleRock.setEllipseBoundary();
