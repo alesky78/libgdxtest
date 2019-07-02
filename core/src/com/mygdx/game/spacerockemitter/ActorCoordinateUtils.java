@@ -8,6 +8,19 @@ public class ActorCoordinateUtils {
 
 	
 	/**
+	 * move the toMove actor Origin coordinate to the Origin coordinate of the target
+	 * the origin is considered has the center of the actor
+	 * 
+	 * @param toMove 
+	 * @param target
+	 */
+	public void moveToOrigin(Actor toMove, Actor target){
+		toMove.setPosition(
+				target.getX() + target.getOriginX() - toMove.getOriginX(),
+				target.getY() + target.getOriginY() - toMove.getOriginY());
+	}
+	
+	/**
 	 * calculate the point on the west of the actor
 	 * 
 	 * @param target

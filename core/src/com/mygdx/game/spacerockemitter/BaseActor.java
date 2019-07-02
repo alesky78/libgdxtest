@@ -14,8 +14,6 @@ import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 
@@ -25,7 +23,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	protected Polygon boundingPolygon;
 	
 	public int type;			//label of the actor type
-	public boolean isDead;
+	public boolean isDead;		//identify if an entity is still valid or not
 	
 	protected List<? extends BaseActor> parentList;
 	protected SpatialHashGrid<BaseActor> grid;
@@ -80,8 +78,6 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		setOriginCenter();
 	}
 	
-	
-
 	public TextureRegion getTextureRegion() {
 		return region;
 	}
@@ -176,6 +172,10 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	}
 
 	
+	/**
+	 * Extended to draw the bounding polygon of the actor
+	 * 
+	 */
 	protected void drawDebugBounds (ShapeRenderer shapes) {
 		super.drawDebugBounds(shapes);
 		
@@ -189,40 +189,6 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		}
 	}	
 	
-	public void copy(BaseActor original)
-	{
-		if(original.region != null){
- 	 		this.region =  original.region ;			
-		}
-		if (original.boundingPolygon != null)
-			this.boundingPolygon = new Polygon( original.boundingPolygon.getVertices() );
-		this.setPosition( original.getX(), original.getY() );
-		this.setOriginX( original.getOriginX() );
-		this.setOriginY( original.getOriginY() );
-		this.setWidth( original.getWidth() );
-		this.setHeight( original.getHeight() );
-		this.setColor( original.getColor() );
-		this.setVisible( original.isVisible() );
-	}
-
-	public BaseActor clone()
-	{
-		BaseActor newbie = new BaseActor();
-		newbie.copy( this );
-		return newbie;
-	}	
-
-	public void moveToOrigin(BaseActor target){
-		this.setPosition(
-				target.getX() + target.getOriginX() - this.getOriginX(),
-				target.getY() + target.getOriginY() - this.getOriginY());
-	}
-	
-	public void moveToCenterShiftToRight(Actor target){
-		this.setPosition(
-				target.getX() + target.getOriginX() - this.getOriginX() + MathUtils.cosDeg(target.getRotation())*target.getWidth()/2,
-				target.getY() + target.getOriginY() - this.getOriginY() + MathUtils.sinDeg (target.getRotation())*target.getWidth()/2);
-	}	
 
 	
 	public void destroy()

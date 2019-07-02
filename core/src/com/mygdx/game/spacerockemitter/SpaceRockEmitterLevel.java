@@ -371,8 +371,9 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		spatialGrid.reset();		
 
 
-
-		//destroy elegible entities
+		wrapAroundAndRemoveAllActors();		
+		
+		//destroy  entities
 		for (BaseActor ba : removeList){
 			ba.destroy();
 		}
@@ -387,7 +388,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		}
 		newRocks.clear();
 
-		wrapAroundAndRemoveAllActors();		
+
 
 
 
@@ -402,9 +403,8 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		for (List<BaseActor> actors : spatialGrid.getPotentialCollision()) {
 			for (int a = 0; a < actors.size()-1; a++) {
 				for (int b = a+1; b < actors.size(); b++) {
-
 					//verify and manage the overlaps in both the direction A-->B and B-->A
-					if(!actors.get(a).isDead && !actors.get(b).isDead) {	//don't manage   death entities
+					if(!actors.get(a).isDead && !actors.get(b).isDead) {	//don't manage death entities
 						overlaps( actors.get(a), actors.get(b));						
 					}
 
@@ -451,7 +451,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 				laser = (Laser)actorB;
 				rock = (Rock)actorA; 				
 			}
-
+			
 			if(laser.overlaps(rock, false)){
 				rock.removeLife();
 				shakeCamera = true;
@@ -468,10 +468,11 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 				laser.isDead = true;
 				removeList.add( laser );		
 
-				ParticleActorPoolable explosion = poolExplosion.obtain(rock.getX()+rock.getOriginX(), rock.getY()+rock.getOriginY()) ;
+				//sound the explosion
 				explosionSound.play(audioVolume); 
-
-				mainStage.addActor(explosion);
+				mainStage.addActor(poolExplosion.obtain(rock.getX()+rock.getOriginX(), rock.getY()+rock.getOriginY()));
+				
+				//add points
 				points += 1;
 				labelPoints.setText(" points: "+points);				
 
@@ -530,9 +531,12 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		wraparound( spaceship );	
 
 		for ( PhysicsActor laser : laserList ){
-			wraparound( laser );
-			if ( !laser.isVisible() )
+			if ( !laser.isVisible() && !laser.isDead ) {	//check if is Dead, could be already in remove list by the collision
+				laser.isDead = true;
 				removeList.add( laser );
+			}else {
+				wraparound( laser );				
+			}
 		}
 
 		for ( PhysicsActor rock : rockList ){

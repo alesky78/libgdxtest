@@ -1,6 +1,7 @@
 package com.mygdx.game.spacerockemitter;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Pool;
 
@@ -63,7 +64,12 @@ public class LaserPool {
 		laser.setGrid(spatialGrid);
 		
 		laser.isDead = false;
-		laser.moveToCenterShiftToRight( spaceship );
+		
+		//position the laser on the Est of the ship
+		Vector2 position = ActorCoordinateUtils.getPositionEst(spaceship);
+		laser.setAccelerationXY(position.x-laser.getOriginX(), position.y-laser.getOriginY());
+		
+		//laser.moveToCenterShiftToRight( spaceship );
 		laser.setVelocityAS( spaceship.getRotation(), 400 );
 		laser.setVisible(true);
 		laser.clearActions();
