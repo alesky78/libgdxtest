@@ -49,6 +49,7 @@ public class RockPool {
 			rock.isDead = false;
 			rock.setLife(2);
 			rock.setSize(MathUtils.random(3, MAX_SIZE));
+			rock.setMass(rock.getSize());
 			rock.setTexture( rockTexture[n%4]);
 			rock.setScale((float)rock.getSize()/MAX_SIZE, (float)rock.getSize()/MAX_SIZE);
 			rock.setPosition(800 * MathUtils.random(), 600 * MathUtils.random() );
@@ -84,6 +85,7 @@ public class RockPool {
 			littleRock.isDead = false;
 			littleRock.setLife(actualSize); //energy equal the size
 			littleRock.setSize(actualSize);
+			rock.setMass(actualSize);			
 			littleRock.setPosition(rock.getX()+ distance*MathUtils.cosDeg(360/2*iteration), rock.getY()+ distance*MathUtils.sinDeg(360/2*iteration));
 			littleRock.setTexture(rockTexture[MathUtils.random(0, rockTexture.length-1)]);	
 			littleRock.setScale((float)actualSize/MAX_SIZE, (float)actualSize/MAX_SIZE);
