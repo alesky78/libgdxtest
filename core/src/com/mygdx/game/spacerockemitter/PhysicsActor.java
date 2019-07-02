@@ -149,24 +149,6 @@ public class PhysicsActor extends BaseActor
 		//complete the act of the hierarchy
 		super.act(dt);		
 	}
-
-	public void copy(PhysicsActor original)
-	{
-		super.copy(original);
-		this.velocity_V = new Vector2(original.velocity_V);
-		this.acceleration_V = new Vector2(original.acceleration_V);
-		this.maxSpeed = original.maxSpeed;
-		this.deceleration = original.deceleration;
-		this.autoAngle = original.autoAngle;
-	}
-
-	public PhysicsActor clone()
-	{
-		PhysicsActor newbie = new PhysicsActor();
-		newbie.copy( this );  
-		return newbie;
-	}
-
 	
 	
 }

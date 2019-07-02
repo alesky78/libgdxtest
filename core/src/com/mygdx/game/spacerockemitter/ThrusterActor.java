@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter.ScaledNumericValue;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -59,10 +58,14 @@ public class ThrusterActor extends Actor {
 		pe.setPosition(position.x, position.y);
 	}	
 	
+	/**
+	 * rotate the emitters when the actor rotate
+	 * 
+	 */
 	public void setRotation(float degrees) {
 		for (ParticleEmitter e : pe.getEmitters() ){
 			   ScaledNumericValue val = e.getAngle();
-	           float amplitude = 30;
+	           float amplitude = 15;
 	           float h1 = degrees + amplitude;                                            
 	           float h2 = degrees - amplitude;                                            
 	           val.setHigh(h1, h2);                                           
@@ -84,18 +87,6 @@ public class ThrusterActor extends Actor {
 	public void draw(Batch batch, float parentAlpha){ 
 		super.draw(batch, parentAlpha);
 		pe.draw(batch); 
-	}
-
-	public ThrusterActor clone(){
-		ThrusterActor newbie = new ThrusterActor();
-		newbie.pe = new ParticleEffect(this.pe);
-		return newbie;
-	}
-	
-	public void moveToCenterShiftToRight(BaseActor target){
-		this.setPosition(
-				target.getX() + target.getOriginX() - this.getOriginX() + MathUtils.cosDeg(target.getRotation())*target.getWidth()/2,
-				target.getY() + target.getOriginY() - this.getOriginY() + MathUtils.sinDeg (target.getRotation())*target.getWidth()/2);
 	}		
 
 }

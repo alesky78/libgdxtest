@@ -224,14 +224,6 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 				target.getY() + target.getOriginY() - this.getOriginY() + MathUtils.sinDeg (target.getRotation())*target.getWidth()/2);
 	}	
 
-	public Vector2 getPositionCenterShiftToLeft(){
-		Vector2 position = new Vector2();
-		position.x = getX() + getOriginX() - MathUtils.cosDeg(getRotation())*getWidth()/2;
-		position.y = getY() + getOriginY() - MathUtils.sinDeg(getRotation())*getWidth()/2;
-		return position;
-
-	}	
-
 	
 	public void destroy()
 	{

@@ -10,19 +10,25 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 
 public class SpaceShip extends Group {
-	
+
 	private PhysicsActor shipPhysic;
 	private ThrusterActor thruster;
 	private Shield shield;		
-	
+
 	public static final float MAX_SPEED = 250;
 	public static final float MAX_ACCELEATION = 250; 	
 	public static final float MAX_DECELERATION = 250;	
-	
+
 	public SpaceShip(String name,float maxSpeed, float acceleration, float deceleration, Texture shipTex, AssetManager assetManager){
-		
+
 		setName(name);
-		
+
+		//thruster data
+		thruster = new ThrusterActor();
+		thruster.setParticleEffect(assetManager.get(AssetCatalog.PARTICLE_THRUSTER));
+		thruster.stop();	
+		addActor(thruster);
+
 		//shipPhysic data
 		shipPhysic = new PhysicsActor();
 		shipPhysic.setMaxSpeed(MathUtils.clamp(maxSpeed, 50, MAX_SPEED));
@@ -33,13 +39,7 @@ public class SpaceShip extends Group {
 		shipPhysic.setEllipseBoundary();	
 		shipPhysic.setType(ActorType.SHIP_BODY);
 		addActor(shipPhysic);
-		
-		//thruster data
-		thruster = new ThrusterActor();
-		thruster.setParticleEffect(assetManager.get(AssetCatalog.PARTICLE_THRUSTER));
-		thruster.stop();	
-		addActor(thruster);
-		
+
 		//shield data
 		shield = new Shield(shipPhysic,assetManager.get(AssetCatalog.SHADER_FLICKER));
 		shield.setTexture( assetManager.get(AssetCatalog.TEXTURE_SHIP_SHILED) );
@@ -49,7 +49,7 @@ public class SpaceShip extends Group {
 		shield.setType(ActorType.SHIP_SHIELD);		
 		//shield.setScale(shipPhysic.getWidth()/shield.getWidth(), shipPhysic.getHeight()/shield.getHeight());
 		addActor(shield);
-		
+
 
 	}
 
@@ -57,15 +57,15 @@ public class SpaceShip extends Group {
 		shipPhysic.setGrid(grid);
 		shield.setGrid(grid);
 	}	
-	
+
 	public void act (float delta) {
 		super.act(delta);
-		
+
 		//adjust the rotation of the thruster based on the ship
-		thruster.setPosition(shipPhysic.getPositionCenterShiftToLeft());
+		thruster.setPosition(GameUtils.getPositionWest(shipPhysic));
 		thruster.setRotation(shipPhysic.getRotation()+180);
 	}
-	
+
 	////////////////////////////////////////////////
 	//all the positions are based on the position of the 
 	//PhysicsActor that represent the ship
@@ -73,7 +73,7 @@ public class SpaceShip extends Group {
 	public void setPosition (float x, float y) {
 		shipPhysic.setPosition(x, y);
 	}
-	
+
 	public float getX() {
 		return shipPhysic.getX();
 	}
@@ -81,7 +81,7 @@ public class SpaceShip extends Group {
 	public float getY() {
 		return shipPhysic.getY();
 	}
-	
+
 	public void setX(float x) {
 		shipPhysic.setX(x);
 	}
@@ -89,19 +89,19 @@ public class SpaceShip extends Group {
 	public void setY(float y) {
 		shipPhysic.setY(y);
 	}	
-	
+
 	public float getOriginX(){
 		return shipPhysic.getOriginX();
 	}
-	
+
 	public float getOriginY(){
 		return shipPhysic.getOriginY();
 	}		
-	
+
 	public float getRotation () {
 		return shipPhysic.getRotation();
 	}	
-	
+
 	public Vector2 getVelocity() {
 		return shipPhysic.getVelocity();
 	}
@@ -122,14 +122,11 @@ public class SpaceShip extends Group {
 		shipPhysic.rotateBy(amountInDegrees);
 	}
 
-	public Vector2 getPositionCenterShiftToLeft() {
-		return shipPhysic.getPositionCenterShiftToLeft();
-	}	
 
 	public boolean overlapsShip(Rock rock, boolean b) {
 		return shipPhysic.overlaps(rock, b);
 	}	
-	
+
 	//////////////////////////////////////////
 	//thruster logic
 	/////////////////////////////////////////
@@ -140,7 +137,7 @@ public class SpaceShip extends Group {
 	public void stopThruster(){
 		thruster.stop();		
 	}
-	
+
 	//////////////////////////////////////////
 	//shield logic
 	/////////////////////////////////////////
@@ -151,15 +148,15 @@ public class SpaceShip extends Group {
 	public boolean isActiveShield(){
 		return shield.isActive();		
 	}
-	
+
 	public void overlapsShield(Rock rock, boolean resolve) {
 		shield.overlaps(rock, resolve);
 	}		
-	
+
 	////////////////////////////////////////////////
 	//UI methods  
 	///////////////////////////////////////////////
-	
+
 	public float getSpeedRatio(){
 		return shipPhysic.getMaxSpeed()/MAX_SPEED;
 	}
@@ -175,7 +172,7 @@ public class SpaceShip extends Group {
 	public TextureRegion getTextureRegion() {
 		return shipPhysic.getTextureRegion();
 	}
-	
+
 	public float getWidth(){
 		return shipPhysic.getWidth();
 	}
@@ -183,11 +180,11 @@ public class SpaceShip extends Group {
 	public float getHeight(){
 		return shipPhysic.getHeight();
 	}
-	
+
 	public void addAction (Action action) {
 		shipPhysic.addAction(action);
 	}
-	
+
 	public void clearActions () {
 		shipPhysic.clearActions();
 	}

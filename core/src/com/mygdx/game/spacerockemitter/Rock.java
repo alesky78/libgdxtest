@@ -1,6 +1,5 @@
 package com.mygdx.game.spacerockemitter;
 
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 
@@ -25,10 +24,6 @@ public class Rock extends PhysicsActor  implements Pool.Poolable {
 
 	public void act(float dt){
 		super.act(dt);
-	}
-
-	public Circle getCircle(){ 
-		return new Circle( getX() + getWidth()/2, getY() + getHeight()/2, getWidth()/2 ); 
 	}
 
 
@@ -70,12 +65,6 @@ public class Rock extends PhysicsActor  implements Pool.Poolable {
 		}
 
 		return true;
-	}
-
-	public Rock clone(){
-		Rock newbie = new Rock(life,size);
-		newbie.copy( this );  
-		return newbie;
 	}
 
 	public void destroy(){
