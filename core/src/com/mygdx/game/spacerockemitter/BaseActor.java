@@ -21,25 +21,36 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	
-	public TextureRegion region;
-	public Polygon boundingPolygon;
-
-	protected List<? extends BaseActor> parentList;
-
-	public SpatialHashGrid<BaseActor> grid;
+	protected TextureRegion region;
+	protected Polygon boundingPolygon;
 	
-	public BaseActor()
-	{
+	protected int type;	//TAG of thi actor type
+	protected List<? extends BaseActor> parentList;
+	protected SpatialHashGrid<BaseActor> grid;
+	
+	public BaseActor(){
 		super();
 		region = new TextureRegion();
 		boundingPolygon = null;
 		parentList = null;
+		type = ActorType.UNTAGGED;
 	}
 	
 	public void setGrid(SpatialHashGrid<BaseActor> grid) {
 		this.grid = grid;
 	}
 
+	public void setParentList(List<? extends BaseActor> pl){ 
+		parentList = pl; 
+	}
+	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
 
 	public List<String> generateIndex(int bucketsSize) {
 		List<String> index = new ArrayList<>();
@@ -57,13 +68,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		}
 
 		return index;
-	}
-	
-	
-	public void setParentList(List<? extends BaseActor> pl){ 
-		parentList = pl; 
-	}
-	
+	}	
 
 	public void setTexture(Texture t)
 	{ 

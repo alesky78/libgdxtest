@@ -33,7 +33,8 @@ public class SpaceShip extends Group {
 		shipPhysic.setDeceleration(MathUtils.clamp(deceleration, 50, MAX_DECELERATION));
 		shipPhysic.setTexture(shipTex);
 		shipPhysic.setOriginCenter();
-		shipPhysic.setEllipseBoundary();		
+		shipPhysic.setEllipseBoundary();	
+		shipPhysic.setType(ActorType.SHIP_BODY);
 		addActor(shipPhysic);
 		
 		//thruster data
@@ -48,6 +49,7 @@ public class SpaceShip extends Group {
 		shield.setOriginCenter();				
 		shield.setPosition(shipPhysic.getX()+shipPhysic.getOriginX()-shipPhysic.getOriginX(),shipPhysic.getY()+shipPhysic.getOriginY()-shipPhysic.getOriginY());
 		shield.setEllipseBoundary();
+		shipPhysic.setType(ActorType.SHIP_SHIELD);		
 		//shield.setScale(shipPhysic.getWidth()/shield.getWidth(), shipPhysic.getHeight()/shield.getHeight());
 		addActor(shield);
 		

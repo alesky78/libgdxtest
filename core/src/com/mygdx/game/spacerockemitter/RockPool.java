@@ -60,6 +60,8 @@ public class RockPool {
 			rockList.add(rock);
 			rock.setPool(pool);
 			rock.setGrid(spatialGrid);
+			rock.setParentList(null);			
+			rock.setType(ActorType.ROCK);
 		}
 		
 		return rockList;
@@ -92,9 +94,9 @@ public class RockPool {
 			littleRock.setPool(pool);
 			littleRock.setGrid(spatialGrid);
 			littleRock.setParentList(null);
+			littleRock.setType(ActorType.ROCK);			
 			
 			newRocks.add(littleRock);					
-			
 			iteration++;
 		}
 		
