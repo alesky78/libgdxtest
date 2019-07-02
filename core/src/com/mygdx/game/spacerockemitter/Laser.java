@@ -22,8 +22,7 @@ public class Laser extends PhysicsActor  implements Pool.Poolable {
 
 	public void destroy(){
 		super.destroy();
-		clearActions();
-		parentList.remove(this);			
+		clearActions();		
 		parentList = null;
 		grid = null;	 
 		//free the effect actor associate		

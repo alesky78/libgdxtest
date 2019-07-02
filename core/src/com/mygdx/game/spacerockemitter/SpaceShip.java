@@ -1,10 +1,7 @@
 package com.mygdx.game.spacerockemitter;
 
-import java.util.Map;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -49,7 +46,7 @@ public class SpaceShip extends Group {
 		shield.setOriginCenter();				
 		shield.setPosition(shipPhysic.getX()+shipPhysic.getOriginX()-shipPhysic.getOriginX(),shipPhysic.getY()+shipPhysic.getOriginY()-shipPhysic.getOriginY());
 		shield.setEllipseBoundary();
-		shipPhysic.setType(ActorType.SHIP_SHIELD);		
+		shield.setType(ActorType.SHIP_SHIELD);		
 		//shield.setScale(shipPhysic.getWidth()/shield.getWidth(), shipPhysic.getHeight()/shield.getHeight());
 		addActor(shield);
 		

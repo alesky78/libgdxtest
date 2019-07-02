@@ -1,7 +1,6 @@
 package com.mygdx.game.spacerockemitter;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Pool;
 
@@ -63,6 +62,7 @@ public class LaserPool {
 		laser.setPool(pool);
 		laser.setGrid(spatialGrid);
 		
+		laser.isDead = false;
 		laser.moveToCenterShiftToRight( spaceship );
 		laser.setVelocityAS( spaceship.getRotation(), 400 );
 		laser.setVisible(true);

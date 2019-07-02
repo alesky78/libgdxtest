@@ -404,7 +404,10 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 				for (int b = a+1; b < actors.size(); b++) {
 
 					//verify and manage the overlaps in both the direction A-->B and B-->A
-					overlaps( actors.get(a), actors.get(b));
+					if(!actors.get(a).isDead && !actors.get(b).isDead) {	//don't manage   death entities
+						overlaps( actors.get(a), actors.get(b));						
+					}
+
 
 				}
 			}
@@ -429,23 +432,17 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	 */
 	private void overlaps(BaseActor actorA, BaseActor actorB) {
 
-		//TODO maage same entity collide more that one time
-		//I found another important point to manage the same entity could be collided two times
-		//esample immagine a laser that touch two rocks or a rock that touch two laser
-		//then the removal list could contain more that one time the same entity
-		//to decide how to manage for example i should introduced flag on the status of validity of an entity!!!!
-		//and in case the entity is already collided skip the next collision
-		//check this task here
+		//support variables should be external so i don''t have to initialize every time
+		Rock rock; 
+		Laser laser;		
 
 
-		if(actorA instanceof Rock && actorB instanceof Rock){ //ROCK and ROCK
+		if(actorA.type == ActorType.ROCK   && actorB.type == ActorType.ROCK){ //ROCK and ROCK
 
 			((Rock)actorA).overlaps((Rock)actorB, true);
 
-		}else if(actorA instanceof Rock && actorB instanceof Laser || actorA instanceof Laser && actorB instanceof Rock ){ //ROCK and LASER
+		}else if(actorA.type == ActorType.ROCK && actorB.type == ActorType.LASER || actorA.type == ActorType.LASER && actorB.type == ActorType.ROCK ){ //ROCK and LASER
 
-			Rock rock; 
-			Laser laser;
 
 			if(actorA instanceof Laser){
 				laser = (Laser)actorA;
@@ -455,71 +452,65 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 				rock = (Rock)actorA; 				
 			}
 
-			//TODO avoid same collision multiple time
-			if(!removeList.contains(laser) && !removeList.contains(rock)){
+			if(laser.overlaps(rock, false)){
+				rock.removeLife();
+				shakeCamera = true;
 
-				if(laser.overlaps(rock, false)){
-					rock.removeLife();
-					shakeCamera = true;
-
-					if(rock.isDistoried()){
-						removeList.add( rock );		
-						//regenerate little rock from the big rock
-						if(rock.getSize() > 1){
-							newRocks.addAll(poolRock.generateSplitRock(rock)); 								
-						}						
-					}
-
-					removeList.add( laser );		
-
-					ParticleActorPoolable explosion = poolExplosion.obtain(rock.getX()+rock.getOriginX(), rock.getY()+rock.getOriginY()) ;
-					explosionSound.play(audioVolume); 
-
-					mainStage.addActor(explosion);
-					points += 1;
-					labelPoints.setText(" points: "+points);				
-
+				if(rock.isDistoried()){
+					rock.isDead = true;
+					removeList.add( rock );		
+					//regenerate little rock from the big rock
+					if(rock.getSize() > 1){
+						newRocks.addAll(poolRock.generateSplitRock(rock)); 								
+					}						
 				}
-				
+
+				laser.isDead = true;
+				removeList.add( laser );		
+
+				ParticleActorPoolable explosion = poolExplosion.obtain(rock.getX()+rock.getOriginX(), rock.getY()+rock.getOriginY()) ;
+				explosionSound.play(audioVolume); 
+
+				mainStage.addActor(explosion);
+				points += 1;
+				labelPoints.setText(" points: "+points);				
+
 			}
 
-		}else if(actorA instanceof Rock && actorB instanceof Shield || actorA instanceof Shield && actorB instanceof Rock ){ //ROCK and SHIELD
+		}else if(actorA.type == ActorType.ROCK &&  actorB.type == ActorType.SHIP_SHIELD || actorA.type == ActorType.SHIP_SHIELD && actorB.type == ActorType.ROCK ){ //ROCK and SHIELD
 
 			if(spaceship.isActiveShield()){
 				if(actorB instanceof Rock){
 					spaceship.overlapsShield((Rock)actorB, true);
 				}else{
-					if(actorB instanceof Rock){
-						spaceship.overlapsShield((Rock)actorA, true);
-					}
+					spaceship.overlapsShield((Rock)actorA, true);
 				}
 
 			}
 
-		}else if(actorA instanceof Rock && actorB instanceof Shield || actorA instanceof Shield && actorB instanceof Rock ){ //ROCK and SHIP
-			//TODO implement the ship contact
-			//ERROR the ship entity is not a shield but a physyc actor.... i must customize the entity in a different way!!!
+		}else if(actorA.type == ActorType.ROCK && actorB.type == ActorType.SHIP_BODY || actorA.type == ActorType.SHIP_BODY && actorB.type == ActorType.ROCK ){ //ROCK and SHIP
 
-			//			if(!spaceship.isActiveShield()){
-			//				if(actorB instanceof Rock){
-			//					spaceship.overlapsShip((Rock)actorB, true);
-			//				}else{
-			//					if(actorB instanceof Rock){
-			//						spaceship.overlapsShip((Rock)actorA, true);
-			//					}
-			//				}
-			//				
-			//				
-			//				ParticleActorPoolable explosion = poolExplosion.obtain(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY()) ;
-			//
-			//				explosionSound.play(audioVolume); 
-			//				mainStage.addActor(explosion);
-			//				spaceship.stopThruster();
-			//
-			//				gamePhase = PHASE_PLAYER_DESTROIED;
-			//				PHASE_TIMER = 0;
-			//				
-			//			}
+			if(!spaceship.isActiveShield() && gamePhase == PHASE_GAME_ON){	//manage the collision only when the game is on
+
+				if(actorB instanceof Rock){
+					rock = (Rock)actorB;
+				}else{
+					rock = (Rock)actorA;
+				}
+
+				if(spaceship.overlapsShip(rock, true)) {
+					ParticleActorPoolable explosion = poolExplosion.obtain(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY()) ;
+
+					explosionSound.play(audioVolume); 
+					mainStage.addActor(explosion);
+					spaceship.stopThruster();
+
+					gamePhase = PHASE_PLAYER_DESTROIED;
+					PHASE_TIMER = 0;					
+				}
+
+
+			}
 
 		}
 

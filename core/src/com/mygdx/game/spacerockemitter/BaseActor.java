@@ -24,7 +24,9 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	protected TextureRegion region;
 	protected Polygon boundingPolygon;
 	
-	protected int type;	//TAG of thi actor type
+	public int type;			//label of the actor type
+	public boolean isDead;
+	
 	protected List<? extends BaseActor> parentList;
 	protected SpatialHashGrid<BaseActor> grid;
 	
@@ -34,6 +36,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		boundingPolygon = null;
 		parentList = null;
 		type = ActorType.UNTAGGED;
+		isDead = false;
 	}
 	
 	public void setGrid(SpatialHashGrid<BaseActor> grid) {
@@ -44,9 +47,6 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		parentList = pl; 
 	}
 	
-	public int getType() {
-		return type;
-	}
 
 	public void setType(int type) {
 		this.type = type;
@@ -236,6 +236,9 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	public void destroy()
 	{
 		remove(); // removes self from Stage
+		if(parentList!=null){
+			parentList.remove(this);	
+		}
 
 	}
 

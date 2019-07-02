@@ -80,8 +80,7 @@ public class Rock extends PhysicsActor  implements Pool.Poolable {
 
 	public void destroy(){
 		super.destroy();
-		clearActions();
-		parentList.remove(this);			
+		clearActions();			
 		parentList = null;
 		grid = null;			
 		pool.free(this);	

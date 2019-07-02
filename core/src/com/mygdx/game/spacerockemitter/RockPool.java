@@ -45,7 +45,8 @@ public class RockPool {
 		List<Rock> rockList = new ArrayList<>();
 		for (int n = 0; n < numRocks; n++){
 			
-			Rock rock =  pool.obtain();			
+			Rock rock =  pool.obtain();
+			rock.isDead = false;
 			rock.setLife(2);
 			rock.setSize(MathUtils.random(3, MAX_SIZE));
 			rock.setTexture( rockTexture[n%4]);
@@ -80,6 +81,7 @@ public class RockPool {
 			actualSize = MathUtils.random(1, amount);
 			amount -= actualSize;
 			littleRock =  pool.obtain();		
+			littleRock.isDead = false;
 			littleRock.setLife(actualSize); //energy equal the size
 			littleRock.setSize(actualSize);
 			littleRock.setPosition(rock.getX()+ distance*MathUtils.cosDeg(360/2*iteration), rock.getY()+ distance*MathUtils.sinDeg(360/2*iteration));
