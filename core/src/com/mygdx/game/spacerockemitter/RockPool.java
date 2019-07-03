@@ -54,7 +54,7 @@ public class RockPool {
 			rock.setScale((float)rock.getSize()/MAX_SIZE, (float)rock.getSize()/MAX_SIZE);
 			rock.setPosition(800 * MathUtils.random(), 600 * MathUtils.random() );
 			rock.setOriginCenter();
-			rock.setEllipseBoundary();
+			rock.assignEllipseBoundary();
 			rock.setAutoAngle(false);
 			float speedUp = MathUtils.random(0.0f, 1.0f);
 			rock.setVelocityAS( 360 * MathUtils.random(), 75 + 50*speedUp );
@@ -90,7 +90,7 @@ public class RockPool {
 			littleRock.setTexture(rockTexture[MathUtils.random(0, rockTexture.length-1)]);	
 			littleRock.setScale((float)actualSize/MAX_SIZE, (float)actualSize/MAX_SIZE);
 			littleRock.setOriginCenter();			
-			littleRock.setEllipseBoundary();
+			littleRock.assignEllipseBoundary();
 			littleRock.setAutoAngle(false);
 			float speedUp = MathUtils.random(0.0f, 1.0f);
 			littleRock.setVelocityAS( 360 * MathUtils.random(), 75 + 50*speedUp );

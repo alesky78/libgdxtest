@@ -22,11 +22,6 @@ public class Rock extends PhysicsActor  implements Pool.Poolable {
 	}
 	
 
-	public void act(float dt){
-		super.act(dt);
-	}
-
-
 	public boolean isDistoried(){
 		return life <= 0;
 	}

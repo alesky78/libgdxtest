@@ -21,6 +21,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	
 	protected TextureRegion region;
 	protected Polygon boundingPolygon;
+	protected Rectangle boundingRectangle;	//this is the AABB of the boundingPolygon
 	
 	public int type;			//label of the actor type
 	public boolean isDead;		//identify if an entity is still valid or not
@@ -32,6 +33,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		super();
 		region = new TextureRegion();
 		boundingPolygon = null;
+		boundingRectangle = null;
 		parentList = null;
 		type = ActorType.UNTAGGED;
 		isDead = false;
@@ -45,14 +47,13 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		parentList = pl; 
 	}
 	
-
 	public void setType(int type) {
 		this.type = type;
 	}
 
 	public List<String> generateIndex(int bucketsSize) {
 		List<String> index = new ArrayList<>();
-		Rectangle rect = boundingPolygon.getBoundingRectangle();
+		Rectangle rect = boundingRectangle;
 		
 		int minX = MathUtils.floor(rect.getX()/bucketsSize);
 		int maxX = MathUtils.floor((rect.getX()+rect.getWidth()) /bucketsSize);		
@@ -68,8 +69,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		return index;
 	}	
 
-	public void setTexture(Texture t)
-	{ 
+	public void setTexture(Texture t){ 
 		int w = t.getWidth();
 		int h = t.getHeight();
 		setWidth( w );
@@ -82,6 +82,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		return region;
 	}
 
+	
 	public void setOriginCenter(){
 		if ( getWidth() == 0 )
 			System.err.println("error: actor size not set");
@@ -89,8 +90,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	}
 
 
-	public void setRectangleBoundary()
-	{
+	public void assignRectangleBoundary(){
 		float w = getWidth();
 		float h = getHeight();
 		float[] vertices = {0,0, w,0, w,h, 0,h};
@@ -99,8 +99,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		boundingPolygon.setScale(getScaleX(), getScaleY());		
 	}
 
-	public void setEllipseBoundary()
-	{
+	public void assignEllipseBoundary(){
 		int n = 12; // number of vertices
 		float w = getWidth();
 		float h = getHeight();
@@ -119,30 +118,34 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		boundingPolygon.setScale(getScaleX(), getScaleY());
 	}
 
-	public Polygon getBoundingPolygon()
-	{          
+	/**
+	 * recalculate the bounding poligon and AABB of this entity 
+	 */
+	private void refreshBoundings(){
 		boundingPolygon.setPosition( getX(), getY() );		
 		boundingPolygon.setOrigin( getOriginX(), getOriginY() );		
 		boundingPolygon.setRotation( getRotation() );
 		boundingPolygon.setScale(getScaleX(), getScaleY());		
-		return boundingPolygon;
+		
+		boundingRectangle = boundingPolygon.getBoundingRectangle();
 	}
-
+	
 	/**
 	 *  Determine if the collision polygons of two BaseActor objects overlap.
 	 *  If (resolve == true), then when there is overlap, move this BaseActor
-	 *    along minimum translation vector until there is no overlap.
+	 *  along minimum translation vector until there is no overlap.
+	 *  
+	 *  this method consider that the refreshBoundings() si already called on the two actors
+	 *  
 	 */
-	public boolean overlaps(BaseActor other, boolean resolve)
-	{
-		Polygon poly1 = this.getBoundingPolygon();
-		Polygon poly2 = other.getBoundingPolygon();
+	public boolean overlaps(BaseActor other, boolean resolve){
 
-		if ( !poly1.getBoundingRectangle().overlaps(poly2.getBoundingRectangle()) )
+
+		if ( !boundingRectangle.overlaps(other.boundingRectangle ) )
 			return false;
 
 		MinimumTranslationVector mtv = new MinimumTranslationVector();
-		boolean polyOverlap = Intersector.overlapConvexPolygons(poly1, poly2, mtv);
+		boolean polyOverlap = Intersector.overlapConvexPolygons(boundingPolygon, other.boundingPolygon, mtv);
 		if (polyOverlap && resolve)
 		{
 			this.moveBy( mtv.normal.x * mtv.depth, mtv.normal.y * mtv.depth );
@@ -151,9 +154,21 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		return (polyOverlap && (mtv.depth > significant));
 	}
 
-	public void act(float dt)
-	{
+	/**
+	 * basic implementation of the act, if the a new class overwrite this method
+	 * the refreshBoundingPolygon() and the insertion of the entity in the grid
+	 * must be executed after the entity is moved
+	 *  
+	 * then should be good that the super class call the super.act() only after is logic is completed
+	 */
+	public void act(float dt){
+		
 		super.act( dt );
+		
+		//refresh the bounding after the entity is moved and put in the grid
+		if(boundingPolygon!=null){
+			refreshBoundings();			
+		}
 		if(grid!=null){
 			grid.addToGrid(this);			
 		}
@@ -184,7 +199,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		else{
 			shapes.set(ShapeType.Line);
 			shapes.setColor(Color.RED);
-			shapes.polygon(getBoundingPolygon().getTransformedVertices());
+			shapes.polygon(boundingPolygon.getTransformedVertices());
 			
 		}
 	}	

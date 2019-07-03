@@ -44,7 +44,7 @@ public class LaserPool {
 		laser.setOriginCenter();		
 		laser.setMaxSpeed(400);
 		laser.setDeceleration(0);
-		laser.setRectangleBoundary();
+		laser.assignRectangleBoundary();
 		laser.setAutoAngle(true);
 		laser.setType(ActorType.LASER);
 				

@@ -21,8 +21,7 @@ public class PhysicsActor extends BaseActor
 	// should image rotate to match velocity?
 	private boolean autoAngle;
 
-	public PhysicsActor()
-	{
+	public PhysicsActor(){
 		velocity_V = new Vector2();
 		acceleration_V = new Vector2();
 		maxSpeed = 9999;
@@ -30,7 +29,6 @@ public class PhysicsActor extends BaseActor
 		autoAngle = false;
 	}
 
-	
 	
 	// velocity methods
 	public void setVelocityXY(float vx, float vy){  velocity_V.set(vx,vy);  }
@@ -42,15 +40,16 @@ public class PhysicsActor extends BaseActor
 	public void setVelocity(Vector2 velocity) {
 		this.velocity_V = velocity;
 	}
-	public void setVelocity(float vx, float vy)
-	{  velocity_V.set(vx,vy);  }	
+	public void setVelocity(float vx, float vy){  
+		velocity_V.set(vx,vy);  
+	}	
 
-	public void addVelocityXY(float vx, float vy)
-	{  velocity_V.add(vx,vy);  }
+	public void addVelocityXY(float vx, float vy){  
+		velocity_V.add(vx,vy);  
+	}
 
 	// set velocity from angle and speed
-	public void setVelocityAS(float angleDeg, float speed)
-	{
+	public void setVelocityAS(float angleDeg, float speed){
 		velocity_V.x = speed * MathUtils.cosDeg(angleDeg);
 		velocity_V.y = speed * MathUtils.sinDeg(angleDeg);
 	}
@@ -59,14 +58,17 @@ public class PhysicsActor extends BaseActor
 		setRotation(getRotation()%360);
 	}
 	
-	public float getSpeed()
-	{  return velocity_V.len();  }
+	public float getSpeed(){  
+		return velocity_V.len();  
+	}
 
-	public void setSpeed(float s)
-	{  velocity_V.setLength(s);  }
+	public void setSpeed(float s){  
+		velocity_V.setLength(s);  
+	}
 
-	public void setMaxSpeed(float ms)
-	{  maxSpeed = ms;  }
+	public void setMaxSpeed(float ms){  
+		maxSpeed = ms;  
+	}
 
 	public float getMaxSpeed() {
 		return maxSpeed;
@@ -84,23 +86,25 @@ public class PhysicsActor extends BaseActor
 		return deceleration;
 	}
 
-	public float getMotionAngle()
-	{  return MathUtils.atan2(velocity_V.y, velocity_V.x) * MathUtils.radiansToDegrees;  }
+	public float getMotionAngle(){  
+		return MathUtils.atan2(velocity_V.y, velocity_V.x) * MathUtils.radiansToDegrees;  
+	}
 
-	public void setAutoAngle(boolean b)
-	{  autoAngle = b;  }
+	public void setAutoAngle(boolean b){  
+		autoAngle = b;  
+	}
 
 	// acceleration methods
+	public void setAccelerationXY(float ax, float ay){  
+		acceleration_V.set(ax,ay);  
+	}
 
-	public void setAccelerationXY(float ax, float ay)
-	{  acceleration_V.set(ax,ay);  }
-
-	public void addAccelerationXY(float ax, float ay)
-	{  acceleration_V.add(ax,ay);  }
+	public void addAccelerationXY(float ax, float ay){  
+		acceleration_V.add(ax,ay);  
+	}
 
 	// set acceleration from angle and speed
-	public void setAccelerationAS(float angleDeg, float speed)
-	{
+	public void setAccelerationAS(float angleDeg, float speed){
 		acceleration_V.x = speed * MathUtils.cosDeg(angleDeg);
 		acceleration_V.y = speed * MathUtils.sinDeg(angleDeg);
 	}
@@ -113,14 +117,15 @@ public class PhysicsActor extends BaseActor
 		acceleration_V.add( acceleration * MathUtils.cosDeg(angle), acceleration * MathUtils.sinDeg(angle) );
 	}	
 
-	public void accelerateForward(float speed)
-	{  setAccelerationAS( getRotation(), speed );  }
+	public void accelerateForward(float speed){  
+		setAccelerationAS( getRotation(), speed );  
+	}
 
-	public void setDeceleration(float d)
-	{  deceleration = d;  }
+	public void setDeceleration(float d){  
+		deceleration = d;  
+	}
 
-	public void act(float dt) 
-	{
+	public void act(float dt) {
 	
 		// apply acceleration
 		velocity_V.add( acceleration_V.x * dt, acceleration_V.y * dt );

@@ -23,7 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class SpaceRockEmitterLevel extends BaseScreen {
 
 	// activate the graphic DEBUG
-	private final boolean MAIN_SCENE_DEBUG = true;
+	private final boolean MAIN_SCENE_DEBUG = false;
 	private final boolean UI_TABLE_DEBUG = false;	
 
 	protected int gamePhase;
@@ -104,7 +104,11 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	@Override
 	public void create() {
 
+		//DEBUG MANAGEMENT
 		mainStage.setDebugAll(MAIN_SCENE_DEBUG);
+		if(UI_TABLE_DEBUG){
+			uiTable.debugAll();	
+		}
 
 
 		//game spatial grid used for the collision resolver
@@ -161,9 +165,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			immageLifeTable.add(immageLife[i]);
 		}
 
-		if(UI_TABLE_DEBUG){
-			uiTable.debugAll();	
-		}
+
 
 		//WORKING
 		uiTable.pad(5);
@@ -367,6 +369,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 
 		//manage all the collision and clear the lists
+		//spatialGrid.debugGrid();
 		manageTheCollision();
 		spatialGrid.reset();		
 
