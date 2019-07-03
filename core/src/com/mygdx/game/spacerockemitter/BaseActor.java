@@ -144,15 +144,21 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		if ( !boundingRectangle.overlaps(other.boundingRectangle ) )
 			return false;
 
-		MinimumTranslationVector mtv = new MinimumTranslationVector();
-		boolean polyOverlap = Intersector.overlapConvexPolygons(boundingPolygon, other.boundingPolygon, mtv);
-		if (polyOverlap && resolve)
-		{
-			this.moveBy( mtv.normal.x * mtv.depth, mtv.normal.y * mtv.depth );
+		if(!resolve){
+			return Intersector.overlapConvexPolygons(boundingPolygon, other.boundingPolygon);
+		}else{
+			MinimumTranslationVector mtv = new MinimumTranslationVector();
+			boolean polyOverlap = Intersector.overlapConvexPolygons(boundingPolygon, other.boundingPolygon, mtv);
+			if (polyOverlap){
+				this.moveBy( mtv.normal.x * mtv.depth, mtv.normal.y * mtv.depth );
+			}
+			
+			float significant = 0.1f;
+			return (polyOverlap && (mtv.depth > significant));
 		}
-		float significant = 0.5f;
-		return (polyOverlap && (mtv.depth > significant));
+		
 	}
+	
 
 	/**
 	 * basic implementation of the act, if the a new class overwrite this method

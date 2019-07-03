@@ -74,7 +74,10 @@ public class LaserPool {
 		laser.clearActions();
 		laser.getColor().a = 1.0f;//reset the alpha to 1 becouse the previous execution set it to 0
 		laser.addAction(Actions.sequence(Actions.fadeOut(0.2f), Actions.delay(1.f), Actions.visible(false)) );
-		 
+		
+		//physic caracteristics
+		laser.setMass(0.02f);
+		
 		//get the particle from the pool and configure it		
 		ParticleActorPoolable laserParticle = particleEffectPool.obtain();
 		laserParticle.setParticleEffect(particleEffectManager.getPooledParticleEffect(ParticleEffectManager.LASER));

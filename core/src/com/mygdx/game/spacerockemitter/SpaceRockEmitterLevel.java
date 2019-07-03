@@ -436,13 +436,17 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	private void overlaps(BaseActor actorA, BaseActor actorB) {
 
 		//support variables should be external so i don''t have to initialize every time
-		Rock rock; 
+		Rock rock,rock2;
 		Laser laser;		
 
 
 		if(actorA.type == ActorType.ROCK   && actorB.type == ActorType.ROCK){ //ROCK and ROCK
-
-			((Rock)actorA).overlaps((Rock)actorB, true);
+			rock = (Rock)actorA;
+			rock2 = (Rock)actorB;			
+			
+			if(rock.overlaps(rock2, true)){	//if collide simulate the elastic collision
+				rock.elasticCollision(rock2);
+			}
 
 		}else if(actorA.type == ActorType.ROCK && actorB.type == ActorType.LASER || actorA.type == ActorType.LASER && actorB.type == ActorType.ROCK ){ //ROCK and LASER
 
@@ -456,6 +460,9 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 			}
 			
 			if(laser.overlaps(rock, false)){
+				
+				
+				
 				rock.removeLife();
 				shakeCamera = true;
 
@@ -466,6 +473,8 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 					if(rock.getSize() > 1){
 						newRocks.addAll(poolRock.generateSplitRock(rock)); 								
 					}						
+				}else{
+					laser.elasticCollision(rock);	//the rock is influenced by the hit
 				}
 
 				laser.isDead = true;
@@ -484,14 +493,18 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 		}else if(actorA.type == ActorType.ROCK &&  actorB.type == ActorType.SHIP_SHIELD || actorA.type == ActorType.SHIP_SHIELD && actorB.type == ActorType.ROCK ){ //ROCK and SHIELD
 
 			if(spaceship.isActiveShield()){
+				
 				if(actorB instanceof Rock){
-					spaceship.overlapsShield((Rock)actorB, true);
+					rock = (Rock) actorB; 
 				}else{
-					spaceship.overlapsShield((Rock)actorA, true);
+					rock = (Rock) actorA;
 				}
-
+				
+				if(rock.overlaps(spaceship.getShield(),true)){
+					spaceship.getShield().bounce(rock);  //TODO this method must be factorized in the physyc actor correctly for now the bounce work but is not correct
+				}
 			}
-
+			
 		}else if(actorA.type == ActorType.ROCK && actorB.type == ActorType.SHIP_BODY || actorA.type == ActorType.SHIP_BODY && actorB.type == ActorType.ROCK ){ //ROCK and SHIP
 
 			if(!spaceship.isActiveShield() && gamePhase == PHASE_GAME_ON){	//manage the collision only when the game is on
@@ -502,7 +515,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 					rock = (Rock)actorA;
 				}
 
-				if(spaceship.overlapsShip(rock, true)) {
+				if(rock.overlaps(spaceship.getShip(),true)) {
 					ParticleActorPoolable explosion = poolExplosion.obtain(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY()) ;
 
 					explosionSound.play(audioVolume); 

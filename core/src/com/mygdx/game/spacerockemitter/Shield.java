@@ -56,43 +56,21 @@ public class Shield extends PhysicsActor {
 	}
 	
 	public void act(float dt){
-		super.act(dt);
-		setPosition(spaceship.getX()+spaceship.getOriginX()-getOriginX(),spaceship.getY()+spaceship.getOriginY()-getOriginY());
+		
+		setPosition(spaceship.getX()+spaceship.getOriginX()-getOriginX(),spaceship.getY()+spaceship.getOriginY()-getOriginY());		
 		
 		//reduce the activation time until 0
 		if (activeTime>0){
 			activeTime -= dt;
-			activeTime = Math.max(activeTime, 0);
-			//System.out.println("activeTime"+ activeTime);		
-			//System.out.println("intensity" + (   1f - Math.max(0f,  Math.abs((activeTime-(SHIELD_TTL/2f))/(SHIELD_TTL/2f)) *2f - 1f)   ));			
+			activeTime = Math.max(activeTime, 0);		
 		}
 		
 		if(active && activeTime==0 ){
 			disable();				
 		}
 		
-	}
-
-
-	
-	public boolean overlaps(Rock rock, boolean bounceOff){
-
-		if(!active){
-			return false;
-		}
-
-		if (! rock.overlaps(this, true))
-			return false;
-
-		//if overlap then elastic collision only for the rock not for the shield and ship
-		//Vector2 rockVelocity;
+		super.act(dt);
 		
-		if ( bounceOff ){
-			//rockVelocity = new Vector2((2 * ROCK_MASS * spaceship.velocity.x) / (ROCK_MASS + ROCK_MASS), (2 * ROCK_MASS * spaceship.velocity.y) / (ROCK_MASS + ROCK_MASS));
-			rock.setVelocityXY(MathUtils.clamp(spaceship.getVelocity().x, 50, 200), MathUtils.clamp(spaceship.getVelocity().y, 50, 200));
-		}
-
-		return true;
 	}
 	
 	
@@ -111,8 +89,12 @@ public class Shield extends PhysicsActor {
 			super.draw(batch, parentAlpha);						
 		}
 		
-
+	}
 	
+	public void bounce(PhysicsActor other){
+
+		other.setVelocityXY(MathUtils.clamp(spaceship.getVelocity().x, 50, 200), MathUtils.clamp(spaceship.getVelocity().y, 50, 200));
+
 	}	
 
 }

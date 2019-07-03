@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 public class SpaceShip extends Group {
 
-	private PhysicsActor shipPhysic;
+	private PhysicsActor ship;
 	private ThrusterActor thruster;
 	private Shield shield;		
 
@@ -30,21 +30,21 @@ public class SpaceShip extends Group {
 		addActor(thruster);
 
 		//shipPhysic data
-		shipPhysic = new PhysicsActor();
-		shipPhysic.setMaxSpeed(MathUtils.clamp(maxSpeed, 50, MAX_SPEED));
-		shipPhysic.setAcceleration(MathUtils.clamp(acceleration, 50, MAX_ACCELEATION));
-		shipPhysic.setDeceleration(MathUtils.clamp(deceleration, 50, MAX_DECELERATION));
-		shipPhysic.setTexture(shipTex);
-		shipPhysic.setOriginCenter();
-		shipPhysic.assignEllipseBoundary();	
-		shipPhysic.setType(ActorType.SHIP_BODY);
-		addActor(shipPhysic);
+		ship = new PhysicsActor();
+		ship.setMaxSpeed(MathUtils.clamp(maxSpeed, 50, MAX_SPEED));
+		ship.setAcceleration(MathUtils.clamp(acceleration, 50, MAX_ACCELEATION));
+		ship.setDeceleration(MathUtils.clamp(deceleration, 50, MAX_DECELERATION));
+		ship.setTexture(shipTex);
+		ship.setOriginCenter();
+		ship.assignEllipseBoundary();	
+		ship.setType(ActorType.SHIP_BODY);
+		addActor(ship);
 
 		//shield data
-		shield = new Shield(shipPhysic,assetManager.get(AssetCatalog.SHADER_FLICKER));
+		shield = new Shield(ship,assetManager.get(AssetCatalog.SHADER_FLICKER));
 		shield.setTexture( assetManager.get(AssetCatalog.TEXTURE_SHIP_SHILED) );
 		shield.setOriginCenter();				
-		shield.setPosition(shipPhysic.getX()+shipPhysic.getOriginX()-shipPhysic.getOriginX(),shipPhysic.getY()+shipPhysic.getOriginY()-shipPhysic.getOriginY());
+		shield.setPosition(ship.getX()+ship.getOriginX()-ship.getOriginX(),ship.getY()+ship.getOriginY()-ship.getOriginY());
 		shield.assignEllipseBoundary();
 		shield.setType(ActorType.SHIP_SHIELD);		
 		//shield.setScale(shipPhysic.getWidth()/shield.getWidth(), shipPhysic.getHeight()/shield.getHeight());
@@ -53,8 +53,16 @@ public class SpaceShip extends Group {
 
 	}
 
+	public PhysicsActor getShip() {
+		return ship;
+	}
+	
+	public Shield getShield() {
+		return shield;
+	}
+
 	public void setGrid(SpatialHashGrid<BaseActor> grid) {
-		shipPhysic.setGrid(grid);
+		ship.setGrid(grid);
 		shield.setGrid(grid);
 	}	
 
@@ -62,8 +70,8 @@ public class SpaceShip extends Group {
 		super.act(delta);
 
 		//adjust the rotation of the thruster based on the ship
-		thruster.setPosition(ActorCoordinateUtils.getPositionWest(shipPhysic));
-		thruster.setRotation(shipPhysic.getRotation()+180);
+		thruster.setPosition(ActorCoordinateUtils.getPositionWest(ship));
+		thruster.setRotation(ship.getRotation()+180);
 	}
 
 	////////////////////////////////////////////////
@@ -71,61 +79,57 @@ public class SpaceShip extends Group {
 	//PhysicsActor that represent the ship
 	///////////////////////////////////////////////
 	public void setPosition (float x, float y) {
-		shipPhysic.setPosition(x, y);
+		ship.setPosition(x, y);
 	}
 
 	public float getX() {
-		return shipPhysic.getX();
+		return ship.getX();
 	}
 
 	public float getY() {
-		return shipPhysic.getY();
+		return ship.getY();
 	}
 
 	public void setX(float x) {
-		shipPhysic.setX(x);
+		ship.setX(x);
 	}
 
 	public void setY(float y) {
-		shipPhysic.setY(y);
+		ship.setY(y);
 	}	
 
 	public float getOriginX(){
-		return shipPhysic.getOriginX();
+		return ship.getOriginX();
 	}
 
 	public float getOriginY(){
-		return shipPhysic.getOriginY();
+		return ship.getOriginY();
 	}		
 
 	public float getRotation () {
-		return shipPhysic.getRotation();
+		return ship.getRotation();
 	}	
 
 	public Vector2 getVelocity() {
-		return shipPhysic.getVelocity();
+		return ship.getVelocity();
 	}
 
 	public void setAccelerationXY(int ax, int ay) {
-		shipPhysic.setAccelerationXY(ax, ay);
+		ship.setAccelerationXY(ax, ay);
 	}
 
 	public void setVelocity(int vx, int vy) {
-		shipPhysic.setVelocity(vx, vy);
+		ship.setVelocity(vx, vy);
 	}
 
 	public void addAccelerationAS() {
-		shipPhysic.addAccelerationAS(shipPhysic.getRotation());
+		ship.addAccelerationAS(ship.getRotation());
 	}
 
 	public void rotateBy (float amountInDegrees) {
-		shipPhysic.rotateBy(amountInDegrees);
+		ship.rotateBy(amountInDegrees);
 	}
-
-
-	public boolean overlapsShip(Rock rock, boolean b) {
-		return shipPhysic.overlaps(rock, b);
-	}	
+	
 
 	//////////////////////////////////////////
 	//thruster logic
@@ -147,46 +151,42 @@ public class SpaceShip extends Group {
 
 	public boolean isActiveShield(){
 		return shield.isActive();		
-	}
-
-	public void overlapsShield(Rock rock, boolean resolve) {
-		shield.overlaps(rock, resolve);
-	}		
+	}	
 
 	////////////////////////////////////////////////
 	//UI methods  
 	///////////////////////////////////////////////
 
 	public float getSpeedRatio(){
-		return shipPhysic.getMaxSpeed()/MAX_SPEED;
+		return ship.getMaxSpeed()/MAX_SPEED;
 	}
 
 	public float getAccelerationRatio(){
-		return shipPhysic.getAcceleration()/MAX_ACCELEATION;
+		return ship.getAcceleration()/MAX_ACCELEATION;
 	}
 
 	public float getDecelerationRatio(){
-		return shipPhysic.getDeceleration()/MAX_DECELERATION;
+		return ship.getDeceleration()/MAX_DECELERATION;
 	}
 
 	public TextureRegion getTextureRegion() {
-		return shipPhysic.getTextureRegion();
+		return ship.getTextureRegion();
 	}
 
 	public float getWidth(){
-		return shipPhysic.getWidth();
+		return ship.getWidth();
 	}
 
 	public float getHeight(){
-		return shipPhysic.getHeight();
+		return ship.getHeight();
 	}
 
 	public void addAction (Action action) {
-		shipPhysic.addAction(action);
+		ship.addAction(action);
 	}
 
 	public void clearActions () {
-		shipPhysic.clearActions();
+		ship.clearActions();
 	}
 
 
