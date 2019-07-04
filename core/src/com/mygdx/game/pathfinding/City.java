@@ -52,30 +52,25 @@ public class City extends Actor {
 	
 	
 	public void draw (Batch batch, float parentAlpha) {
-
 		
 		batch.end();
 		
-		ShapeRenderer shapeRenderer = new ShapeRenderer();
-		shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-		
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+		PathFindingScreen.sr.begin(ShapeRenderer.ShapeType.Filled);
 		if(inPath) {
 			// green
-			shapeRenderer.setColor(.57f, .76f, .48f, 1);
+			PathFindingScreen.sr.setColor(.57f, .76f, .48f, 1);
 		}
 		else{
 			// blue
-			shapeRenderer.setColor(.8f, .88f, .95f, 1);
+			PathFindingScreen.sr.setColor(.8f, .88f, .95f, 1);
 		}
-		shapeRenderer.circle(getX()+radius, getY()+radius, radius);
-		shapeRenderer.end();
+		PathFindingScreen.sr.circle(getX()+radius, getY()+radius, radius);
+		PathFindingScreen.sr.end();
 
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-		shapeRenderer.setColor(0, 0, 0, 1);
-		shapeRenderer.circle(getX()+radius, getY()+radius, 20);
-		shapeRenderer.end();
+		PathFindingScreen.sr.begin(ShapeRenderer.ShapeType.Line);
+		PathFindingScreen.sr.setColor(0, 0, 0, 1);
+		PathFindingScreen.sr.circle(getX()+radius, getY()+radius, 20);
+		PathFindingScreen.sr.end();
 
 		batch.begin();
 		//write the name of the node

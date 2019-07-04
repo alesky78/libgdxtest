@@ -20,13 +20,12 @@ public class Street extends Actor implements Connection<City>  {
 	}
 
 	public void draw (Batch batch, float parentAlpha) {
-		ShapeRenderer shapeRenderer = new ShapeRenderer();
-		shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-		shapeRenderer.setColor(0, 0, 0, 1);
-		shapeRenderer.rectLine(fromCity.getX()+fromCity.radius, fromCity.getY()+fromCity.radius, toCity.getX()+toCity.radius, toCity.getY()+toCity.radius, 4);
-		shapeRenderer.end();		
+		PathFindingScreen.sr.setProjectionMatrix(batch.getProjectionMatrix());
+		PathFindingScreen.sr.setTransformMatrix(batch.getTransformMatrix());
+		PathFindingScreen.sr.begin(ShapeRenderer.ShapeType.Filled);
+		PathFindingScreen.sr.setColor(0, 0, 0, 1);
+		PathFindingScreen.sr.rectLine(fromCity.getX()+fromCity.radius, fromCity.getY()+fromCity.radius, toCity.getX()+toCity.radius, toCity.getY()+toCity.radius, 4);
+		PathFindingScreen.sr.end();		
 	}
 
 

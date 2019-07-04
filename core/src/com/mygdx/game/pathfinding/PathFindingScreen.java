@@ -8,7 +8,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -29,6 +31,7 @@ public class PathFindingScreen implements Screen, InputProcessor {
 	private int height = 480;
 
 	private Stage mainStage;
+	private static Agent agent; 
 
 	public static BitmapFont font;
 	
@@ -39,6 +42,8 @@ public class PathFindingScreen implements Screen, InputProcessor {
 
 	private static Label startCityLabel;
 	private static Label goalCityLabel;
+	
+	public static ShapeRenderer sr;
 	
 	public PathFindingScreen(PathFindingGame game) {
 		super();
@@ -111,6 +116,9 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		for (City city : cityGraph.cities) {
 			mainStage.addActor(city);
 		}
+
+		agent = new Agent(cityGraph);
+		mainStage.addActor( agent );
 		
 		startCityLabel.setPosition(20, 20);
 		mainStage.addActor( startCityLabel );
@@ -119,13 +127,15 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		mainStage.addActor( goalCityLabel );
 		
 
+		sr = new ShapeRenderer();
+		
+
 	}
 	
 	
 	public static void setStartCity(City startCity) {
 		PathFindingScreen.startCity = startCity;
 		startCityLabel.setText("start:"+startCity.name);
-
 	}
 
 	public static void setGoalCity(City goalCity) {
@@ -140,7 +150,11 @@ public class PathFindingScreen implements Screen, InputProcessor {
 
 	@Override
 	public void render(float delta) {
-
+		
+		Batch batch = mainStage.getBatch();
+		sr.setProjectionMatrix(batch.getProjectionMatrix());
+		sr.setTransformMatrix(batch.getTransformMatrix());
+		
 		mainStage.act(delta);
 		
 		// render
@@ -148,6 +162,7 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		mainStage.draw();	
+		
 
 	}
 
@@ -195,6 +210,7 @@ public class PathFindingScreen implements Screen, InputProcessor {
 			for (City city : cityPath) {
 				city.setInPath(true);
 			}
+			agent.setPath(cityPath,startCity);			
 		}
 		
 		
