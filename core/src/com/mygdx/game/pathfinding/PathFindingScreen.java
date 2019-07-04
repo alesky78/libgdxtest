@@ -6,9 +6,12 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.pfa.GraphPath;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -29,19 +32,21 @@ public class PathFindingScreen implements Screen, InputProcessor {
 
 	public static BitmapFont font;
 	
-	public City startCity;
-	public City goalCity;	
+	private static City startCity;
+	private static City goalCity;	
 	private CityGraph cityGraph;
 	private GraphPath<City> cityPath;
 
+	private static Label startCityLabel;
+	private static Label goalCityLabel;
+	
 	public PathFindingScreen(PathFindingGame game) {
 		super();
 		this.game = game;
 		create();
 	}
 	
-
-
+	
 	private void create() {
 		
 		mainStage = new Stage( new FitViewport(width, height) );
@@ -51,6 +56,10 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		
 		font = new BitmapFont();
 
+		LabelStyle style = new LabelStyle( new BitmapFont(), Color.NAVY );
+		startCityLabel = new Label("start:", style);
+		goalCityLabel = new Label("goal:", style);		
+		
 		cityGraph = new CityGraph();
 
 		startCity = new City(300, 250, "S");
@@ -103,7 +112,25 @@ public class PathFindingScreen implements Screen, InputProcessor {
 			mainStage.addActor(city);
 		}
 		
+		startCityLabel.setPosition(20, 20);
+		mainStage.addActor( startCityLabel );
+		
+		goalCityLabel.setPosition(120, 20);
+		mainStage.addActor( goalCityLabel );
+		
 
+	}
+	
+	
+	public static void setStartCity(City startCity) {
+		PathFindingScreen.startCity = startCity;
+		startCityLabel.setText("start:"+startCity.name);
+
+	}
+
+	public static void setGoalCity(City goalCity) {
+		PathFindingScreen.goalCity = goalCity;
+		goalCityLabel.setText("goal:"+goalCity.name);
 	}
 
 
@@ -154,9 +181,10 @@ public class PathFindingScreen implements Screen, InputProcessor {
 	public boolean keyDown(int keycode) {
 		
 		if(keycode == Keys.R){	//repeat the simulation
+			System.out.println("RESET SIMULATION");			
 			game.setScreen(new PathFindingScreen(game));
 		} else if(keycode == Keys.C){
-			
+			System.out.println("RECALCULATE");
 			//clean all the city
 			for (City city : cityGraph.cities) {
 				city.setInPath(false);

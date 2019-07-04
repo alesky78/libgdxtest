@@ -25,7 +25,7 @@ public class Street extends Actor implements Connection<City>  {
 		shapeRenderer.setTransformMatrix(batch.getTransformMatrix());
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		shapeRenderer.setColor(0, 0, 0, 1);
-		shapeRenderer.rectLine(fromCity.getX(), fromCity.getY(), toCity.getX(), toCity.getY(), 4);
+		shapeRenderer.rectLine(fromCity.getX()+fromCity.radius, fromCity.getY()+fromCity.radius, toCity.getX()+toCity.radius, toCity.getY()+toCity.radius, 4);
 		shapeRenderer.end();		
 	}
 
