@@ -7,6 +7,6 @@ public class CityHeuristic  implements Heuristic<City> {
 
 	  @Override
 	  public float estimate(City currentCity, City goalCity) {
-	    return Vector2.dst(currentCity.x, currentCity.y, goalCity.x, goalCity.y);
+	    return Vector2.dst(currentCity.getX(), currentCity.getY(), goalCity.getX(), goalCity.getY());
 	  }
 	}

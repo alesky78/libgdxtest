@@ -1,13 +1,15 @@
 package com.mygdx.game.pathfinding;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
  * this implementation is takend from the example 
@@ -20,13 +22,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class PathFindingScreen implements Screen, InputProcessor {
 
 	private PathFindingGame game;
-	private int width; 
-	private int height;
+	private int width = 640; 
+	private int height = 480;
 
-	private ShapeRenderer shapeRenderer;
-	private SpriteBatch batch;
-	private BitmapFont font;
+	private Stage mainStage;
 
+	public static BitmapFont font;
+	
 	private CityGraph cityGraph;
 	private GraphPath<City> cityPath;
 
@@ -35,11 +37,16 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		this.game = game;
 		create();
 	}
+	
 
 
 	private void create() {
-		shapeRenderer = new ShapeRenderer();
-		batch = new SpriteBatch();
+		
+		mainStage = new Stage( new FitViewport(width, height) );
+		
+		InputMultiplexer im = new InputMultiplexer(this, mainStage);
+		Gdx.input.setInputProcessor( im );
+		
 		font = new BitmapFont();
 
 		cityGraph = new CityGraph();
@@ -86,7 +93,20 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		cityGraph.connectCities(startCity, eCity);
 		cityGraph.connectCities(eCity, goalCity);
 
-		cityPath = cityGraph.findPath(startCity, goalCity);	
+		cityPath = cityGraph.findPath(startCity, goalCity);
+		
+		for (City city : cityPath) {
+			city.setInPath(true);
+		}
+		
+		for (Street street : cityGraph.streets) {
+			mainStage.addActor(street);
+		}
+		
+		for (City city : cityGraph.cities) {
+			mainStage.addActor(city);
+		}
+		
 
 	}
 
@@ -98,24 +118,13 @@ public class PathFindingScreen implements Screen, InputProcessor {
 	@Override
 	public void render(float delta) {
 
+		mainStage.act(delta);
+		
 		// render
 		Gdx.gl.glClearColor(0.5f,0.5f,0.5f,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		//implement render logic here
-		for (Street street : cityGraph.streets) {
-			street.render(shapeRenderer);
-		}
-
-		// Draw all cities blue
-		for (City city : cityGraph.cities) {
-			city.render(shapeRenderer, batch, font, false);
-		}
-
-		// Draw cities in path green
-		for (City city : cityPath) {
-			city.render(shapeRenderer, batch, font, true);
-		}		
+		mainStage.draw();	
 
 	}
 
@@ -127,8 +136,6 @@ public class PathFindingScreen implements Screen, InputProcessor {
 	
 	@Override
 	public void dispose() {
-		shapeRenderer.dispose();
-		batch.dispose();
 		font.dispose();
 	}
 	
@@ -149,7 +156,12 @@ public class PathFindingScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO PUT the logic here to button press
+		
+		if(keycode == Keys.R){	//repeat the simulation
+			game.setScreen(new PathFindingScreen(game));
+			dispose();
+		}
+		
 		return false;
 	}
 
