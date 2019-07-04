@@ -11,7 +11,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.6'
-		classpath "com.badlogicgames.gdx:gdx-ai:1.8.1"
+		classpath "com.badlogicgames.gdx:1.8.1"
     }
 }
 

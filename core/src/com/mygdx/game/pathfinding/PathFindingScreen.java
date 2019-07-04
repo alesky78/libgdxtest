@@ -29,6 +29,8 @@ public class PathFindingScreen implements Screen, InputProcessor {
 
 	public static BitmapFont font;
 	
+	public City startCity;
+	public City goalCity;	
 	private CityGraph cityGraph;
 	private GraphPath<City> cityPath;
 
@@ -51,7 +53,7 @@ public class PathFindingScreen implements Screen, InputProcessor {
 
 		cityGraph = new CityGraph();
 
-		City startCity = new City(300, 250, "S");
+		startCity = new City(300, 250, "S");
 		City bCity = new City(300, 350, "B");
 		City aCity = new City(200, 350, "A");
 		City cCity = new City(400, 350, "C");
@@ -63,7 +65,7 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		City iCity = new City(200, 50, "I");
 		City jCity = new City(300, 50, "J");
 		City kCity = new City(400, 50, "K");
-		City goalCity = new City(400, 150, "Z");
+		goalCity = new City(400, 150, "Z");
 
 		cityGraph.addCity(startCity);
 		cityGraph.addCity(bCity);
@@ -92,12 +94,6 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		cityGraph.connectCities(kCity, goalCity);
 		cityGraph.connectCities(startCity, eCity);
 		cityGraph.connectCities(eCity, goalCity);
-
-		cityPath = cityGraph.findPath(startCity, goalCity);
-		
-		for (City city : cityPath) {
-			city.setInPath(true);
-		}
 		
 		for (Street street : cityGraph.streets) {
 			mainStage.addActor(street);
@@ -159,8 +155,20 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		
 		if(keycode == Keys.R){	//repeat the simulation
 			game.setScreen(new PathFindingScreen(game));
-			dispose();
+		} else if(keycode == Keys.C){
+			
+			//clean all the city
+			for (City city : cityGraph.cities) {
+				city.setInPath(false);
+			}
+			//recalculate the path			
+			cityPath = cityGraph.findPath(startCity, goalCity);
+			//highlights the new one			
+			for (City city : cityPath) {
+				city.setInPath(true);
+			}
 		}
+		
 		
 		return false;
 	}
