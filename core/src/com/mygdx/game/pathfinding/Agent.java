@@ -20,6 +20,7 @@ public class Agent extends Actor{
 	float deltaX = 0;
 	float deltaY = 0;
 
+	private int MOVE_ALGHORITM = 1;
 
 	public Agent(CityGraph cityGraph) {
 		this.cityGraph = cityGraph;
@@ -31,7 +32,23 @@ public class Agent extends Actor{
 	public void act(float delta){
 
 		if(!reachGoal){
-			moveBy(deltaX * speed * delta, deltaY * speed * delta);
+			
+			if(MOVE_ALGHORITM == 0) {
+				moveBy(deltaX * speed * delta, deltaY * speed * delta);	//logic				
+			}else if(MOVE_ALGHORITM == 1) {	//move using vector, really nice solution
+				
+				Vector2 position = new Vector2(getX(), getY());
+				
+				City next = pathQueue.first();
+				Vector2 target = new Vector2(next.getX(), next.getY());
+				
+				target.sub(position);
+				target.setLength(speed);
+				
+				moveBy( target.x * delta,  target.y * delta);
+				
+			}
+
 			checkCollision();
 		}
 		super.act(delta);
@@ -83,7 +100,7 @@ public class Agent extends Actor{
 	private void checkCollision() {
 		if (pathQueue.size > 0) {
 			City targetCity = pathQueue.first();
-			if (Vector2.dst(getX(), getY(), targetCity.getX(), targetCity.getY()) < 10) {
+			if (Vector2.dst(getX(), getY(), targetCity.getX(), targetCity.getY()) < 5) {
 				reachNextCity();
 			}
 		}
@@ -94,13 +111,12 @@ public class Agent extends Actor{
 	 */
 	private void reachNextCity() {
 
-		City nextCity = pathQueue.first();
+		this.actualCity = pathQueue.first();
 
 		// Set the position to keep the Agent in the middle of the path
-		setX(nextCity.getX());
-		setY(nextCity.getY());
+		setX(actualCity.getX());
+		setY(actualCity.getY());
 
-		this.actualCity = nextCity;
 		pathQueue.removeFirst();
 
 		if (pathQueue.size == 0) {
