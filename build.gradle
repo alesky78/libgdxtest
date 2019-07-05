@@ -5,13 +5,13 @@ buildscript {
         mavenLocal()
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
+   		maven { url "https://oss.sonatype.org/content/repositories/releases/" }        
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
         google()
     }
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.6'
-		classpath "com.badlogicgames.gdx:1.8.1"
     }
 }
 
