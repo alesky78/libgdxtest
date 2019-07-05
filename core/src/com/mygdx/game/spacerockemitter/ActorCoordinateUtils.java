@@ -57,8 +57,34 @@ public class ActorCoordinateUtils {
 		position.x = target.getX() + target.getOriginX() - MathUtils.sinDeg(target.getRotation())*target.getHeight()/2;
 		position.y = target.getY() + target.getOriginY() + MathUtils.cosDeg(target.getRotation())*target.getHeight()/2;
 		return position;
-	}		
+	}
+	
+	/**
+	 * calculate the point on the north-est of the actor
+	 * 
+	 * @param target
+	 * @return
+	 */	
+	public static  Vector2 getPositionNorthEst(Actor target){
+		Vector2 position = new Vector2( target.getX()+target.getWidth(),target.getY()+target.getHeight() );
+		Vector2 reference = new Vector2( target.getX()+target.getOriginX(),target.getY()+target.getOriginY() );		
+		position.rotateAround(reference, target.getRotation());
+		return position;
+	}	
 
+	/**
+	 * calculate the point on the north-west of the actor
+	 * 
+	 * @param target
+	 * @return
+	 */	
+	public static  Vector2 getPositionNorthWest(Actor target){
+		Vector2 position = new Vector2( target.getX(),target.getY()+target.getHeight() );
+		Vector2 reference = new Vector2( target.getX()+target.getOriginX(),target.getY()+target.getOriginY() );		
+		position.rotateAround(reference, target.getRotation());
+		return position;
+	}		
+	
 	/**
 	 * calculate the point on the south of the actor
 	 * 
@@ -70,6 +96,34 @@ public class ActorCoordinateUtils {
 		position.x = target.getX() + target.getOriginX() + MathUtils.sinDeg(target.getRotation())*target.getHeight()/2;
 		position.y = target.getY() + target.getOriginY() - MathUtils.cosDeg(target.getRotation())*target.getHeight()/2;
 		return position;
+	}
+	
+	/**
+	 * calculate the point on the south-est of the actor
+	 * 
+	 * @param target
+	 * @return
+	 */	
+	public static  Vector2 getPositionSouthEst(Actor target){
+		Vector2 position = new Vector2( target.getX()+target.getWidth(),target.getY() );
+		Vector2 reference = new Vector2( target.getX()+target.getOriginX(),target.getY()+target.getOriginY() );		
+		position.rotateAround(reference, target.getRotation());
+		return position;
 	}	
+
+	/**
+	 * calculate the point on the south-west of the actor
+	 * 
+	 * @param target
+	 * @return
+	 */	
+	public static  Vector2 getPositionSouthWest(Actor target){
+		Vector2 position = new Vector2( target.getX(),target.getY() );
+		Vector2 reference = new Vector2( target.getX()+target.getOriginX(),target.getY()+target.getOriginY() );		
+		position.rotateAround(reference, target.getRotation());
+		return position;
+	}			
+		
+	
 
 }
