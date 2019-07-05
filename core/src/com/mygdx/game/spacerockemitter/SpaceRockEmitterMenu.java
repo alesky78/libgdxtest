@@ -1,7 +1,5 @@
 package com.mygdx.game.spacerockemitter;
 
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -20,8 +18,10 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 	private final int PHASE_GAME_START = 1; 	
 	
 	private Texture backgroundTxt;
-	private Music entryLoop;
-	private Sound gameOnSound;		
+	
+	//audio
+	private AudioManager audioManager;
+			
 	private float audioVolume;	
 	
 	public SpaceRockEmitterMenu(SpaceRockEmitterGame g) {
@@ -32,16 +32,16 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 	public void create() {
 
 		audioVolume = 0.50f;
-		
-		
-		entryLoop = game.assetManager.get(AssetCatalog.MUSIC_MENU_LOOP);
-		
-		entryLoop.setLooping(true);
-		entryLoop.setVolume(audioVolume);
+	
+		audioManager = new AudioManager(audioVolume);
+	
+		//register music
+		audioManager.registerAudio(AudioManager.MUSIC_MENU_LOOP, game.assetManager.get(AssetCatalog.MUSIC_MENU_LOOP), true);
 
+		//register sound		
+		audioManager.registerAudio(AudioManager.SOUND_GAME_ON, game.assetManager.get(AssetCatalog.SOUND_GAME_ON));
 		
-		gameOnSound = game.assetManager.get(AssetCatalog.SOUND_GAME_ON);
-		
+	
 		Label title = new Label("Space Rocker", game.skin, "title");	
 		
 		backgroundTxt = game.assetManager.get(AssetCatalog.TEXTURE_SPACE_BACKGROUND);
@@ -75,7 +75,7 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 		
 		if(gamePhase == PHASE_GAME_WAIT){
 			if(PHASE_TIMER == 0){
-				entryLoop.play();
+				audioManager.playMusic(AudioManager.MUSIC_MENU_LOOP);
 			}
 			
 			PHASE_TIMER = PHASE_TIMER +dt;
@@ -83,15 +83,16 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 		}else if(gamePhase == PHASE_GAME_START){	
 			
 			if(PHASE_TIMER == 0){
-				gameOnSound.play();
+				audioManager.playSound(AudioManager.SOUND_GAME_ON);
 				uiStage.addAction(Actions.fadeOut(2.0f));
 			}
 			
 			audioVolume = MathUtils.clamp(audioVolume-dt, 0.0f, 1.0f); 
-			entryLoop.setVolume(audioVolume);	
+			audioManager.setMusicVolume(audioVolume);
 			
 			if(PHASE_TIMER > 2){
-				entryLoop.stop();
+
+				audioManager.stopMusic(AudioManager.MUSIC_MENU_LOOP);
 				SpaceRockEmitterChooseShip tl = new SpaceRockEmitterChooseShip(game);
 				game.setScreen( tl );				
 			}
