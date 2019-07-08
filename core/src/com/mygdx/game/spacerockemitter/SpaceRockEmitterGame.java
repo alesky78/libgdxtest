@@ -3,6 +3,7 @@ package com.mygdx.game.spacerockemitter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mygdx.game.spacerockemitter.screen.SpaceRockEmitterMenu;
 
 public class SpaceRockEmitterGame extends Game {
 

@@ -1,4 +1,4 @@
-package com.mygdx.game.spacerockemitter;
+package com.mygdx.game.spacerockemitter.actor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Pool;
+import com.mygdx.game.spacerockemitter.AssetCatalog;
+import com.mygdx.game.spacerockemitter.SpatialHashGrid;
 
 public class RockPool {
 

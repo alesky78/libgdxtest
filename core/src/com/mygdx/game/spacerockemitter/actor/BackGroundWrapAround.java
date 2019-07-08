@@ -1,4 +1,4 @@
-package com.mygdx.game.spacerockemitter;
+package com.mygdx.game.spacerockemitter.actor;
 
 
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.mygdx.game.spacerockemitter.AssetCatalog;
 
 public class BackGroundWrapAround extends Group{
 	

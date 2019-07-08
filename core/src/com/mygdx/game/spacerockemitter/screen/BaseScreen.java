@@ -1,4 +1,4 @@
-package com.mygdx.game.spacerockemitter;
+package com.mygdx.game.spacerockemitter.screen;
 
 
 import com.badlogic.gdx.Gdx;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 
 public abstract class BaseScreen implements Screen, InputProcessor{
 	

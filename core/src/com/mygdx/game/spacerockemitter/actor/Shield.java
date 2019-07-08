@@ -1,4 +1,4 @@
-package com.mygdx.game.spacerockemitter;
+package com.mygdx.game.spacerockemitter.actor;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;

@@ -1,4 +1,4 @@
-package com.mygdx.game.spacerockemitter;
+package com.mygdx.game.spacerockemitter.screen;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,6 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.game.spacerockemitter.AssetCatalog;
+import com.mygdx.game.spacerockemitter.AudioManager;
+import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 
 public class SpaceRockEmitterMenu extends BaseScreen {
 

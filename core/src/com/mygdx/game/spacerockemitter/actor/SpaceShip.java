@@ -1,4 +1,4 @@
-package com.mygdx.game.spacerockemitter;
+package com.mygdx.game.spacerockemitter.actor;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.mygdx.game.spacerockemitter.ActorCoordinateUtils;
+import com.mygdx.game.spacerockemitter.AssetCatalog;
+import com.mygdx.game.spacerockemitter.SpatialHashGrid;
 
 
 public class SpaceShip extends Group {

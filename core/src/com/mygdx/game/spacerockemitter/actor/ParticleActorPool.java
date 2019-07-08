@@ -1,6 +1,7 @@
-package com.mygdx.game.spacerockemitter;
+package com.mygdx.game.spacerockemitter.actor;
 
 import com.badlogic.gdx.utils.Pool;
+import com.mygdx.game.spacerockemitter.ParticleEffectManager;
 
 public class ParticleActorPool {
 
