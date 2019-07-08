@@ -13,7 +13,7 @@ import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.AudioManager;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 
-public class SpaceRockEmitterMenu extends BaseScreen {
+public class MainMenu extends BaseScreen {
 
 	protected int gamePhase;
 	private float PHASE_TIMER = 0;	
@@ -27,7 +27,7 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 			
 	private float audioVolume;	
 	
-	public SpaceRockEmitterMenu(SpaceRockEmitterGame g) {
+	public MainMenu(SpaceRockEmitterGame g) {
 		super(g);
 	}
 
@@ -96,7 +96,7 @@ public class SpaceRockEmitterMenu extends BaseScreen {
 			if(PHASE_TIMER > 2){
 
 				audioManager.stopMusic(AudioManager.MUSIC_MENU_LOOP);
-				SpaceRockEmitterChooseShip tl = new SpaceRockEmitterChooseShip(game);
+				ChooseShip tl = new ChooseShip(game);
 				game.setScreen( tl );				
 			}
 			

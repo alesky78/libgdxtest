@@ -36,7 +36,7 @@ import com.mygdx.game.spacerockemitter.actor.Rock;
 import com.mygdx.game.spacerockemitter.actor.RockPool;
 import com.mygdx.game.spacerockemitter.actor.SpaceShip;
 
-public class SpaceRockEmitterLevel extends BaseScreen {
+public class DestoryAsteroidLevel extends BaseScreen {
 
 	// activate the graphic DEBUG
 	private final boolean MAIN_SCENE_DEBUG = false;
@@ -99,7 +99,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 	final int mapHeight = 600;
 
 
-	public SpaceRockEmitterLevel(SpaceRockEmitterGame g, SpaceShip spaceship){
+	public DestoryAsteroidLevel(SpaceRockEmitterGame g, SpaceShip spaceship){
 		super();
 		setGame(g);
 		this.spaceship = spaceship;
@@ -304,7 +304,7 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 			if(PHASE_TIMER > 2){
 				dispose();
-				game.setScreen(new SpaceRockEmitterMenu(game));
+				game.setScreen(new MainMenu(game));
 			}
 
 			PHASE_TIMER = PHASE_TIMER + dt;
@@ -649,12 +649,12 @@ public class SpaceRockEmitterLevel extends BaseScreen {
 
 		if (keycode == Keys.R){
 			dispose();
-			game.setScreen(new SpaceRockEmitterLevel(this.game,spaceship));
+			game.setScreen(new DestoryAsteroidLevel(this.game,spaceship));
 		}
 
 		if (keycode == Keys.M){
 			audioManager.stopMusic(AudioManager.MUSIC_LEVEL_LOOP);
-			game.setScreen(new SpaceRockEmitterMenu(game));
+			game.setScreen(new MainMenu(game));
 		}
 
 		return false;

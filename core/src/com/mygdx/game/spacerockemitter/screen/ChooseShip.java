@@ -14,7 +14,7 @@ import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 import com.mygdx.game.spacerockemitter.actor.SpaceShip;
 
-public class SpaceRockEmitterChooseShip extends BaseScreen {
+public class ChooseShip extends BaseScreen {
 
 	protected int gamePhase;
 	private float PHASE_TIMER = 0;	
@@ -33,7 +33,7 @@ public class SpaceRockEmitterChooseShip extends BaseScreen {
 	private Image shipImage;
 
 	
-	public SpaceRockEmitterChooseShip(SpaceRockEmitterGame g) {
+	public ChooseShip(SpaceRockEmitterGame g) {
 		super(g);
 	}
 
@@ -160,7 +160,7 @@ public class SpaceRockEmitterChooseShip extends BaseScreen {
 			 
 			
 			if(PHASE_TIMER > 2){
-				SpaceRockEmitterLevel tl = new SpaceRockEmitterLevel(game,spaceShips[SpaceShipsIndex]);
+				DestoryAsteroidLevel tl = new DestoryAsteroidLevel(game,spaceShips[SpaceShipsIndex]);
 				game.setScreen( tl );
 
 			}
