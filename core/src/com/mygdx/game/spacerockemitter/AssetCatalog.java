@@ -48,6 +48,7 @@ public class AssetCatalog {
 	//TEXTURE
 	//////////////////////
 	public static AssetDescriptor<Texture> TEXTURE_SPACE_BACKGROUND;
+	public static AssetDescriptor<Texture> TEXTURE_HYPERSPACE_MAP;	
 	public static AssetDescriptor<Texture> TEXTURE_SHIP_0;		
 	public static AssetDescriptor<Texture> TEXTURE_SHIP_1;
 	public static AssetDescriptor<Texture> TEXTURE_SHIP_2;
@@ -97,6 +98,7 @@ public class AssetCatalog {
 		textureParam.minFilter = TextureFilter.Linear;
 		
 		TEXTURE_SPACE_BACKGROUND = new AssetDescriptor<>("spacerockemitter/space.png", Texture.class,textureParam);
+		TEXTURE_HYPERSPACE_MAP = new AssetDescriptor<>("spacerockemitter/hyperspacemap.png", Texture.class,textureParam);
 		TEXTURE_SHIP_0 = new AssetDescriptor<>("spacerockemitter/spaceship-0.png", Texture.class,textureParam);
 		TEXTURE_SHIP_1 = new AssetDescriptor<>("spacerockemitter/spaceship-1.png", Texture.class,textureParam);
 		TEXTURE_SHIP_2 = new AssetDescriptor<>("spacerockemitter/spaceship-2.png", Texture.class,textureParam);
@@ -149,6 +151,7 @@ public class AssetCatalog {
 		
 		//load texture
 		assetManager.load(TEXTURE_SPACE_BACKGROUND);		
+		assetManager.load(TEXTURE_HYPERSPACE_MAP);
 		assetManager.load(TEXTURE_SHIP_0);
 		assetManager.load(TEXTURE_SHIP_1);
 		assetManager.load(TEXTURE_SHIP_2);
