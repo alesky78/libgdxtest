@@ -16,7 +16,6 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mygdx.game.spacerockemitter.SpatialHashGrid;
-import com.mygdx.game.spacerockemitter.SpatialHashGrid.GridIndexable;
 
 
 public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
