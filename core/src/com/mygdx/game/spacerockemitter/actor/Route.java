@@ -2,8 +2,8 @@ package com.mygdx.game.spacerockemitter.actor;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.spacerockemitter.ActorCoordinateUtils;
 
 public class Route extends BaseActor {
 
@@ -39,12 +39,7 @@ public class Route extends BaseActor {
 		
 		//rotation		
 		setOrigin( 0, getHeight()/2f );		
-
-		float dx = b.getX() - a.getX(); 
-		float dy = b.getY() - a.getY();
-		float angle = (float)Math.atan2(dy, dx) * MathUtils.radiansToDegrees;
-	
-		setRotation(angle);
+		setRotation(ActorCoordinateUtils.angle(a,b));
 
 	}
 	

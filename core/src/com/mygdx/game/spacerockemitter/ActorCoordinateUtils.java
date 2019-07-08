@@ -14,12 +14,26 @@ public class ActorCoordinateUtils {
 	 * @param toMove 
 	 * @param target
 	 */
-	public void moveToOrigin(Actor toMove, Actor target){
+	public static void moveToOrigin(Actor toMove, Actor target){
 		toMove.setPosition(
 				target.getX() + target.getOriginX() - toMove.getOriginX(),
 				target.getY() + target.getOriginY() - toMove.getOriginY());
 	}
 	
+	/**
+	 * the angle in degrees of this actors relative to the x-axis. 
+	 * Angles are towards the positive y-axis (typically counter-clockwise) and between 0 and 360. 
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static float angle(Actor a, Actor b) {
+		float dx = b.getX() - a.getX(); 
+		float dy = b.getY() - a.getY();
+		return (float)Math.atan2(dy, dx) * MathUtils.radiansToDegrees;
+		
+	}
 	/**
 	 * calculate the point on the west of the actor
 	 * 
