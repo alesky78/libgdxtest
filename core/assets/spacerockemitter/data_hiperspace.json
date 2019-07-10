@@ -1,0 +1,9 @@
+{
+	planets:[
+				{name:alfa  ,ref:0, x:100, y:100},
+				{name:beta  ,ref:1, x:200, y:100}
+			],
+	routes:[
+			{refA:0, refB:1}
+			]
+}
