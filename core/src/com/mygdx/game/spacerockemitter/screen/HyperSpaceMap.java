@@ -1,7 +1,6 @@
 package com.mygdx.game.spacerockemitter.screen;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.mygdx.game.spacerockemitter.AssetCatalog;
@@ -41,6 +40,8 @@ public class HyperSpaceMap extends BaseScreen {
 		actualPlanet.setPosition(100, 100f);
 		actualPlanet.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));
 		actualPlanet.setTextureSelected(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET_SELECT));
+		actualPlanet.setBitmapFont(game.skin.getFont("font"));
+		
 		actualPlanet.selected();		
 
 		Planet p2 = new Planet();
@@ -48,19 +49,22 @@ public class HyperSpaceMap extends BaseScreen {
 		p2.setPosition(300f, 150f);
 		p2.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));
 		p2.setTextureSelected(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET_SELECT));		
-
+		p2.setBitmapFont(game.skin.getFont("font"));
+		
 		Planet p3 = new Planet();
 		p3.addListener(listener);		
 		p3.setPosition(500f, 280f);
 		p3.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));
 		p3.setTextureSelected(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET_SELECT));
+		p3.setBitmapFont(game.skin.getFont("font"));
 		
 		Planet p4 = new Planet();
 		p4.addListener(listener);		
 		p4.setPosition(150f, 350f);
 		p4.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));
 		p4.setTextureSelected(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET_SELECT));		
-
+		p4.setBitmapFont(game.skin.getFont("font"));
+		
 		Route r1 = new Route(actualPlanet, p2);
 		r1.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_ROUTE));
 		r1.setTextureSelected(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_ROUTE_SELECT));

@@ -1,42 +1,23 @@
 package com.mygdx.game.spacerockemitter.actor;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Planet extends BaseActor {
 
 	public int index;
-	
-	TextureRegion selected_texture = new TextureRegion();
-	TextureRegion default_texture = new TextureRegion();	
-	
+
+	protected TextureRegion selected_texture = new TextureRegion();
+	protected TextureRegion default_texture = new TextureRegion();	
+	protected BitmapFont font;
+
 	public Planet() {
-
-		super();
-		
-//		addListener(new InputListener(){
-//				public boolean touchDown (InputEvent ev, float x, float y, int pointer, int button){
-//					if(button == Input.Buttons.LEFT){
-//						System.out.println("LEFT set start city:  "+Planet.this.getName());	
-//						region = selected_texture;
-//		
-//					}else if (button == Input.Buttons.RIGHT){
-//						System.out.println("RIGHT set goal city:  "+Planet.this.getName());
-//						region = default_texture;
-//							
-//					}else{
-//						System.out.println("no event manager SO");								
-//					}
-//	
-//					return true;
-//	
-//				}
-//			}
-//		);
-
-		
+		super();		
 	}
-	
+
 	public void setTexture(Texture t){ 
 		super.setTexture(t);
 		default_texture = new TextureRegion(t);
@@ -45,13 +26,23 @@ public class Planet extends BaseActor {
 	public void setTextureSelected(Texture texture) {
 		selected_texture = new TextureRegion(texture); 
 	}
-	
+
+	public void setBitmapFont(BitmapFont font) {
+		this.font = font;
+	}
+
 	public void selected() {
 		region = selected_texture;
 	}
-	
+
 	public void unSelected() {
 		region = default_texture;
 	}	
-		
+
+	public void draw(Batch batch, float parentAlpha) {
+		font.setColor(Color.RED);
+		font.draw(batch, ""+index, getX()+getOriginX(), getY());
+		super.draw(batch, parentAlpha);
+	}
+
 }
