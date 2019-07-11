@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -87,7 +86,6 @@ public class HyperSpaceMap extends BaseScreen {
 			planet.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));
 			planet.setTextureSelected(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET_SELECT));
 			planet.setBitmapFont(game.skin.getFont("font"));		
-			planet.assignEllipseBoundary();
 			planets.add(planet);
 		}
 
@@ -154,7 +152,6 @@ public class HyperSpaceMap extends BaseScreen {
 		agent.setPosition(actualPlanet);
 		agent.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));	//TODO set the correct texture
 		agent.setColor(Color.BLUE);															//TODO remove this line when the correct texture is inserted
-		agent.assignEllipseBoundary();
 		mainStage.addActor(agent);	
 
 		///////////////////
