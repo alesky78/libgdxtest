@@ -35,6 +35,10 @@ public class HyperSpaceMap extends BaseScreen {
 	private final boolean MAIN_SCENE_DEBUG = false;
 	private final boolean UI_TABLE_DEBUG = false;	
 
+	private float PHASE_TIMER = 0;	
+	private final int PHASE_SELECT = 0;
+	private final int PHASE_TRAVEL = 1;    
+	
 	protected Planet actualPlanet;
 	protected Planet selectedPlanet;	
 	protected PlanetAgent agent;
