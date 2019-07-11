@@ -37,7 +37,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		boundingRectangle = null;
 		parentList = null;
 		type = ActorType.UNTAGGED;
-		isDead = false;
+		isDead = false; 
 	}
 	
 	/**

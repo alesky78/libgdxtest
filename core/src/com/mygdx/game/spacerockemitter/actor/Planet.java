@@ -5,28 +5,28 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.game.spacerockemitter.data.PlanetData;
 
 public class Planet extends BaseActor {
 
 	public int refIndex;
 
-	protected String planetName;
+	protected PlanetData planetData;
 	
 	protected TextureRegion selected_texture = new TextureRegion();
 	protected TextureRegion default_texture = new TextureRegion();	
 	protected BitmapFont font;
 
 	
-	public Planet() {
+	public Planet(PlanetData planetData) {
 		super();		
+		this.planetData = planetData;
+		refIndex = planetData.getRef();
+		setPosition(planetData.getX(), planetData.getY());
 	}
 
-	public String getPlanetName() {
-		return planetName;
-	}
-
-	public void setPlanetName(String planetName) {
-		this.planetName = planetName;
+	public PlanetData getPlanetData() {
+		return planetData;
 	}
 
 	public void setTexture(Texture t){ 
@@ -52,7 +52,7 @@ public class Planet extends BaseActor {
 
 	public void draw(Batch batch, float parentAlpha) {
 		font.setColor(Color.RED);
-		font.draw(batch, planetName, getX()+getOriginX(), getY());
+		font.draw(batch, planetData.getName(), getX()+getOriginX(), getY());
 		super.draw(batch, parentAlpha);
 	}
 

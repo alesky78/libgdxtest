@@ -12,6 +12,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -66,6 +67,11 @@ public class AssetCatalog {
 	public static AssetDescriptor<Texture> TEXTURE_ROCK_3;	
 
 	//////////////////////
+	//TEXTURE ATLAS
+	//////////////////////
+	public static AssetDescriptor<TextureAtlas> TEXTURE_ATLAS_PLANETS;
+	
+	//////////////////////
 	//PARTICLE EFFECT
 	//////////////////////
 	private static String PARTICLE_IMAGES_DIR = "spacerockemitter/";		
@@ -119,7 +125,10 @@ public class AssetCatalog {
 		TEXTURE_ROCK_2 = new AssetDescriptor<>("spacerockemitter/rock2.png", Texture.class,textureParam);
 		TEXTURE_ROCK_3 = new AssetDescriptor<>("spacerockemitter/rock3.png", Texture.class,textureParam);		
 		
-
+		//texture atlas
+		TEXTURE_ATLAS_PLANETS = new AssetDescriptor<>("spacerockemitter/packPlanets.atlas", TextureAtlas.class);
+		
+		
 		//particle
 		ParticleEffectLoader.ParticleEffectParameter particleParam = new ParticleEffectLoader.ParticleEffectParameter();
 		particleParam.imagesDir = Gdx.files.internal(PARTICLE_IMAGES_DIR);
@@ -176,6 +185,8 @@ public class AssetCatalog {
 		assetManager.load(TEXTURE_ROCK_2);	
 		assetManager.load(TEXTURE_ROCK_3);			
 		
+		//load texture atlas
+		assetManager.load(TEXTURE_ATLAS_PLANETS);
 		
 		//load particle effects
 		assetManager.load(PARTICLE_THRUSTER);

@@ -1,7 +1,5 @@
 package com.mygdx.game.spacerockemitter;
 
-import java.util.Iterator;
-
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
@@ -42,40 +40,10 @@ public class PlanetGraph implements IndexedGraph<Planet> {
 	
 
 	public GraphPath<Planet> findPath(Planet start, Planet goal){
-		
-		//clear previous selection
-		for (Planet planet : planets) {
-			planet.unSelected();
-		}
-		
-		for (Route route : routes) {
-			route.unSelected();
-		}		
-		
+				
 		GraphPath<Planet> planetPath = new DefaultGraphPath<>();
 		new IndexedAStarPathFinder<>(this).searchNodePath(start, goal, cityHeuristic, planetPath);
-		
-		//highlight selected route and planet
-		Iterator<Planet> iterator = planetPath.iterator();
-		
-		Planet actual = start;
-		Planet next = null;		
 			
-		actual.selected();		
-
-		while (iterator.hasNext()) {
-			next = iterator.next();	
-			next.selected();
-			for (Route route : routes) {
-				if(route.isRoute(actual,next)) {
-					route.selected();
-				}
-			}		
-			
-			actual = next;
-		}
-		
-		
 		return planetPath;
 	}
 	
@@ -103,7 +71,6 @@ public class PlanetGraph implements IndexedGraph<Planet> {
 
 	@Override
 	public int getNodeCount() {
-		System.out.print(planets.size);
 		return planets.size;
 	}
 }

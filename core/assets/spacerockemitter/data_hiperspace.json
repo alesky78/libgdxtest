@@ -1,13 +1,13 @@
 {
 	planets:[
-				{name:alfa  ,ref:0, x:70, y:75}
-				{name:beta  ,ref:1, x:200, y:120}
-				{name:gamma ,ref:2, x:300, y:150}
-				{name:delta ,ref:3, x:320, y:80}
-				{name:pi 	,ref:4, x:420, y:110}
-				{name:bacta ,ref:5, x:540, y:70}
-				{name:pico  ,ref:6, x:80, y:200}
-				{name:gul	,ref:7, x:690, y:66}
+				{name:alfa  ,ref:0, x:70, 	y:75,	faction:star league,	challenge:1,	image:planet-0,	summary:mineral station planet}
+				{name:beta  ,ref:1, x:200, 	y:120,	faction:star league,	challenge:2,	image:planet-1,	summary:abbandon planet}
+				{name:gamma ,ref:2, x:300, 	y:150,	faction:star league,	challenge:3,	image:planet-2,	summary:capital planet}
+				{name:delta ,ref:3, x:320, 	y:80,	faction:star league,	challenge:1,	image:planet-3,	summary:prigion planet}
+				{name:pi 	,ref:4, x:420, 	y:110,	faction:empire,			challenge:2,	image:planet-4,	summary:market planet}
+				{name:bacta ,ref:5, x:540, 	y:70,	faction:empire,			challenge:4,	image:planet-5,	summary:abbandon planet}
+				{name:pico  ,ref:6, x:80, 	y:200,	faction:republic,		challenge:1,	image:planet-6,	summary:tomb planet}
+				{name:gul	,ref:7, x:690, 	y:66,	faction:republic,		challenge:2,	image:planet-7,	summary:capital planet}
 			],
 	routes:[
 			{refA:0, refB:1}

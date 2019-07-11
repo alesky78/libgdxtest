@@ -1,0 +1,62 @@
+
+packPlanets.png
+size: 512,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+planet-0
+  rotate: false
+  xy: 2, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+planet-1
+  rotate: false
+  xy: 54, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+planet-2
+  rotate: false
+  xy: 106, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+planet-3
+  rotate: false
+  xy: 158, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+planet-4
+  rotate: false
+  xy: 210, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+planet-5
+  rotate: false
+  xy: 262, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+planet-6
+  rotate: false
+  xy: 314, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+planet-7
+  rotate: false
+  xy: 366, 2
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
