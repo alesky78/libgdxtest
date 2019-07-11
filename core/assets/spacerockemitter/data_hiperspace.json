@@ -1,9 +1,19 @@
 {
 	planets:[
 				{name:alfa  ,ref:0, x:100, y:100},
-				{name:beta  ,ref:1, x:200, y:100}
+				{name:beta  ,ref:1, x:200, y:120},
+				{name:gamma ,ref:2, x:300, y:150},
+				{name:delta ,ref:3, x:320, y:80},
+				{name:pi 	,ref:4, x:420, y:110},
+				{name:bacta ,ref:5, x:540, y:70},
+				{name:pico  ,ref:6, x:80, y:200}
 			],
 	routes:[
 			{refA:0, refB:1}
+			{refA:1, refB:2}
+			{refA:1, refB:3}
+			{refA:3, refB:4}
+			{refA:4, refB:5}
+			{refA:1, refB:6}
 			]
 }

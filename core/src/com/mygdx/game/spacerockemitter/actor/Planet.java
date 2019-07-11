@@ -8,14 +8,25 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Planet extends BaseActor {
 
-	public int index;
+	public int refIndex;
 
+	protected String planetName;
+	
 	protected TextureRegion selected_texture = new TextureRegion();
 	protected TextureRegion default_texture = new TextureRegion();	
 	protected BitmapFont font;
 
+	
 	public Planet() {
 		super();		
+	}
+
+	public String getPlanetName() {
+		return planetName;
+	}
+
+	public void setPlanetName(String planetName) {
+		this.planetName = planetName;
 	}
 
 	public void setTexture(Texture t){ 
@@ -41,7 +52,7 @@ public class Planet extends BaseActor {
 
 	public void draw(Batch batch, float parentAlpha) {
 		font.setColor(Color.RED);
-		font.draw(batch, ""+index, getX()+getOriginX(), getY());
+		font.draw(batch, planetName, getX()+getOriginX(), getY());
 		super.draw(batch, parentAlpha);
 	}
 

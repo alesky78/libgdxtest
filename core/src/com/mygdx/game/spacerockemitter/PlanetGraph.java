@@ -16,7 +16,6 @@ public class PlanetGraph implements IndexedGraph<Planet> {
 
 	private PlanetHeuristic cityHeuristic = new PlanetHeuristic();
 	
-	
 	public Array<Planet> planets = new Array<>();
 	public Array<Route> routes = new Array<>();
 
@@ -24,14 +23,6 @@ public class PlanetGraph implements IndexedGraph<Planet> {
 	 * map of all the routes by any planet
 	 */
 	ObjectMap<Planet, Array<Connection<Planet>>> routeMap = new ObjectMap<>();
-
-	private int lastNodeIndex = 0;
-
-	public void addPlanet(Planet planet){
-		planet.index = lastNodeIndex;
-		lastNodeIndex++;
-		planets.add(planet);
-	}
 
 	public void addRoute(Route route){
 		connectPlanetDirectional(route.getPlanetA(), route.getPlanetB());
@@ -44,6 +35,7 @@ public class PlanetGraph implements IndexedGraph<Planet> {
 		PlanetRoute route = new PlanetRoute(from, to);
 		if(!routeMap.containsKey(from)){
 			routeMap.put(from, new Array<Connection<Planet>>());
+			planets.add(from);
 		}
 		routeMap.get(from).add(route);
 	}
@@ -88,15 +80,16 @@ public class PlanetGraph implements IndexedGraph<Planet> {
 	}
 	
 
+	/**
+	 * extremely important of the algorithm will go in exception
+	 * the node index must be sequential 
+	 * 
+	 */
 	@Override
 	public int getIndex(Planet node) {
-		return node.index;
+		return node.refIndex;
 	}
 
-	@Override
-	public int getNodeCount() {
-		return lastNodeIndex;
-	}
 
 	@Override
 	public Array<Connection<Planet>> getConnections(Planet fromNode) {
@@ -105,5 +98,12 @@ public class PlanetGraph implements IndexedGraph<Planet> {
 		}
 
 		return new Array<>(0);
+	}
+
+
+	@Override
+	public int getNodeCount() {
+		System.out.print(planets.size);
+		return planets.size;
 	}
 }
