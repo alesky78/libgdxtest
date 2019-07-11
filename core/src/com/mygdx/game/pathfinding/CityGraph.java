@@ -41,6 +41,10 @@ public class CityGraph implements IndexedGraph<City> {
 		return cityPath;
 	}
 
+	/**
+	 * Extremely important, node must be initialised sequentially 
+	 * 
+	 */
 	@Override
 	public int getIndex(City node) {
 		return node.index;

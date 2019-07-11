@@ -75,7 +75,7 @@ public class City extends Actor {
 		batch.begin();
 		//write the name of the node
 		PathFindingScreen.font.setColor(1.0f, 0, 0, 1);
-		PathFindingScreen.font.draw(batch, name, getX()+radius-5, getY()+radius+5);
+		PathFindingScreen.font.draw(batch, name+":"+index, getX()+radius-10, getY()+radius+5);
 		
 	}
 

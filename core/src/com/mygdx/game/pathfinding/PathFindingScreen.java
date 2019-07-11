@@ -42,6 +42,8 @@ public class PathFindingScreen implements Screen, InputProcessor {
 
 	private static Label startCityLabel;
 	private static Label goalCityLabel;
+	private static Label howTo;
+	private static Label toatalNode;	
 	
 	public static ShapeRenderer sr;
 	
@@ -64,6 +66,8 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		LabelStyle style = new LabelStyle( new BitmapFont(), Color.NAVY );
 		startCityLabel = new Label("start:", style);
 		goalCityLabel = new Label("goal:", style);		
+		howTo = new Label("R: reset C:calcualte", style);
+		toatalNode = new Label("R: reset C:calcualte", style);
 		
 		cityGraph = new CityGraph();
 
@@ -126,8 +130,15 @@ public class PathFindingScreen implements Screen, InputProcessor {
 		goalCityLabel.setPosition(120, 20);
 		mainStage.addActor( goalCityLabel );
 		
+		howTo.setPosition(220, 20);
+		mainStage.addActor( howTo );
 
+		toatalNode.setPosition(420, 20);
+		toatalNode.setText("node:"+cityGraph.getNodeCount());
+		mainStage.addActor( toatalNode );
+		
 		sr = new ShapeRenderer();
+		
 		
 
 	}
