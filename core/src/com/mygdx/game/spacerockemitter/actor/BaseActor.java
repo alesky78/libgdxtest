@@ -40,18 +40,40 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		isDead = false;
 	}
 	
+	/**
+	 * set a grid of this entity use the spatial greed to manage collisions
+	 * 
+	 * @param grid
+	 */
 	public void setGrid(SpatialHashGrid<BaseActor> grid) {
 		this.grid = grid;
 	}
 
+	/**
+	 * if this enity is managed in a exteranl list add it here
+	 * then the entity will delete itself from the list if 
+	 * {@link BaseActor#destroy()} is called
+	 * 
+	 * @param grid
+	 */	
 	public void setParentList(List<? extends BaseActor> pl){ 
 		parentList = pl; 
 	}
 	
+	/**
+	 * used to tag the entity wiht a specific type
+	 * 
+	 * @param type
+	 */
 	public void setType(int type) {
 		this.type = type;
 	}
 
+	
+	/**
+	 * basic implementation of the generate index that used the AABB
+	 * 
+	 */
 	public List<String> generateIndex(int bucketsSize) {
 		List<String> index = new ArrayList<>();
 		Rectangle rect = boundingRectangle;
@@ -120,7 +142,11 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	}
 
 	/**
-	 * recalculate the bounding poligon and AABB of this entity 
+	 * recalculate the bounding polygon and AABB of this entity
+	 * be careful, access the {@link BaseActor#boundingPolygon} or the {@link BaseActor#boundingRectangle}
+	 * without call this method could create unexpected situation  
+	 *  
+	 * see the {@link BaseActor#act(float)} method for more details
 	 */
 	private void refreshBoundings(){
 		boundingPolygon.setPosition( getX(), getY() );		
@@ -136,7 +162,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	 *  If (resolve == true), then when there is overlap, move this BaseActor
 	 *  along minimum translation vector until there is no overlap.
 	 *  
-	 *  this method consider that the refreshBoundings() si already called on the two actors
+	 *  this method consider that the refreshBoundings() is already called on the two actors
 	 *  
 	 */
 	public boolean overlaps(BaseActor other, boolean resolve){
@@ -166,7 +192,7 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	 * the refreshBoundingPolygon() and the insertion of the entity in the grid
 	 * must be executed after the entity is moved
 	 *  
-	 * then should be good that the super class call the super.act() only after is logic is completed
+	 * then should be good that the super class call the super.act() only after its logic is completed
 	 */
 	public void act(float dt){
 		
