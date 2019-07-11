@@ -92,15 +92,15 @@ public class AssetCatalog {
 	public void init() {		
 		
 		//music
-		MUSIC_MENU_LOOP = new AssetDescriptor<>("spacerockemitter/entry_loop.wav", Music.class);
-		MUSIC_LEVEL_LOOP = new AssetDescriptor<>("spacerockemitter/theme_loop.wav", Music.class);
+		MUSIC_MENU_LOOP = new AssetDescriptor<>("spacerockemitter/sound/entry_loop.wav", Music.class);
+		MUSIC_LEVEL_LOOP = new AssetDescriptor<>("spacerockemitter/sound/theme_loop.wav", Music.class);
 		
 		//sound
-		SOUND_GAME_ON = new AssetDescriptor<>("spacerockemitter/game on.wav", Sound.class);
-		SOUND_LASER = new AssetDescriptor<>("spacerockemitter/laser.wav", Sound.class);		
-		SOUND_EXPLOSION = new AssetDescriptor<>("spacerockemitter/explosion.wav", Sound.class);		
-		SOUND_WARNING = new AssetDescriptor<>("spacerockemitter/warning.wav", Sound.class);	
-		SOUND_GAME_OVER = new AssetDescriptor<>("spacerockemitter/game over.wav", Sound.class);	
+		SOUND_GAME_ON = new AssetDescriptor<>("spacerockemitter/sound/game on.wav", Sound.class);
+		SOUND_LASER = new AssetDescriptor<>("spacerockemitter/sound/laser.wav", Sound.class);		
+		SOUND_EXPLOSION = new AssetDescriptor<>("spacerockemitter/sound/explosion.wav", Sound.class);		
+		SOUND_WARNING = new AssetDescriptor<>("spacerockemitter/sound/warning.wav", Sound.class);	
+		SOUND_GAME_OVER = new AssetDescriptor<>("spacerockemitter/sound/game over.wav", Sound.class);	
 		
 		//texture
 		TextureLoader.TextureParameter textureParam = new TextureLoader.TextureParameter();
