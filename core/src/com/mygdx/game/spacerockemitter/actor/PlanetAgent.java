@@ -7,7 +7,9 @@ import com.badlogic.gdx.utils.Queue;
 public class PlanetAgent extends BaseActor {
 
 	private float speed = 80f;
-
+	private ArriveListener listener;
+	
+	
 	private boolean reachGoal;
 	Queue<Planet> pathQueue;
 
@@ -16,6 +18,12 @@ public class PlanetAgent extends BaseActor {
 		pathQueue = new Queue<>();
 		reachGoal = true;
 	}
+
+	
+	public void setListener(ArriveListener listener) {
+		this.listener = listener;
+	}
+
 
 	public void setPosition(Planet planet) {
 		setPosition(planet.getX(), planet.getY());
@@ -47,6 +55,9 @@ public class PlanetAgent extends BaseActor {
 				pathQueue.removeFirst();
 				if(pathQueue.isEmpty()) {
 					reachGoal = true;
+					if(listener!=null) {
+						listener.reachDestination();
+					}
 				}
 				moveBy( target.x,  target.y);
 			}else {
@@ -60,7 +71,13 @@ public class PlanetAgent extends BaseActor {
 
 		super.act( dt );
 
-
+	}
+	
+	
+	public interface ArriveListener{
+		
+		public void reachDestination();
+		
 	}
 
 }

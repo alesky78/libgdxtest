@@ -29,7 +29,7 @@ import com.mygdx.game.spacerockemitter.data.HiperSpaceData;
 import com.mygdx.game.spacerockemitter.data.PlanetData;
 import com.mygdx.game.spacerockemitter.data.RouteData;
 
-public class HyperSpaceMap extends BaseScreen {
+public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListener {
 
 	// activate the graphic DEBUG
 	private final boolean MAIN_SCENE_DEBUG = false;
@@ -38,16 +38,19 @@ public class HyperSpaceMap extends BaseScreen {
 	private float PHASE_TIMER = 0;	
 	private final int PHASE_SELECT = 0;
 	private final int PHASE_TRAVEL = 1;    
-	
-	protected Planet actualPlanet;
-	protected Planet selectedPlanet;	
-	protected PlanetAgent agent;
-	protected PlanetGraph pathFinder;
-	protected GraphPath<Planet> path;
-	protected HiperSpaceData data;
-	protected List<Planet> planets;
-	protected List<Route> routes;
 
+	private PlanetAgent agent;
+	private PlanetGraph pathFinder;
+	private GraphPath<Planet> path;
+	private HiperSpaceData data;
+	private List<Planet> planets;
+	private List<Route> routes;
+
+	//route data
+	private Planet actualPlanet;
+	private Planet selectedPlanet;	
+	private boolean agentArriveDestination;
+	
 	//UI data
 	private Window window;
 	private Image planetImage;
@@ -152,10 +155,12 @@ public class HyperSpaceMap extends BaseScreen {
 		actualPlanet = planets.get(0);
 
 		//TODO create the agent also here 
+		agentArriveDestination = true;
 		agent = new PlanetAgent();
 		agent.setPosition(actualPlanet);
 		agent.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));	//TODO set the correct texture
 		agent.setColor(Color.BLUE);															//TODO remove this line when the correct texture is inserted
+		agent.setListener(this);
 		mainStage.addActor(agent);	
 
 		///////////////////
@@ -174,10 +179,10 @@ public class HyperSpaceMap extends BaseScreen {
 			}
 
 			public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-
-				//clearRoute();
+				
+				agentArriveDestination = false;
 				path = pathFinder.findPath(actualPlanet, selectedPlanet);
-				//highLightsRoute(path, actualPlanet);
+				highLightsRoute(path, actualPlanet);
 				
 				actualPlanet = selectedPlanet;
 				agent.setPath(path);
@@ -306,26 +311,25 @@ public class HyperSpaceMap extends BaseScreen {
 
 
 		public boolean touchDown (InputEvent ev, float x, float y, int pointer, int button){
-			if(button == Input.Buttons.LEFT){
+			
+			if(agentArriveDestination) {
 				selectedPlanet = (Planet)ev.getListenerActor();
 				prepareWindow(selectedPlanet);
 				window.setVisible(true);
-
-
-			}else if (button == Input.Buttons.RIGHT){
-				selectedPlanet = (Planet)ev.getListenerActor();
-				prepareWindow(selectedPlanet);
-				window.setVisible(true);
-
-			}else{
-				System.err.println("no event manager SO");								
 			}
-
+				
 			return true;
 
 		}
 
 
+	}
+
+
+	@Override
+	public void reachDestination() {
+		agentArriveDestination = true;
+		clearRoute();
 	}
 
 }
