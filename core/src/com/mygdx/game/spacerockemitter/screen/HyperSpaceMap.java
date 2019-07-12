@@ -36,9 +36,10 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	private final boolean MAIN_SCENE_DEBUG = false;
 	private final boolean UI_TABLE_DEBUG = false;	
 
-	private float PHASE_TIMER = 0;	
+	protected int gamePhase;
 	private final int PHASE_SELECT = 0;
 	private final int PHASE_TRAVEL = 1;    
+	private final int PHASE_TRAVEL_FINISH = 2;	
 
 	private PlanetAgent agent;
 	private PlanetGraph pathFinder;
@@ -54,6 +55,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 
 	//AUDIO data
 	private float soundVolume;
+	private long  soundEngineInstance;
 	
 	//UI data
 	private Window window;
@@ -75,16 +77,16 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	@Override
 	protected void create() {
 
+		gamePhase = PHASE_SELECT;
+		
 		//////////////
 		// AUDIO
 		//////////////
 
 		//sound
-		soundVolume = 0.5f;
+		soundVolume = 0.0f;
 		game.audioManager.setSoundVolume(soundVolume);
 		game.audioManager.registerAudio(AudioManager.SOUND_WARP_ENGINE, game.assetManager.get(AssetCatalog.SOUND_WARP_ENGINE));
-		game.audioManager.loopSound(AudioManager.SOUND_WARP_ENGINE);
-
 
 		//load the hiper space map data
 		Json json = new Json();
@@ -201,6 +203,8 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 				actualPlanet = selectedPlanet;
 				agent.setPath(path);
 				window.setVisible(false);
+				gamePhase = PHASE_TRAVEL;
+				soundEngineInstance = game.audioManager.loopSound(AudioManager.SOUND_WARP_ENGINE);
 
 			}
 		});
@@ -317,6 +321,38 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	@Override
 	protected void update(float dt) {
 
+		if(gamePhase == PHASE_SELECT) {
+			
+			
+		}else if(gamePhase == PHASE_TRAVEL) {
+			
+			//Increase the volume until 0.5
+			if(soundVolume<0.5f) {
+				soundVolume += 0.2*dt;
+				if(soundVolume>0.5f) {
+					soundVolume = 0.5f;
+				}
+				game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, soundVolume);
+			}
+			
+		}else if(gamePhase == PHASE_TRAVEL_FINISH) {
+			
+			//decrease the volume until 0
+			if(soundVolume > 0f) {
+				soundVolume -= 0.2*dt;
+				if(soundVolume<0 ) {
+					soundVolume = 0;
+					gamePhase = PHASE_SELECT;
+					game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, soundVolume);					
+					game.audioManager.stopSound(AudioManager.SOUND_WARP_ENGINE);
+				}else {
+					game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, soundVolume);					
+				}
+
+			}
+			
+		}
+		
 
 	}
 
@@ -344,6 +380,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	public void reachDestination() {
 		agentArriveDestination = true;
 		clearRoute();
+		gamePhase = PHASE_TRAVEL_FINISH;
 	}
 
 }

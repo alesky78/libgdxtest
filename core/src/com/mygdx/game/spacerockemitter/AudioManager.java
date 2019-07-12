@@ -59,6 +59,11 @@ public class AudioManager {
 		soundVolume = volume;
 	}		
 	
+	public void setSoundVolume(int type, long soundId, float volume) {
+		Sound audio = soundPool.get(type);
+		audio.setVolume(soundId, volume);
+	}	
+	
 	public void playMusic(int type) {
 		Music audio = musicPool.get(type);
 		audio.setVolume(musicVolume);
@@ -70,19 +75,21 @@ public class AudioManager {
 		audio.stop();
 	}	
 	
-	public void playSound(int type) {
+	public long playSound(int type) {
 		Sound audio = soundPool.get(type);
-		audio.play(soundVolume);
+		return audio.play(soundVolume);
 	}
 	
-	public void loopSound(int type) {
+	public long loopSound(int type) {
 		Sound audio = soundPool.get(type);
-		audio.loop(soundVolume);
+		return audio.loop(soundVolume);
 	}	
 
 	public void stopSound(int type) {
 		Sound audio = soundPool.get(type);
 		audio.stop();
 	}	
+	
+	
 	
 }
