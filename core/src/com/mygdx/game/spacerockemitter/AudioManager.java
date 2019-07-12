@@ -44,6 +44,9 @@ public class AudioManager {
 		musicPool.put(type, music);
 	}
 	
+	//////////////////////
+	//MUSIC FUNCTINS 
+	//////////////////////
 	
 	public void setMusicVolume(float volume) {
 		musicVolume = volume;
@@ -53,15 +56,6 @@ public class AudioManager {
 				entry.value.setVolume(musicVolume);
 			}
 		}
-	}	
-
-	public void setSoundVolume(float volume) {
-		soundVolume = volume;
-	}		
-	
-	public void setSoundVolume(int type, long soundId, float volume) {
-		Sound audio = soundPool.get(type);
-		audio.setVolume(soundId, volume);
 	}	
 	
 	public void playMusic(int type) {
@@ -73,6 +67,20 @@ public class AudioManager {
 	public void stopMusic(int type) {
 		Music audio = musicPool.get(type);
 		audio.stop();
+	}		
+
+	
+	//////////////////////
+	//SOUND FUNCTINS 
+	//////////////////////
+	
+	public void setSoundVolume(float volume) {
+		soundVolume = volume;
+	}		
+	
+	public void setSoundVolume(int type, long soundId, float volume) {
+		Sound audio = soundPool.get(type);
+		audio.setVolume(soundId, volume);
 	}	
 	
 	public long playSound(int type) {
@@ -85,11 +93,20 @@ public class AudioManager {
 		return audio.loop(soundVolume);
 	}	
 
+	public long loopSound(int type, float volume) {
+		Sound audio = soundPool.get(type);
+		return audio.loop(volume);
+	}	
 	public void stopSound(int type) {
 		Sound audio = soundPool.get(type);
 		audio.stop();
 	}	
-	
+
+	public void stopSound(int type,long soundId) {
+		Sound audio = soundPool.get(type);
+		audio.stop(soundId);
+	}	
+
 	
 	
 }

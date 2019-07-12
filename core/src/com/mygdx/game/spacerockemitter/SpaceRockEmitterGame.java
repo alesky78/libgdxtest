@@ -20,7 +20,7 @@ public class SpaceRockEmitterGame extends Game {
 		assetCatalog.init();
 
 		assetManager = new AssetManager();		
-		audioManager = new AudioManager(0.5f);
+		audioManager = new AudioManager();
 		
 		assetCatalog.loadAssetsManagerQueue(assetManager);
 		assetManager.finishLoading();

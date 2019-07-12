@@ -54,7 +54,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	private boolean agentArriveDestination;
 
 	//AUDIO data
-	private float soundVolume;
+	private float soundEngineVolume;
 	private long  soundEngineInstance;
 	
 	//UI data
@@ -84,8 +84,6 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		//////////////
 
 		//sound
-		soundVolume = 0.0f;
-		game.audioManager.setSoundVolume(soundVolume);
 		game.audioManager.registerAudio(AudioManager.SOUND_WARP_ENGINE, game.assetManager.get(AssetCatalog.SOUND_WARP_ENGINE));
 
 		//load the hiper space map data
@@ -204,7 +202,10 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 				agent.setPath(path);
 				window.setVisible(false);
 				gamePhase = PHASE_TRAVEL;
-				soundEngineInstance = game.audioManager.loopSound(AudioManager.SOUND_WARP_ENGINE);
+				
+				//start the sound at 0
+				soundEngineInstance = game.audioManager.loopSound(AudioManager.SOUND_WARP_ENGINE, 0f);
+				//game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, 0f);
 
 			}
 		});
@@ -327,26 +328,26 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		}else if(gamePhase == PHASE_TRAVEL) {
 			
 			//Increase the volume until 0.5
-			if(soundVolume<0.5f) {
-				soundVolume += 0.2*dt;
-				if(soundVolume>0.5f) {
-					soundVolume = 0.5f;
+			if(soundEngineVolume<0.5f) {
+				soundEngineVolume += 0.3*dt;
+				if(soundEngineVolume>0.5f) {
+					soundEngineVolume = 0.5f;
 				}
-				game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, soundVolume);
+				game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, soundEngineVolume);
 			}
 			
 		}else if(gamePhase == PHASE_TRAVEL_FINISH) {
 			
 			//decrease the volume until 0
-			if(soundVolume > 0f) {
-				soundVolume -= 0.2*dt;
-				if(soundVolume<0 ) {
-					soundVolume = 0;
+			if(soundEngineVolume > 0f) {
+				soundEngineVolume -= 0.4*dt;
+				if(soundEngineVolume<0 ) {
+					soundEngineVolume = 0;
 					gamePhase = PHASE_SELECT;
-					game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, soundVolume);					
-					game.audioManager.stopSound(AudioManager.SOUND_WARP_ENGINE);
+					game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, soundEngineVolume);					
+					game.audioManager.stopSound(AudioManager.SOUND_WARP_ENGINE,soundEngineInstance);
 				}else {
-					game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, soundVolume);					
+					game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, soundEngineVolume);					
 				}
 
 			}
