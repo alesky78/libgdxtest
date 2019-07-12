@@ -53,6 +53,9 @@ public class Shaker {
 	 * @return
 	 */
 	public Vector2 shakeOn(float delta) {
+
+		currentTime += delta;
+		
 		if (currentTime <= shakeDuration) {
 
 			currentPower = shakePower * FunctionUtils.linearFallOn(currentTime, shakeDuration);
@@ -60,7 +63,6 @@ public class Shaker {
 			pos.x = (MathUtils.random(1f) - 0.5f) * 2 * currentPower;
 			pos.y = (MathUtils.random(1f) - 0.5f) * 2 * currentPower;
 
-			currentTime += delta;
 		} else {
 			currentTime = shakeDuration;
 			pos.set(0, 0);
@@ -90,6 +92,9 @@ public class Shaker {
 	 * @return
 	 */
 	public Vector2 shakeOff(float delta) {
+
+		currentTime += delta;
+		
 		if (currentTime <= shakeDuration) {
 
 			currentPower = shakePower * FunctionUtils.linearFallOff(currentTime, shakeDuration);
@@ -97,7 +102,6 @@ public class Shaker {
 			pos.x = (MathUtils.random(1f) - 0.5f) * 2 * currentPower;
 			pos.y = (MathUtils.random(1f) - 0.5f) * 2 * currentPower;
 
-			currentTime += delta;
 		} else {
 			currentTime = shakeDuration;
 			pos.set(0, 0);
