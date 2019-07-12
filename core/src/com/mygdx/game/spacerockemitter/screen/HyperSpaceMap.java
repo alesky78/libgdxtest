@@ -5,10 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ai.pfa.GraphPath;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,6 +24,7 @@ import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.AudioManager;
 import com.mygdx.game.spacerockemitter.PlanetGraph;
+import com.mygdx.game.spacerockemitter.Shaker;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 import com.mygdx.game.spacerockemitter.actor.BaseActor;
 import com.mygdx.game.spacerockemitter.actor.Planet;
@@ -48,6 +52,11 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	private List<Planet> planets;
 	private List<Route> routes;
 
+	private Shaker shaker;
+	private Camera camera;
+	private Vector2 cameraOriginalPosition;	
+	private Vector2 position;
+	
 	//route data
 	private Planet actualPlanet;
 	private Planet selectedPlanet;	
@@ -86,6 +95,11 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		//sound
 		game.audioManager.registerAudio(AudioManager.SOUND_WARP_ENGINE, game.assetManager.get(AssetCatalog.SOUND_WARP_ENGINE));
 
+		shaker = new Shaker(4, 0);
+		camera = mainStage.getCamera();
+		cameraOriginalPosition = new Vector2(camera.position.x, camera.position.y) ;
+		
+		
 		//load the hiper space map data
 		Json json = new Json();
 		data = json.fromJson(HiperSpaceData.class, Gdx.files.internal("spacerockemitter/data_hiperspace.json"));
@@ -205,6 +219,9 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 				
 				//start the sound at 0
 				soundEngineInstance = game.audioManager.loopSound(AudioManager.SOUND_WARP_ENGINE, 0f);
+				
+				//start to shake the camer
+				shaker.reset(2);
 
 			}
 		});
@@ -323,6 +340,15 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 
 		if(gamePhase == PHASE_SELECT) {
 			
+			//finish to shake if not completed
+			//shake the camera
+			if(shaker.getShakeTimeLeft()>0) {
+				position = shaker.shakeOff(dt);
+				position.add(cameraOriginalPosition);
+				camera.position.set(position.x,position.y, 0 );
+				camera.update();
+			}
+			
 			
 		}else if(gamePhase == PHASE_TRAVEL) {
 			
@@ -334,6 +360,19 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 				}
 				game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, soundEngineVolume);
 			}
+			
+			//shake the camera
+
+			if(shaker.getShakeTimeLeft()>0) {
+				position = shaker.shakeOn(dt);
+			}else {
+				position = shaker.shake(dt);				
+			}
+			
+			position.add(cameraOriginalPosition);
+			camera.position.set(position.x,position.y, 0 );
+			camera.update();			
+			
 			
 		}else if(gamePhase == PHASE_TRAVEL_FINISH) {
 			
@@ -350,6 +389,15 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 				}
 
 			}
+			
+			//shake the camera
+			if(shaker.getShakeTimeLeft()>0) {
+				position = shaker.shakeOff(dt);
+				position.add(cameraOriginalPosition);
+				camera.position.set(position.x,position.y, 0 );
+				camera.update();
+			}
+			
 			
 		}
 		
@@ -380,6 +428,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	public void reachDestination() {
 		agentArriveDestination = true;
 		clearRoute();
+		shaker.reset(2);
 		gamePhase = PHASE_TRAVEL_FINISH;
 	}
 

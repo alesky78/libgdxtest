@@ -48,4 +48,20 @@ public class FunctionUtils {
 		return 1-(x/fallOff);
 	}
 	
+	/**
+	 * this is a function that that is going from 0 to 1
+	 * the shape is a rect, then it increase lineary and the values are: 
+	 * 0 where x = 0
+	 * 1 where x = fallOn 
+	 * 
+	 * @param x in the range of 0 and 1
+	 * @return the specific value of the function
+	 */
+	public static float linearFallOn(float x, float fallOn) {
+		if(x<0 || x>fallOn)
+			throw new UnsupportedOperationException("the range of the input parameter must be between 0 and fallOn included");
+		
+		return x/fallOn;
+	}	
+	
 }

@@ -586,7 +586,6 @@ public class DestoryAsteroidLevel extends BaseScreen {
 	}	
 
 
-
 	@Override
 	public void postDrawMainStage(float dt) {
 
@@ -602,7 +601,7 @@ public class DestoryAsteroidLevel extends BaseScreen {
 		batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA); // Normal rendering
 		batch.end();
 
-
+				
 		//camera shake explosion
 
 		if(shakeCamera){			
