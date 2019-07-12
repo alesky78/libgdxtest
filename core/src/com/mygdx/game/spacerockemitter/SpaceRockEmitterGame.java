@@ -11,6 +11,7 @@ public class SpaceRockEmitterGame extends Game {
 	public Skin skin;
 	public AssetManager assetManager; 
 	public AssetCatalog assetCatalog;
+	public AudioManager audioManager;
 	
 	@Override
 	public void create() {
@@ -18,7 +19,9 @@ public class SpaceRockEmitterGame extends Game {
 		assetCatalog = new AssetCatalog();
 		assetCatalog.init();
 
-		assetManager = new AssetManager();
+		assetManager = new AssetManager();		
+		audioManager = new AudioManager(0.5f);
+		
 		assetCatalog.loadAssetsManagerQueue(assetManager);
 		assetManager.finishLoading();
 

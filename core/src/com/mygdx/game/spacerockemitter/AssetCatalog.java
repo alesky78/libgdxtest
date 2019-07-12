@@ -43,7 +43,8 @@ public class AssetCatalog {
 	public static AssetDescriptor<Sound> SOUND_GAME_OVER;
 	public static AssetDescriptor<Sound> SOUND_LASER;
 	public static AssetDescriptor<Sound> SOUND_EXPLOSION;
-	public static AssetDescriptor<Sound> SOUND_WARNING;	
+	public static AssetDescriptor<Sound> SOUND_WARNING;
+	public static AssetDescriptor<Sound> SOUND_WARP_ENGINE;		
 	
 	//////////////////////
 	//TEXTURE
@@ -101,6 +102,8 @@ public class AssetCatalog {
 		SOUND_EXPLOSION = new AssetDescriptor<>("spacerockemitter/sound/explosion.wav", Sound.class);		
 		SOUND_WARNING = new AssetDescriptor<>("spacerockemitter/sound/warning.wav", Sound.class);	
 		SOUND_GAME_OVER = new AssetDescriptor<>("spacerockemitter/sound/game over.wav", Sound.class);	
+		SOUND_WARP_ENGINE = new AssetDescriptor<>("spacerockemitter/sound/warp_engine.wav", Sound.class);
+		
 		
 		//texture
 		TextureLoader.TextureParameter textureParam = new TextureLoader.TextureParameter();
@@ -165,7 +168,9 @@ public class AssetCatalog {
 		assetManager.load(SOUND_EXPLOSION);		
 		assetManager.load(SOUND_WARNING);
 		assetManager.load(SOUND_GAME_OVER);		
+		assetManager.load(SOUND_WARP_ENGINE);		
 		
+
 		//load texture
 		assetManager.load(TEXTURE_SPACE_BACKGROUND);		
 		assetManager.load(TEXTURE_HYPERSPACE_MAP);

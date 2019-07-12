@@ -11,13 +11,13 @@ public class AudioManager {
 	public static final int SOUND_EXPLOSION = 1;	
 	public static final int SOUND_WARNING = 2;	
 	public static final int SOUND_GAME_OVER = 3;
-	public static final int SOUND_GAME_ON = 4;		
+	public static final int SOUND_GAME_ON = 4;
+	public static final int SOUND_WARP_ENGINE = 5;		
 
 	public static final int MUSIC_MENU_LOOP = 100;
 	public static final int MUSIC_LEVEL_LOOP = 101;
 	
-	
-	
+		
 	private IntMap<Sound> soundPool;
 	private IntMap<Music> musicPool;
 	
@@ -74,6 +74,15 @@ public class AudioManager {
 		Sound audio = soundPool.get(type);
 		audio.play(soundVolume);
 	}
+	
+	public void loopSound(int type) {
+		Sound audio = soundPool.get(type);
+		audio.loop(soundVolume);
+	}	
 
+	public void stopSound(int type) {
+		Sound audio = soundPool.get(type);
+		audio.stop();
+	}	
 	
 }

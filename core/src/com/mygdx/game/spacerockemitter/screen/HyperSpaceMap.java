@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.spacerockemitter.AssetCatalog;
+import com.mygdx.game.spacerockemitter.AudioManager;
 import com.mygdx.game.spacerockemitter.PlanetGraph;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 import com.mygdx.game.spacerockemitter.actor.BaseActor;
@@ -50,6 +51,9 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	private Planet actualPlanet;
 	private Planet selectedPlanet;	
 	private boolean agentArriveDestination;
+
+	//AUDIO data
+	private float soundVolume;
 	
 	//UI data
 	private Window window;
@@ -70,6 +74,16 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 
 	@Override
 	protected void create() {
+
+		//////////////
+		// AUDIO
+		//////////////
+
+		//sound
+		soundVolume = 0.5f;
+		game.audioManager.setSoundVolume(soundVolume);
+		game.audioManager.registerAudio(AudioManager.SOUND_WARP_ENGINE, game.assetManager.get(AssetCatalog.SOUND_WARP_ENGINE));
+		game.audioManager.loopSound(AudioManager.SOUND_WARP_ENGINE);
 
 
 		//load the hiper space map data
@@ -179,11 +193,11 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 			}
 
 			public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-				
+
 				agentArriveDestination = false;
 				path = pathFinder.findPath(actualPlanet, selectedPlanet);
 				highLightsRoute(path, actualPlanet);
-				
+
 				actualPlanet = selectedPlanet;
 				agent.setPath(path);
 				window.setVisible(false);
@@ -271,7 +285,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		for (Planet planet : planets) {
 			planet.unSelected();
 		}
-		
+
 		for (Route route : routes) {
 			route.unSelected();
 		}	
@@ -280,10 +294,10 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	private void highLightsRoute(GraphPath<Planet> planetPath,Planet start) {
 		//highlight selected route and planet
 		Iterator<Planet> iterator = planetPath.iterator();
-		
+
 		Planet actual = start;
 		Planet next = null;		
-			
+
 		actual.selected();		
 
 		while (iterator.hasNext()) {
@@ -294,11 +308,11 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 					route.selected();
 				}
 			}		
-			
+
 			actual = next;
 		}
 	}
-	
+
 
 	@Override
 	protected void update(float dt) {
@@ -311,13 +325,13 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 
 
 		public boolean touchDown (InputEvent ev, float x, float y, int pointer, int button){
-			
+
 			if(agentArriveDestination) {
 				selectedPlanet = (Planet)ev.getListenerActor();
 				prepareWindow(selectedPlanet);
 				window.setVisible(true);
 			}
-				
+
 			return true;
 
 		}

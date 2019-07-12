@@ -90,7 +90,6 @@ public class DestoryAsteroidLevel extends BaseScreen {
 	private int life = 3;
 
 	//AUDIO
-	private AudioManager audioManager;
 	private float audioVolume;
 
 
@@ -192,17 +191,17 @@ public class DestoryAsteroidLevel extends BaseScreen {
 		// AUDIO
 		//////////////
 		audioVolume = 0.5f;
-		audioManager = new AudioManager(audioVolume);
+		game.audioManager.setMusicVolume(audioVolume);
+		game.audioManager.setSoundVolume(audioVolume);
 		
 		//sound
-		audioManager.registerAudio(AudioManager.SOUND_EXPLOSION, game.assetManager.get(AssetCatalog.SOUND_EXPLOSION));
-		audioManager.registerAudio(AudioManager.SOUND_LASER, game.assetManager.get(AssetCatalog.SOUND_LASER));
-		audioManager.registerAudio(AudioManager.SOUND_WARNING, game.assetManager.get(AssetCatalog.SOUND_WARNING));
-		audioManager.registerAudio(AudioManager.SOUND_GAME_OVER, game.assetManager.get(AssetCatalog.SOUND_GAME_OVER));				
+		game.audioManager.registerAudio(AudioManager.SOUND_EXPLOSION, game.assetManager.get(AssetCatalog.SOUND_EXPLOSION));
+		game.audioManager.registerAudio(AudioManager.SOUND_LASER, game.assetManager.get(AssetCatalog.SOUND_LASER));
+		game.audioManager.registerAudio(AudioManager.SOUND_WARNING, game.assetManager.get(AssetCatalog.SOUND_WARNING));
+		game.audioManager.registerAudio(AudioManager.SOUND_GAME_OVER, game.assetManager.get(AssetCatalog.SOUND_GAME_OVER));				
 
 		//music
-		
-		audioManager.registerAudio(AudioManager.MUSIC_LEVEL_LOOP, game.assetManager.get(AssetCatalog.MUSIC_LEVEL_LOOP), true);
+		game.audioManager.registerAudio(AudioManager.MUSIC_LEVEL_LOOP, game.assetManager.get(AssetCatalog.MUSIC_LEVEL_LOOP), true);
 
 
 		//START GAME PHASE
@@ -220,7 +219,7 @@ public class DestoryAsteroidLevel extends BaseScreen {
 
 			if(PHASE_TIMER == 0){
 				wave +=1;
-				audioManager.playSound(AudioManager.SOUND_WARNING); 			
+				game.audioManager.playSound(AudioManager.SOUND_WARNING); 			
 
 				labelWarning.setText("    warning \nwave "+wave+" caming");
 				labelWarning.clearActions();
@@ -245,7 +244,7 @@ public class DestoryAsteroidLevel extends BaseScreen {
 			}
 
 		}else if(gamePhase == PHASE_PREPARE_WAVE){
-			audioManager.playMusic(AudioManager.MUSIC_LEVEL_LOOP); 
+			game.audioManager.playMusic(AudioManager.MUSIC_LEVEL_LOOP); 
 
 			for (Rock rock : poolRock.generateNewRocks(wave)) {
 				rockList.add(rock);
@@ -284,10 +283,10 @@ public class DestoryAsteroidLevel extends BaseScreen {
 			PHASE_TIMER = PHASE_TIMER + dt;
 
 			audioVolume = MathUtils.clamp(audioVolume-dt, 0.0f, 1.0f); 
-			audioManager.setMusicVolume(MathUtils.clamp(audioVolume-dt, 0.0f, 1.0f));	
+			game.audioManager.setMusicVolume(MathUtils.clamp(audioVolume-dt, 0.0f, 1.0f));	
 
 			if(audioVolume == 0){
-				audioManager.playSound(AudioManager.SOUND_GAME_OVER); 		
+				game.audioManager.playSound(AudioManager.SOUND_GAME_OVER); 		
 				gamePhase = PHASE_GAME_EXIT;
 				PHASE_TIMER = 0;
 			}
@@ -496,7 +495,7 @@ public class DestoryAsteroidLevel extends BaseScreen {
 				removeList.add( laser );		
 
 				//sound the explosion
-				audioManager.playSound(AudioManager.SOUND_EXPLOSION); 		
+				game.audioManager.playSound(AudioManager.SOUND_EXPLOSION); 		
 				mainStage.addActor(poolExplosion.obtain(rock.getX()+rock.getOriginX(), rock.getY()+rock.getOriginY()));
 				
 				//add points
@@ -533,7 +532,7 @@ public class DestoryAsteroidLevel extends BaseScreen {
 				if(rock.overlaps(spaceship.getShip(),true)) {
 					ParticleActorPoolable explosion = poolExplosion.obtain(spaceship.getX()+spaceship.getOriginX(), spaceship.getY()+spaceship.getOriginY()) ;
 
-					audioManager.playSound(AudioManager.SOUND_EXPLOSION); 		
+					game.audioManager.playSound(AudioManager.SOUND_EXPLOSION); 		
 					mainStage.addActor(explosion);
 					spaceship.stopThruster();
 
@@ -643,7 +642,7 @@ public class DestoryAsteroidLevel extends BaseScreen {
 			laserList.add(laser);
 			mainStage.addActor(laser);
 
-			audioManager.playSound(AudioManager.SOUND_LASER); 		
+			game.audioManager.playSound(AudioManager.SOUND_LASER); 		
 
 		}
 
@@ -653,7 +652,7 @@ public class DestoryAsteroidLevel extends BaseScreen {
 		}
 
 		if (keycode == Keys.M){
-			audioManager.stopMusic(AudioManager.MUSIC_LEVEL_LOOP);
+			game.audioManager.stopMusic(AudioManager.MUSIC_LEVEL_LOOP);
 			game.setScreen(new MainMenu(game));
 		}
 
