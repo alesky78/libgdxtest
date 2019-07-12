@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Utility that is able to calcolate randomical shaker 
+ * Utility that is able to calculate random shake of a Vector2 
  * 
  * @author Alessandro D'Ottavio
  *
