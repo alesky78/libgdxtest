@@ -221,7 +221,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 				soundEngineInstance = game.audioManager.loopSound(AudioManager.SOUND_WARP_ENGINE, 0f);
 				
 				//start to shake the camer
-				shaker.reset(2);
+				shaker.reset(1.5f);
 
 			}
 		});
@@ -341,7 +341,6 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		if(gamePhase == PHASE_SELECT) {
 			
 			//finish to shake if not completed
-			//shake the camera
 			if(shaker.getShakeTimeLeft()>0) {
 				position = shaker.shakeOff(dt);
 				position.add(cameraOriginalPosition);

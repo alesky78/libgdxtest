@@ -63,6 +63,7 @@ public class Shaker {
 			currentTime += delta;
 		} else {
 			currentTime = shakeDuration;
+			pos.set(0, 0);
 		}
 		return pos;
 	}
@@ -99,6 +100,7 @@ public class Shaker {
 			currentTime += delta;
 		} else {
 			currentTime = shakeDuration;
+			pos.set(0, 0);
 		}
 		return pos;
 	}
