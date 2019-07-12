@@ -32,4 +32,20 @@ public class FunctionUtils {
 		return 4f*x*(1f-x);			
 	}
 	
+	/**
+	 * this is a function that that is going from 1 to 0
+	 * the shape is a rect, then it decrese lineary and the values are: 
+	 * 1 where x = 0
+	 * 0 where x = fallOff 
+	 * 
+	 * @param x in the range of 0 and 1
+	 * @return the specific value of the function
+	 */
+	public static float linearFallOff(float x, float fallOff) {
+		if(x<0 || x>fallOff)
+			throw new UnsupportedOperationException("the range of the input parameter must be between 0 and fallOff included");
+		
+		return 1-(x/fallOff);
+	}
+	
 }

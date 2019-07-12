@@ -205,7 +205,6 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 				
 				//start the sound at 0
 				soundEngineInstance = game.audioManager.loopSound(AudioManager.SOUND_WARP_ENGINE, 0f);
-				//game.audioManager.setSoundVolume(AudioManager.SOUND_WARP_ENGINE, soundEngineInstance, 0f);
 
 			}
 		});
