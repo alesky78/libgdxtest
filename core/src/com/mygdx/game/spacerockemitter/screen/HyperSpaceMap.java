@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -19,6 +21,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -26,6 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.AudioManager;
 import com.mygdx.game.spacerockemitter.PlanetGraph;
@@ -34,6 +38,7 @@ import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 import com.mygdx.game.spacerockemitter.actor.BaseActor;
 import com.mygdx.game.spacerockemitter.actor.Planet;
 import com.mygdx.game.spacerockemitter.actor.PlanetAgent;
+import com.mygdx.game.spacerockemitter.actor.PostProcesActor;
 import com.mygdx.game.spacerockemitter.actor.Route;
 import com.mygdx.game.spacerockemitter.data.HiperSpaceData;
 import com.mygdx.game.spacerockemitter.data.PlanetData;
@@ -45,11 +50,16 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	private final boolean MAIN_SCENE_DEBUG = false;
 	private final boolean UI_TABLE_DEBUG = false;	
 
+	int screenWidth;
+	int screenHeight;
+	
+	//game phase data
 	protected int gamePhase;
 	private final int PHASE_SELECT = 0;
 	private final int PHASE_TRAVEL = 1;    
 	private final int PHASE_TRAVEL_FINISH = 2;	
 
+	//screen data
 	private PlanetAgent agent;
 	private PlanetGraph pathFinder;
 	private GraphPath<Planet> path;
@@ -57,6 +67,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	private List<Planet> planets;
 	private List<Route> routes;
 
+	//camera managemente
 	private Shaker shaker;
 	private Camera camera;
 	private Vector2 cameraOriginalPosition;	
@@ -81,9 +92,14 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	private TextButton goButton;
 	private TextButton closeButton;
 
-	//BUFFER data
-	private FrameBuffer frameBuffer; 
+	//Post Process data
+	private FrameBuffer frameBuffer;
+	PostProcesActor postProcesActor;
+	Stage postProcesStage; 
+	
+	
 
+	
 
 	public HyperSpaceMap(SpaceRockEmitterGame g) {
 		super(g);
@@ -94,6 +110,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	@Override
 	protected void create() {
 
+		
 		gamePhase = PHASE_SELECT;
 
 		//////////////
@@ -102,7 +119,12 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 
 		frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, viewWidth, viewHeight, false);
 		frameBuffer.getColorBufferTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
+		
+		postProcesStage = new Stage( new FitViewport(viewWidth, viewHeight));
+		postProcesActor = new PostProcesActor( game.assetManager.get(AssetCatalog.SHADER_WARP_NOISE));
+		postProcesActor.setPosition(0, 0);
+		postProcesStage.addActor(postProcesActor);
+		
 
 		//////////////
 		// AUDIO
@@ -412,6 +434,11 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 				camera.position.set(position.x,position.y, 0 );
 				camera.update();
 			}
+			
+			if(shaker.getShakeTimeLeft() == 0 && soundEngineVolume == 0) {
+				gamePhase = PHASE_SELECT;
+			}
+				
 
 
 		}
@@ -435,110 +462,57 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 			update(dt);
 		}
 
-		//clear the screen
-		Gdx.gl.glClearColor(0,0,0,1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 		//start the buffer and clear it
 		frameBuffer.begin();
 
 		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		mainStage.draw();
-		postDrawMainStage(dt);
 
 		frameBuffer.end();
 
+		//clear the screen
+		Gdx.gl.glClearColor(1,1,1,1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		postProcesDraw(dt);
-
-
-
 		uiStage.draw();
 	}
 
 
-	//shaders
-	String vertexShader;
-	String fragmentShader;
-	ShaderProgram shader;
-	float time;
-	boolean addShader;
-	float intensity;
+	public void resize(int width, int height) {
+		screenWidth = width;
+		screenHeight = height;		
+		
+		mainStage.getViewport().update(width, height, true); 
+		uiStage.getViewport().update(width, height, true);
+		postProcesStage.getViewport().update(width, height, true);
+
+		
+	}
+	
 
 	private void postProcesDraw(float dt) {
 
-		//create all the shaders
-		if(shader == null) {
-			vertexShader = Gdx.files.internal("shader/passthrough.vrtx").readString();        
-			fragmentShader = Gdx.files.internal("shader/WarpNoise.frgm").readString();      
-			shader = new ShaderProgram(vertexShader,fragmentShader);	
-			time = 0;
-			intensity = 0;
-		}
-
-		if(gamePhase == PHASE_SELECT && shaker.getShakeTimeLeft() == 0 && intensity == 0) {
-			addShader = false;
-			time = 0;
-			intensity = 0;
+		//manage shader intensity
+		if(gamePhase == PHASE_TRAVEL) {
+			postProcesActor.increaseIntensity();			
 		}else if(gamePhase == PHASE_SELECT || gamePhase == PHASE_TRAVEL_FINISH) {
-			addShader = true;
-			time+=dt;
-			intensity-= 0.001;
-			intensity = MathUtils.clamp(intensity, 0f, 0.1f);
-		}else {
-			addShader = true;
-			time+=dt;
-			intensity+= 0.001;
-			intensity = MathUtils.clamp(intensity, 0f, 0.1f);
+			postProcesActor.decreaseIntensity();
 		}
-
-
 
 		Texture texture = frameBuffer.getColorBufferTexture();
 		TextureRegion  textureRegion = new TextureRegion(texture);
 		// FLIP!  V (vertical) only
 		textureRegion.flip(false, true);
+		postProcesActor.setTextureRegion(textureRegion);
 
-		mainStage.getBatch().begin();
-		mainStage.getBatch().setColor(1, 1, 1, 1);
-
-		if(addShader) {
-			mainStage.getBatch().setShader(shader);
-			shader.setUniformf("timePass", time);
-			shader.setUniformf("intensity", intensity); 				
-		}
-
-		mainStage.getBatch().draw(textureRegion, 0, 0, texture.getWidth(), texture.getHeight());
+		postProcesStage.getViewport().update( screenWidth, screenHeight, false);
+		postProcesStage.act(dt);
+		postProcesStage.draw();
 		
-		if(addShader) {
-			mainStage.getBatch().setShader(null);
-		}
-		
-		mainStage.getBatch().end();
-
-
 	}
 
-
-	protected class PlanetListner  extends InputListener{
-
-
-		public boolean touchDown (InputEvent ev, float x, float y, int pointer, int button){
-
-			if(agentArriveDestination) {
-				selectedPlanet = (Planet)ev.getListenerActor();
-				prepareWindow(selectedPlanet);
-				window.setVisible(true);
-			}
-
-			return true;
-
-		}
-
-
-	}
-
-
+	
 	@Override
 	public void reachDestination() {
 		agentArriveDestination = true;
@@ -546,5 +520,27 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		shaker.reset(2);
 		gamePhase = PHASE_TRAVEL_FINISH;
 	}
+
+	
+	protected class PlanetListner  extends InputListener{
+
+
+		public boolean touchDown (InputEvent ev, float x, float y, int pointer, int button){
+
+ 
+			if(agentArriveDestination) {	//this event work only if the agent if not moving
+				selectedPlanet = (Planet)ev.getListenerActor();
+				prepareWindow(selectedPlanet);
+				window.setVisible(true);
+			}
+			
+			return true;
+
+		}
+
+
+	}
+	
+	
 
 }
