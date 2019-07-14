@@ -506,7 +506,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		textureRegion.flip(false, true);
 		postProcesActor.setTextureRegion(textureRegion);
 
-		postProcesStage.getViewport().update( screenWidth, screenHeight, false);
+		postProcesStage.getViewport().update( screenWidth, screenHeight, false);	//TODO why the viewport is modified and i have to force it?
 		postProcesStage.act(dt);
 		postProcesStage.draw();
 		
