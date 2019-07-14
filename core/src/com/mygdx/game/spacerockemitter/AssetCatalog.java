@@ -27,8 +27,8 @@ public class AssetCatalog {
 	///////////////////////
 	//UI references
 	//////////////////////
-	public static final String UI_ATLAS  = "spacerockemitter/quantum-horizon-ui.atlas";
-	public static final String UI_JSON  = "spacerockemitter/quantum-horizon-ui.json";	
+	public static final String UI_ATLAS  = "spacerockemitter/ui/quantum-horizon-ui.atlas";
+	public static final String UI_JSON  = "spacerockemitter/ui/quantum-horizon-ui.json";	
 	
 	///////////////////////
 	//MUSIC
