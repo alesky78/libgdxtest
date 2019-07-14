@@ -94,8 +94,8 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 
 	//Post Process data
 	private FrameBuffer frameBuffer;
-	PostProcesActor postProcesActor;
-	Stage postProcesStage; 
+	private PostProcesActor postProcesActor;
+	private Stage postProcesStage; 
 	
 	
 
@@ -119,8 +119,9 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 
 		frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, viewWidth, viewHeight, false);
 		frameBuffer.getColorBufferTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		
+
 		postProcesStage = new Stage( new FitViewport(viewWidth, viewHeight));
+		
 		postProcesActor = new PostProcesActor( game.assetManager.get(AssetCatalog.SHADER_WARP_NOISE));
 		postProcesActor.setPosition(0, 0);
 		postProcesStage.addActor(postProcesActor);
@@ -223,7 +224,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		//TODO create the agent also here 
 		agentArriveDestination = true;
 		agent = new PlanetAgent();
-		agent.setPosition(actualPlanet);
+		agent.setPosition(actualPlanet);													//TODO set the correct planet
 		agent.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));	//TODO set the correct texture
 		agent.setColor(Color.BLUE);															//TODO remove this line when the correct texture is inserted
 		agent.setListener(this);
@@ -285,7 +286,6 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 			uiStage.setDebugAll(UI_TABLE_DEBUG);
 			uiTable.debugAll();
 		}
-
 
 	}
 
@@ -469,8 +469,9 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		mainStage.draw();
 
-		frameBuffer.end();
-
+		//reset the viewport when the frame buffer is closed
+		frameBuffer.end(mainStage.getViewport().getScreenX(), mainStage.getViewport().getScreenY(), mainStage.getViewport().getScreenWidth(), mainStage.getViewport().getScreenHeight());
+		
 		//clear the screen
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -482,14 +483,13 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	public void resize(int width, int height) {
 		screenWidth = width;
 		screenHeight = height;		
-		
-		mainStage.getViewport().update(width, height, true); 
-		uiStage.getViewport().update(width, height, true);
-		postProcesStage.getViewport().update(width, height, true);
-
-		
+		mainStage.getViewport().update(width, height, false); 
+		uiStage.getViewport().update(width, height, false);
+		postProcesStage.getViewport().update(width, height, false);
 	}
 	
+	
+	boolean resize = false;
 
 	private void postProcesDraw(float dt) {
 
@@ -505,8 +505,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		// FLIP!  V (vertical) only
 		textureRegion.flip(false, true);
 		postProcesActor.setTextureRegion(textureRegion);
-
-		postProcesStage.getViewport().update( screenWidth, screenHeight, false);	//TODO why the viewport is modified and i have to force it?
+		
 		postProcesStage.act(dt);
 		postProcesStage.draw();
 		
