@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mygdx.game.spacerockemitter.SpatialHashGrid;
 
 
+//TODO deve esterndere Actor e non group... ci sono dei problemi se estende Group perche le trasformazioni forzano il flush del buffer sul batch
 public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	
 	protected TextureRegion region;
