@@ -101,6 +101,15 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 		setOriginCenter();
 	}
 	
+	public void setTextureRegion(TextureRegion t){ 
+		int w = t.getTexture().getWidth();
+		int h = t.getTexture().getHeight();
+		setWidth( w );
+		setHeight( h );
+		region = t;
+		setOriginCenter();
+	}	
+	
 	public TextureRegion getTextureRegion() {
 		return region;
 	}

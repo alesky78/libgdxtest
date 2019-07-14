@@ -85,6 +85,7 @@ public class AssetCatalog {
 	//SHADERS
 	//////////////////////
 	public static AssetDescriptor<ShaderProgram> SHADER_FLICKER;
+	public static AssetDescriptor<ShaderProgram> SHADER_WARP_NOISE;	
 	
 	
 	/**
@@ -147,6 +148,14 @@ public class AssetCatalog {
 																												fragmentFile = "shader/Flicker.frgm";
 																											}
 																										});
+		SHADER_WARP_NOISE = new AssetDescriptor<>("SHADER_WARP_NOISE", ShaderProgram.class,  new ShaderProgramLoader.ShaderProgramParameter(){
+																											{
+																												vertexFile = "shader/passthrough.vrtx";
+																												fragmentFile = "shader/WarpNoise.frgm";
+																											}
+																										});
+		
+		
 		
 	
 		
@@ -200,6 +209,8 @@ public class AssetCatalog {
 		
 		//load shaders
 		assetManager.load(SHADER_FLICKER);
+		assetManager.load(SHADER_WARP_NOISE);		
+		
 		
 	}
 	
