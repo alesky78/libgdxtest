@@ -162,8 +162,8 @@ public class DestoryAsteroidLevel extends BaseScreen {
 		//////////////
 
 		//uiStage preparation
-		labelPoints = new Label(" points: "+points, game.skin, "default");
-		labelWarning = new Label("warning \nwave "+wave+" caming", game.skin, "title");		
+		labelPoints = game.uiManager.getDefaultLabel(" points: ");
+		labelWarning = game.uiManager.getTitleLabel("warning \nwave "+wave+" caming"); 	
 		immageLife = new Image[3];
 		Texture hearTex = game.assetManager.get(AssetCatalog.TEXTURE_HEART);
 

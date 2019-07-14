@@ -45,12 +45,12 @@ public class MainMenu extends BaseScreen {
 		audioManager.registerAudio(AudioManager.SOUND_GAME_ON, game.assetManager.get(AssetCatalog.SOUND_GAME_ON));
 		
 	
-		Label title = new Label("Space Rocker", game.skin, "title");	
+		Label title = game.uiManager.getTitleLabel("Space Rocker"); 
 		
 		backgroundTxt = game.assetManager.get(AssetCatalog.TEXTURE_SPACE_BACKGROUND);
 		TextureRegionDrawable background =  new TextureRegionDrawable(new TextureRegion(backgroundTxt));
 		
-		final TextButton startGame = new TextButton("start game", game.skin, "default");
+		final TextButton startGame = game.uiManager.getTextButon("start game");
 		startGame.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				return true;

@@ -55,12 +55,12 @@ public class ChooseShip extends BaseScreen {
 		spaceShips[2] = new SpaceShip("vertex-xt2", 150, 250, 220, shipTex, game.assetManager);		
 		
 		//create all the UI elements		
-		Label title = new Label("Choose ship", game.skin, "title");	
+		Label title = game.uiManager.getTitleLabel("Choose ship");	
 		
 		backgroundTxt = game.assetManager.get(AssetCatalog.TEXTURE_SPACE_BACKGROUND);
 		TextureRegionDrawable background =  new TextureRegionDrawable(new TextureRegion(backgroundTxt));
 		
-		final TextButton selectAndStartGame = new TextButton("Select Ship", game.skin, "default");
+		final TextButton selectAndStartGame = game.uiManager.getTextButon("Select Ship");
 		selectAndStartGame.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				return true;
@@ -73,7 +73,7 @@ public class ChooseShip extends BaseScreen {
 			}
 		});
 
-		final TextButton changeShip = new TextButton("Change Ship", game.skin, "default");
+		final TextButton changeShip = game.uiManager.getTextButon("Change Ship"); 
 		changeShip.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				SpaceShipsIndex++;
@@ -87,16 +87,16 @@ public class ChooseShip extends BaseScreen {
 		});
 		
 		
-		Label nameLabel = new Label("name:", game.skin, "default");
-		Label accelerationLabel  = new Label("acceleration:", game.skin, "default");
-		Label decelerationLabel  = new Label("deceleration:", game.skin, "default");
-		Label speedLabel  = new Label("maxSpeed:", game.skin, "default");
+		Label nameLabel = game.uiManager.getDefaultLabel("name:"); 
+		Label accelerationLabel  =  game.uiManager.getDefaultLabel("acceleration:");  
+		Label decelerationLabel  =  game.uiManager.getDefaultLabel("deceleration:");  
+		Label speedLabel  = game.uiManager.getDefaultLabel("maxSpeed:");  
 		
 		shipImage = new Image();
-		name = new Label("", game.skin, "default");
-		acceleartion = new ProgressBar(0, 1, 0.1f, false, game.skin, "default-horizontal");
-		deceleration = new ProgressBar(0, 1, 0.1f, false, game.skin, "default-horizontal");
-		speed = new ProgressBar(0, 1, 0.1f, false, game.skin, "default-horizontal");		
+		name = game.uiManager.getDefaultLabel("");  
+		acceleartion = game.uiManager.getProgressBar(0f, 1f, 0.1f);		
+		deceleration = game.uiManager.getProgressBar(0f, 1f, 0.1f);
+		speed = game.uiManager.getProgressBar(0f, 1f, 0.1f);		
 
 		valorizeFields();
 		

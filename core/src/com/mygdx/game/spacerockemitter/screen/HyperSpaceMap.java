@@ -159,7 +159,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 			planet.addListener(listener);
 			planet.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));
 			planet.setTextureSelected(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET_SELECT));
-			planet.setBitmapFont(game.skin.getFont("font"));		
+			planet.setBitmapFont(game.uiManager.getBitmapFont());		
 			planets.add(planet);
 		}
 
@@ -234,12 +234,12 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		//prepare the UI
 		/////////////////
 
-		labelPlanetName = new Label("", game.skin, "default");
-		labelFactionName = new Label("", game.skin, "default");
-		labelSummary = new Label("", game.skin, "default");	
-		labelChalleng = new Label("", game.skin, "default");
+		labelPlanetName = game.uiManager.getDefaultLabel("");
+		labelFactionName = game.uiManager.getDefaultLabel("");
+		labelSummary = game.uiManager.getDefaultLabel("");
+		labelChalleng = game.uiManager.getDefaultLabel("");
 
-		goButton = new TextButton("warp", game.skin, "default");
+		goButton = game.uiManager.getTextButon("warp");
 		goButton.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				return true;
@@ -266,7 +266,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		});
 
 
-		closeButton = new TextButton("close", game.skin, "default");	
+		closeButton = game.uiManager.getTextButon("close"); 
 		closeButton.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				return true;
@@ -294,7 +294,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 
 		uiTable.clear();
 		//preparing window
-		window = new Window("", game.skin, "default");
+		window = game.uiManager.getWindow();
 		window.setMovable(false); 
 		window.setVisible(false);
 		window.getTitleTable().clear();
@@ -321,15 +321,15 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		descTable.row();
 		descTable.add().height(30);      
 		descTable.row();		
-		descTable.add(new Label("Faction:", game.skin, "default")).left();
+		descTable.add( game.uiManager.getDefaultLabel("Faction:")).left();
 		descTable.add(labelFactionName);
 		descTable.row();
-		descTable.add(new Label("Challeng:", game.skin, "default")).left();
+		descTable.add(game.uiManager.getDefaultLabel("Challeng:")).left();
 		descTable.add(labelChalleng);
 		descTable.row();
 		descTable.add().height(30);      
 		descTable.row();	
-		descTable.add(new Label("Summary", game.skin, "default")).colspan(2);
+		descTable.add(game.uiManager.getDefaultLabel("Summary")).colspan(2);
 		descTable.row();
 		descTable.add(labelSummary).colspan(2).left().top().expandY();
 		descTable.row();

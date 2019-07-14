@@ -2,13 +2,12 @@ package com.mygdx.game.spacerockemitter;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mygdx.game.spacerockemitter.screen.HyperSpaceMap;
+import com.mygdx.game.spacerockemitter.screen.MainMenu;
 
 public class SpaceRockEmitterGame extends Game {
 
 	// used to store resources common to multiple screens
-	public Skin skin;
+	public UIManager uiManager;
 	public AssetManager assetManager; 
 	public AssetCatalog assetCatalog;
 	public AudioManager audioManager;
@@ -26,18 +25,18 @@ public class SpaceRockEmitterGame extends Game {
 		assetManager.finishLoading();
 
 		//prepare the UI skin
-		skin = assetManager.get(AssetCatalog.UI_JSON, Skin.class);
+		uiManager = new UIManager(assetManager);
 		
 		
-		//MainMenu scene = new MainMenu(this);
-		HyperSpaceMap scene = new HyperSpaceMap(this);
+		MainMenu scene = new MainMenu(this);
+		//HyperSpaceMap scene = new HyperSpaceMap(this);
         setScreen( scene );
 	}
 	
 	public void dispose () {
 		super.dispose();
 		assetManager.dispose();
-		skin.dispose();
+		uiManager.dispose();
 	}		
 
 }
