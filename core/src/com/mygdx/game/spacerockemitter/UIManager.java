@@ -31,11 +31,11 @@ public class UIManager implements Disposable {
 		return skin.getFont("font");
 	}
 	
-	public Label getDefaultLabel(String text) {
+	public Label getLabelDefault(String text) {
 		return new Label(text, skin, "default");	
 	}
 	
-	public Label getTitleLabel(String text) {
+	public Label getLabelTitle(String text) {
 		return new Label(text, skin, "title");	
 	}
 	

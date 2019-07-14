@@ -45,7 +45,7 @@ public class MainMenu extends BaseScreen {
 		audioManager.registerAudio(AudioManager.SOUND_GAME_ON, game.assetManager.get(AssetCatalog.SOUND_GAME_ON));
 		
 	
-		Label title = game.uiManager.getTitleLabel("Space Rocker"); 
+		Label title = game.uiManager.getLabelTitle("Space Rocker"); 
 		
 		backgroundTxt = game.assetManager.get(AssetCatalog.TEXTURE_SPACE_BACKGROUND);
 		TextureRegionDrawable background =  new TextureRegionDrawable(new TextureRegion(backgroundTxt));

@@ -55,7 +55,7 @@ public class ChooseShip extends BaseScreen {
 		spaceShips[2] = new SpaceShip("vertex-xt2", 150, 250, 220, shipTex, game.assetManager);		
 		
 		//create all the UI elements		
-		Label title = game.uiManager.getTitleLabel("Choose ship");	
+		Label title = game.uiManager.getLabelTitle("Choose ship");	
 		
 		backgroundTxt = game.assetManager.get(AssetCatalog.TEXTURE_SPACE_BACKGROUND);
 		TextureRegionDrawable background =  new TextureRegionDrawable(new TextureRegion(backgroundTxt));
@@ -87,13 +87,13 @@ public class ChooseShip extends BaseScreen {
 		});
 		
 		
-		Label nameLabel = game.uiManager.getDefaultLabel("name:"); 
-		Label accelerationLabel  =  game.uiManager.getDefaultLabel("acceleration:");  
-		Label decelerationLabel  =  game.uiManager.getDefaultLabel("deceleration:");  
-		Label speedLabel  = game.uiManager.getDefaultLabel("maxSpeed:");  
+		Label nameLabel = game.uiManager.getLabelDefault("name:"); 
+		Label accelerationLabel  =  game.uiManager.getLabelDefault("acceleration:");  
+		Label decelerationLabel  =  game.uiManager.getLabelDefault("deceleration:");  
+		Label speedLabel  = game.uiManager.getLabelDefault("maxSpeed:");  
 		
 		shipImage = new Image();
-		name = game.uiManager.getDefaultLabel("");  
+		name = game.uiManager.getLabelDefault("");  
 		acceleartion = game.uiManager.getProgressBar(0f, 1f, 0.1f);		
 		deceleration = game.uiManager.getProgressBar(0f, 1f, 0.1f);
 		speed = game.uiManager.getProgressBar(0f, 1f, 0.1f);		

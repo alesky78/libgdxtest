@@ -234,10 +234,10 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		//prepare the UI
 		/////////////////
 
-		labelPlanetName = game.uiManager.getDefaultLabel("");
-		labelFactionName = game.uiManager.getDefaultLabel("");
-		labelSummary = game.uiManager.getDefaultLabel("");
-		labelChalleng = game.uiManager.getDefaultLabel("");
+		labelPlanetName = game.uiManager.getLabelDefault("");
+		labelFactionName = game.uiManager.getLabelDefault("");
+		labelSummary = game.uiManager.getLabelDefault("");
+		labelChalleng = game.uiManager.getLabelDefault("");
 
 		goButton = game.uiManager.getTextButon("warp");
 		goButton.addListener(new InputListener() {
@@ -321,15 +321,15 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		descTable.row();
 		descTable.add().height(30);      
 		descTable.row();		
-		descTable.add( game.uiManager.getDefaultLabel("Faction:")).left();
+		descTable.add( game.uiManager.getLabelDefault("Faction:")).left();
 		descTable.add(labelFactionName);
 		descTable.row();
-		descTable.add(game.uiManager.getDefaultLabel("Challeng:")).left();
+		descTable.add(game.uiManager.getLabelDefault("Challeng:")).left();
 		descTable.add(labelChalleng);
 		descTable.row();
 		descTable.add().height(30);      
 		descTable.row();	
-		descTable.add(game.uiManager.getDefaultLabel("Summary")).colspan(2);
+		descTable.add(game.uiManager.getLabelDefault("Summary")).colspan(2);
 		descTable.row();
 		descTable.add(labelSummary).colspan(2).left().top().expandY();
 		descTable.row();
