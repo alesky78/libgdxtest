@@ -19,7 +19,7 @@ public class FunctionUtils {
 	 * 0 where x = 1
 	 * 
 	 * TODO we could had the second field pow that change the curve
-	 * for value > 1  the curve tend to become a spice in the 0.5  
+	 * for value > 1  the curve tend to become a pick in the 0.5  
 	 * for value < 1  the curve tend to become a rectangle where the value is 0.5 wherever less that the margins where is always 0
 	 * 
 	 * @param x in the range of 0 and 1
