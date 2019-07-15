@@ -53,7 +53,7 @@ public class StartScene extends BaseScreen {
 		backgroundTxt = game.assetManager.get(AssetCatalog.TEXTURE_SPACE_BACKGROUND);
 		TextureRegionDrawable background =  new TextureRegionDrawable(new TextureRegion(backgroundTxt));
 		
-		final TextButton startGame = game.uiManager.getTextButon("start game");
+		final TextButton startGame = game.uiManager.getTextButon("start new game");
 		startGame.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				return true;
