@@ -137,9 +137,9 @@ public class AssetCatalog {
 		ParticleEffectLoader.ParticleEffectParameter particleParam = new ParticleEffectLoader.ParticleEffectParameter();
 		particleParam.imagesDir = Gdx.files.internal(PARTICLE_IMAGES_DIR);
 		
-		PARTICLE_THRUSTER = new AssetDescriptor<>("spacerockemitter/thruster.pfx", ParticleEffect.class, particleParam);
-		PARTICLE_LASER = new AssetDescriptor<>("spacerockemitter/laser.pfx", ParticleEffect.class, particleParam);		
-		PARTICLE_EXPLOSION = new AssetDescriptor<>("spacerockemitter/explosion.pfx", ParticleEffect.class, particleParam);
+		PARTICLE_THRUSTER = new AssetDescriptor<>("spacerockemitter/particle/thruster.pfx", ParticleEffect.class, particleParam);
+		PARTICLE_LASER = new AssetDescriptor<>("spacerockemitter/particle/laser.pfx", ParticleEffect.class, particleParam);		
+		PARTICLE_EXPLOSION = new AssetDescriptor<>("spacerockemitter/particle/explosion.pfx", ParticleEffect.class, particleParam);
 		
 		//shaders
 		SHADER_FLICKER = new AssetDescriptor<>("SHADER_FLICKER", ShaderProgram.class,  new ShaderProgramLoader.ShaderProgramParameter(){
