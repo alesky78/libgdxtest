@@ -13,7 +13,7 @@ import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.AudioManager;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 
-public class MainMenu extends BaseScreen {
+public class StartScene extends BaseScreen {
 
 	protected int gamePhase;
 	private float PHASE_TIMER = 0;	
@@ -27,7 +27,7 @@ public class MainMenu extends BaseScreen {
 			
 	private float audioVolume;	
 	
-	public MainMenu(SpaceRockEmitterGame g) {
+	public StartScene(SpaceRockEmitterGame g) {
 		super(g);
 	}
 
