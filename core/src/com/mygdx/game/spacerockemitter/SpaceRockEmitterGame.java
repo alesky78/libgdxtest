@@ -2,7 +2,7 @@ package com.mygdx.game.spacerockemitter;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.mygdx.game.spacerockemitter.screen.MainMenu;
+import com.mygdx.game.spacerockemitter.screen.HyperSpaceMap;
 
 public class SpaceRockEmitterGame extends Game {
 
@@ -11,6 +11,7 @@ public class SpaceRockEmitterGame extends Game {
 	public AssetManager assetManager; 
 	public AssetCatalog assetCatalog;
 	public AudioManager audioManager;
+	public DataManager dataManager;
 	
 	@Override
 	public void create() {
@@ -27,9 +28,13 @@ public class SpaceRockEmitterGame extends Game {
 		//prepare the UI skin
 		uiManager = new UIManager(assetManager);
 		
+		//load the game business data
+		dataManager = new DataManager();
+		dataManager.load();
 		
-		MainMenu scene = new MainMenu(this);
-		//HyperSpaceMap scene = new HyperSpaceMap(this);
+		//start the main screen here
+		//MainMenu scene = new MainMenu(this);
+		HyperSpaceMap scene = new HyperSpaceMap(this);
         setScreen( scene );
 	}
 	

@@ -11,13 +11,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -28,7 +24,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.AudioManager;
@@ -40,7 +35,6 @@ import com.mygdx.game.spacerockemitter.actor.Planet;
 import com.mygdx.game.spacerockemitter.actor.PlanetAgent;
 import com.mygdx.game.spacerockemitter.actor.PostProcesActor;
 import com.mygdx.game.spacerockemitter.actor.Route;
-import com.mygdx.game.spacerockemitter.data.HiperSpaceData;
 import com.mygdx.game.spacerockemitter.data.PlanetData;
 import com.mygdx.game.spacerockemitter.data.RouteData;
 
@@ -63,7 +57,6 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	private PlanetAgent agent;
 	private PlanetGraph pathFinder;
 	private GraphPath<Planet> path;
-	private HiperSpaceData data;
 	private List<Planet> planets;
 	private List<Route> routes;
 
@@ -140,8 +133,6 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 
 
 		//load the hiper space map data
-		Json json = new Json();
-		data = json.fromJson(HiperSpaceData.class, Gdx.files.internal("spacerockemitter/data_hiperspace.json"));
 
 		//background image
 		BaseActor backgroundMap = new BaseActor();
@@ -154,7 +145,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		Planet planet;
 		planets = new ArrayList<>();
 
-		for (PlanetData planetData : data.getPlanets()) {
+		for (PlanetData planetData : game.dataManager.hiperSpaceMap.getPlanets()) {
 			planet = new Planet(planetData);
 			planet.addListener(listener);
 			planet.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));
@@ -169,7 +160,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		Planet planetA = null,planetB = null;
 		boolean found = false;
 		Iterator<Planet> it;
-		for (RouteData routeData : data.getRoutes()) {
+		for (RouteData routeData : game.dataManager.hiperSpaceMap.getRoutes()) {
 
 			//search A
 			it =  planets.iterator();
@@ -208,8 +199,13 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 			mainStage.addActor(route2);		
 		}
 
+		//add the planets and identify the actual one
 		for (Planet planet2 : planets) {
-			mainStage.addActor(planet2);		
+			mainStage.addActor(planet2);
+			if(planet2.refIndex == game.dataManager.actualPlanet.ref ) {
+				actualPlanet = planet2;
+			}
+
 		}			
 
 		//crete the path finder
@@ -218,13 +214,9 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 			pathFinder.addRoute(route2);
 		}
 
-		//TODO test here we force the fist as start planet
-		actualPlanet = planets.get(0);
-
-		//TODO create the agent also here 
 		agentArriveDestination = true;
 		agent = new PlanetAgent();
-		agent.setPosition(actualPlanet);													//TODO set the correct planet
+		agent.setPosition(actualPlanet);
 		agent.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));	//TODO set the correct texture
 		agent.setColor(Color.BLUE);															//TODO remove this line when the correct texture is inserted
 		agent.setListener(this);
@@ -233,7 +225,6 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		///////////////////
 		//prepare the UI
 		/////////////////
-
 		labelPlanetName = game.uiManager.getLabelDefault("");
 		labelFactionName = game.uiManager.getLabelDefault("");
 		labelSummary = game.uiManager.getLabelDefault("");
@@ -251,7 +242,10 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 				path = pathFinder.findPath(actualPlanet, selectedPlanet);
 				highLightsRoute(path, actualPlanet);
 
+				//set the actual the new actual planet in the screen and in the dataManager
 				actualPlanet = selectedPlanet;
+				game.dataManager.actualPlanet = selectedPlanet.getPlanetData();
+				
 				agent.setPath(path);
 				window.setVisible(false);
 				gamePhase = PHASE_TRAVEL;
