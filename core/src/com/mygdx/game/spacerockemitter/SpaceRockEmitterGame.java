@@ -34,7 +34,6 @@ public class SpaceRockEmitterGame extends Game {
 		
 		//start the main screen here
 		StartScene scene = new StartScene(this);
-		//HyperSpaceMap scene = new HyperSpaceMap(this);
         setScreen( scene );
 	}
 	

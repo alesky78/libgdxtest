@@ -15,6 +15,9 @@ import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 
 public class StartScene extends BaseScreen {
 
+	private final boolean MAIN_SCENE_DEBUG = false;
+	private final boolean UI_TABLE_DEBUG = false;	
+	
 	protected int gamePhase;
 	private float PHASE_TIMER = 0;	
 	private final int PHASE_GAME_WAIT = 0;
@@ -71,6 +74,15 @@ public class StartScene extends BaseScreen {
 		uiTable.row();
 		uiTable.add(startGame);
 
+		if(MAIN_SCENE_DEBUG) {
+			mainStage.setDebugAll(MAIN_SCENE_DEBUG);
+		}
+
+		if(UI_TABLE_DEBUG) {
+			uiStage.setDebugAll(UI_TABLE_DEBUG);
+			uiTable.debugAll();
+		}
+
 	}
 
 	@Override
@@ -96,7 +108,7 @@ public class StartScene extends BaseScreen {
 			if(PHASE_TIMER > 2){
 
 				audioManager.stopMusic(AudioManager.MUSIC_MENU_LOOP);
-				ChooseShip tl = new ChooseShip(game);
+				OrbitScene tl = new OrbitScene(game);
 				game.setScreen( tl );				
 			}
 			

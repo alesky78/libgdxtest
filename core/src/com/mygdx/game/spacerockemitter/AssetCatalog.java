@@ -50,6 +50,7 @@ public class AssetCatalog {
 	//TEXTURE
 	//////////////////////
 	public static AssetDescriptor<Texture> TEXTURE_SPACE_BACKGROUND;
+	public static AssetDescriptor<Texture> TEXTURE_OBLO_BACKGROUND;	
 	public static AssetDescriptor<Texture> TEXTURE_HYPERSPACE_MAP;
 	public static AssetDescriptor<Texture> TEXTURE_HYPERSPACE_PLANET;	
 	public static AssetDescriptor<Texture> TEXTURE_HYPERSPACE_PLANET_SELECT;
@@ -112,6 +113,7 @@ public class AssetCatalog {
 		textureParam.minFilter = TextureFilter.Linear;
 		
 		TEXTURE_SPACE_BACKGROUND = new AssetDescriptor<>("spacerockemitter/space.png", Texture.class,textureParam);
+		TEXTURE_OBLO_BACKGROUND = new AssetDescriptor<>("spacerockemitter/oblo.png", Texture.class,textureParam);
 		TEXTURE_HYPERSPACE_MAP = new AssetDescriptor<>("spacerockemitter/hyperspace_map.png", Texture.class,textureParam);
 		TEXTURE_HYPERSPACE_PLANET = new AssetDescriptor<>("spacerockemitter/hyperspace_pianeta.png", Texture.class,textureParam);		
 		TEXTURE_HYPERSPACE_PLANET_SELECT = new AssetDescriptor<>("spacerockemitter/hyperspace_pianeta_select.png", Texture.class,textureParam);		
@@ -182,6 +184,7 @@ public class AssetCatalog {
 
 		//load texture
 		assetManager.load(TEXTURE_SPACE_BACKGROUND);		
+		assetManager.load(TEXTURE_OBLO_BACKGROUND);
 		assetManager.load(TEXTURE_HYPERSPACE_MAP);
 		assetManager.load(TEXTURE_HYPERSPACE_PLANET);	
 		assetManager.load(TEXTURE_HYPERSPACE_PLANET_SELECT);		

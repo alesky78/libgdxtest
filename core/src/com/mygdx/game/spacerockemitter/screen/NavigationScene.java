@@ -38,7 +38,7 @@ import com.mygdx.game.spacerockemitter.actor.Route;
 import com.mygdx.game.spacerockemitter.data.PlanetData;
 import com.mygdx.game.spacerockemitter.data.RouteData;
 
-public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListener {
+public class NavigationScene extends BaseScreen implements PlanetAgent.ArriveListener {
 
 	// activate the graphic DEBUG
 	private final boolean MAIN_SCENE_DEBUG = false;
@@ -76,6 +76,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 	private long  soundEngineInstance;
 
 	//UI data
+	private TextButton backButton;	
 	private Window window;
 	private Image planetImage;
 	private Label labelPlanetName;
@@ -94,7 +95,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 
 	
 
-	public HyperSpaceMap(SpaceRockEmitterGame g) {
+	public NavigationScene(SpaceRockEmitterGame g) {
 		super(g);
 	}
 
@@ -225,6 +226,19 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		///////////////////
 		//prepare the UI
 		/////////////////
+		backButton = game.uiManager.getTextButon("back");
+		backButton.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				if(agentArriveDestination) {
+					game.setScreen( new OrbitScene(game) );					
+				}
+				return true;
+			}
+		});	
+		backButton.setPosition(0f,0f);
+		mainStage.addActor(backButton);	
+		
+		
 		labelPlanetName = game.uiManager.getLabelDefault("");
 		labelFactionName = game.uiManager.getLabelDefault("");
 		labelSummary = game.uiManager.getLabelDefault("");
@@ -467,7 +481,7 @@ public class HyperSpaceMap extends BaseScreen implements PlanetAgent.ArriveListe
 		frameBuffer.end(mainStage.getViewport().getScreenX(), mainStage.getViewport().getScreenY(), mainStage.getViewport().getScreenWidth(), mainStage.getViewport().getScreenHeight());
 		
 		//clear the screen
-		Gdx.gl.glClearColor(1,1,1,1);
+		Gdx.gl.glClearColor(0,0,0,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		postProcesDraw(dt);
 		uiStage.draw();
