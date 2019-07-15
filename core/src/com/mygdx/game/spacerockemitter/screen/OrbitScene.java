@@ -43,6 +43,13 @@ public class OrbitScene extends BaseScreen {
 			}
 		});		
 		
+		TextButton findJob = game.uiManager.getTextButon("Find Job");
+		findJob.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				//TODO implement the scene here	
+				return true;
+			}
+		});			
 		
 		
 		//planet info
@@ -65,7 +72,7 @@ public class OrbitScene extends BaseScreen {
 		uiTable.add(labelPlanetName).center();
 		uiTable.add().width(200);		
 		uiTable.row();
-		uiTable.add().left().width(200);
+		uiTable.add(findJob).left().width(200);
 		uiTable.add(labelFactionName).center();
 		uiTable.add().width(200);		
 		uiTable.row();		
