@@ -11,13 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 
-public class OrbitScene extends BaseScreen {
+public class OrbitScreen extends BaseScreen {
 
 	private final boolean MAIN_SCENE_DEBUG = false;
 	private final boolean UI_TABLE_DEBUG = false;	
 	
 	
-	public OrbitScene(SpaceRockEmitterGame g) {
+	public OrbitScreen(SpaceRockEmitterGame g) {
 		super(g);
 	}
 
@@ -30,7 +30,7 @@ public class OrbitScene extends BaseScreen {
 		TextButton navigation = game.uiManager.getTextButon("Navigation");
 		navigation.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				game.setScreen( new NavigationScene(game) );	
+				game.setScreen( new NavigationScreen(game) );	
 				return true;
 			}
 		});		
@@ -38,15 +38,15 @@ public class OrbitScene extends BaseScreen {
 		TextButton chooseShip = game.uiManager.getTextButon("Choose Ship");
 		chooseShip.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				game.setScreen( new ChooseShip(game) );	
+				game.setScreen( new ChooseShipScreen(game) );	
 				return true;
 			}
 		});		
 		
-		TextButton findJob = game.uiManager.getTextButon("Find Job");
+		TextButton findJob = game.uiManager.getTextButon("Find Contract");
 		findJob.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				//TODO implement the scene here	
+				game.setScreen( new FindContractScreen(game) );		
 				return true;
 			}
 		});			

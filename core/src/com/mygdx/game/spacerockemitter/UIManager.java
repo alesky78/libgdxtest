@@ -2,8 +2,10 @@ package com.mygdx.game.spacerockemitter;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -47,6 +49,10 @@ public class UIManager implements Disposable {
 		return new ProgressBar(0, 1, 0.1f, false, skin, "default-horizontal");
 	}	
 
+	public ScrollPane getScrollPane(Actor widget) {
+		return new ScrollPane(widget, skin,  "default");
+	}	
+	
 	public Window getWindow() {
 		return 	new Window("", skin, "default");
 	}	

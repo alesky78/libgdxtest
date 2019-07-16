@@ -13,7 +13,7 @@ import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.AudioManager;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 
-public class StartScene extends BaseScreen {
+public class StartScreen extends BaseScreen {
 
 	private final boolean MAIN_SCENE_DEBUG = false;
 	private final boolean UI_TABLE_DEBUG = false;	
@@ -30,7 +30,7 @@ public class StartScene extends BaseScreen {
 			
 	private float audioVolume;	
 	
-	public StartScene(SpaceRockEmitterGame g) {
+	public StartScreen(SpaceRockEmitterGame g) {
 		super(g);
 	}
 
@@ -108,7 +108,7 @@ public class StartScene extends BaseScreen {
 			if(PHASE_TIMER > 2){
 
 				audioManager.stopMusic(AudioManager.MUSIC_MENU_LOOP);
-				OrbitScene tl = new OrbitScene(game);
+				OrbitScreen tl = new OrbitScreen(game);
 				game.setScreen( tl );				
 			}
 			

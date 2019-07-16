@@ -301,7 +301,7 @@ public class DestoryAsteroidLevel extends BaseScreen {
 
 			if(PHASE_TIMER > 2){
 				dispose();
-				game.setScreen(new StartScene(game));
+				game.setScreen(new StartScreen(game));
 			}
 
 			PHASE_TIMER = PHASE_TIMER + dt;
@@ -650,7 +650,7 @@ public class DestoryAsteroidLevel extends BaseScreen {
 
 		if (keycode == Keys.M){
 			game.audioManager.stopMusic(AudioManager.MUSIC_LEVEL_LOOP);
-			game.setScreen(new StartScene(game));
+			game.setScreen(new StartScreen(game));
 		}
 
 		return false;

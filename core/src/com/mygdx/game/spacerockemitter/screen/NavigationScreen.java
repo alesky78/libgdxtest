@@ -38,7 +38,7 @@ import com.mygdx.game.spacerockemitter.actor.Route;
 import com.mygdx.game.spacerockemitter.data.PlanetData;
 import com.mygdx.game.spacerockemitter.data.RouteData;
 
-public class NavigationScene extends BaseScreen implements PlanetAgent.ArriveListener {
+public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveListener {
 
 	// activate the graphic DEBUG
 	private final boolean MAIN_SCENE_DEBUG = false;
@@ -95,7 +95,7 @@ public class NavigationScene extends BaseScreen implements PlanetAgent.ArriveLis
 
 	
 
-	public NavigationScene(SpaceRockEmitterGame g) {
+	public NavigationScreen(SpaceRockEmitterGame g) {
 		super(g);
 	}
 
@@ -230,7 +230,7 @@ public class NavigationScene extends BaseScreen implements PlanetAgent.ArriveLis
 		backButton.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if(agentArriveDestination) {
-					game.setScreen( new OrbitScene(game) );					
+					game.setScreen( new OrbitScreen(game) );					
 				}
 				return true;
 			}

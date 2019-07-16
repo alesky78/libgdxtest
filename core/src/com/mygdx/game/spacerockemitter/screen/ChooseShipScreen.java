@@ -14,7 +14,7 @@ import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 import com.mygdx.game.spacerockemitter.actor.SpaceShip;
 
-public class ChooseShip extends BaseScreen {
+public class ChooseShipScreen extends BaseScreen {
 
 	protected int gamePhase;
 	private float PHASE_TIMER = 0;	
@@ -33,7 +33,7 @@ public class ChooseShip extends BaseScreen {
 	private Image shipImage;
 
 	
-	public ChooseShip(SpaceRockEmitterGame g) {
+	public ChooseShipScreen(SpaceRockEmitterGame g) {
 		super(g);
 	}
 
