@@ -3,6 +3,7 @@ package com.mygdx.game.spacerockemitter.screen;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 
@@ -16,37 +17,35 @@ public class FindContractScreen extends BaseScreen {
 	@Override
 	protected void create() {
 
-		String reallyLongString = "This\nIs\nA\nReally\nLong\nString\nThat\nHas\nLots\nOf\nLines\nAnd\nRepeats.\n"
-				+ "This\nIs\nA\nReally\nLong\nString\nThat\nHas\nLots\nOf\nLines\nAnd\nRepeats.\n"
-				+ "This\nIs\nA\nReally\nLong\nString\nThat\nHas\nLots\nOf\nLines\nAnd\nRepeats.\n";
-
-
-		Label text = game.uiManager.getLabelDefault(reallyLongString);
-		text.setAlignment(Align.center);
-		text.setWrap(true);
+		//label to user later
 		Label text2 = game.uiManager.getLabelDefault("This is a short string!");
 		text2.setAlignment(Align.center);
 		text2.setWrap(true);
-		Label text3 = game.uiManager.getLabelDefault(reallyLongString);
-		text3.setAlignment(Align.center);
-		text3.setWrap(true);
 
+		TextButton button1 = game.uiManager.getTextButon("button");
+		TextButton button2 = game.uiManager.getTextButon("button");
+		TextButton button3 = game.uiManager.getTextButon("button");
+		TextButton button4 = game.uiManager.getTextButon("button");		
+		
 		Table scrollTable = new Table();
-		scrollTable.add(text);
+		
+		scrollTable.add(button1);
 		scrollTable.row();
-		scrollTable.add(text2);
+		scrollTable.add(button2);
+		scrollTable.row();		
+		scrollTable.add(button3);
 		scrollTable.row();
-		scrollTable.add(text3);
-
+		scrollTable.add(button4);
+		scrollTable.row();
+		
 		ScrollPane scroller =  game.uiManager.getScrollPane(scrollTable);
-		//scroller.setFillParent(true);
+		scroller.setFadeScrollBars(false);
 
 
-//		uiTable.pad(5);
-//		uiTable.add(scroller);
-//		
-//		uiTable.debugAll();
-		uiStage.addActor(scroller);
+		uiTable.pad(5);
+		uiTable.add(scroller).width(200);
+		uiTable.debugAll();
+
 
 	}
 
