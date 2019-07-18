@@ -15,7 +15,9 @@ import com.mygdx.game.spacerockemitter.data.PlanetData;
  */
 public class DataManager {
 
-
+	
+	
+	//Model data
 	public PlanetData actualPlanet;
 	public HiperSpaceMapData hiperSpaceMap;
 
@@ -35,7 +37,8 @@ public class DataManager {
 		//hiperspace data
 		hiperSpaceMap = json.fromJson(HiperSpaceMapData.class, Gdx.files.internal("spacerockemitter/data/data_hiperspace.json"));
 
-		//planet wher to start the game
+		//planet where to start the game
+		//TODO this parameter should be configured in the start new game logic
 		actualPlanet = hiperSpaceMap.getPlanets().get(0);
 		
 		
