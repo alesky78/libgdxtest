@@ -226,7 +226,7 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		///////////////////
 		//prepare the UI
 		/////////////////
-		backButton = game.uiManager.getTextButon("back");
+		backButton = game.uiManager.getTextButon("<<");
 		backButton.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if(agentArriveDestination) {
