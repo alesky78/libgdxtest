@@ -102,6 +102,16 @@ public class DataManager {
 			makeNewContracts(planet);
 		}				
 	}
+
+	
+	public FactionData findFaction(int ref) {
+		for (FactionData factionData : factions) {
+			if(factionData.ref == ref) {
+				return factionData;
+			}
+		}
+		return null;
+	}
 	
 	private void makeNewContracts(PlanetData planet) {
 		
@@ -126,15 +136,6 @@ public class DataManager {
 			
 		}
 					
-	}
-	
-	public FactionData findFaction(int ref) {
-		for (FactionData factionData : factions) {
-			if(factionData.ref == ref) {
-				return factionData;
-			}
-		}
-		return null;
 	}
 	
 
