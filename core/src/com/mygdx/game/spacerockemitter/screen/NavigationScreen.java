@@ -218,8 +218,8 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		agentArriveDestination = true;
 		agent = new PlanetAgent();
 		agent.setPosition(actualPlanet);
-		agent.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));	//TODO set the correct texture
-		agent.setColor(Color.BLUE);															//TODO remove this line when the correct texture is inserted
+		agent.setTexture(game.assetManager.get(AssetCatalog.TEXTURE_HYPERSPACE_PLANET));	//TODO remove this line and the next one when the correct texture is inserted
+		agent.setColor(Color.BLUE);															
 		agent.setListener(this);
 		mainStage.addActor(agent);	
 
