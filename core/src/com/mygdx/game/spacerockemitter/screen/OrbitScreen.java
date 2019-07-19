@@ -48,7 +48,7 @@ public class OrbitScreen extends BaseScreen {
 		TextureAtlas texture = game.assetManager.get(AssetCatalog.TEXTURE_ATLAS_PLANETS);
 		Image planetImage = new Image(new TextureRegionDrawable(texture.findRegion(game.dataManager.getActualPlanet().getImage())));
 		Label labelPlanetName = game.uiManager.getLabelDefault(game.dataManager.getActualPlanet().name);
-		Label labelFactionName = game.uiManager.getLabelDefault(game.dataManager.getActualPlanet().faction);
+		Label labelFactionName = game.uiManager.getLabelDefault(game.dataManager.getActualPlanet().faction.name);	//TODO use the immage of the faction
 		Label actualDay = game.uiManager.getLabelDefault("actual day: "+game.dataManager.actualDay);		
 		
 		//prepare the table

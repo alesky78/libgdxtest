@@ -1,13 +1,13 @@
 {
 	planets:[
-				{name:alfa  ,ref:0, x:70, 	y:75,	faction:star league,	challenge:5,	image:planet-0,	summary:mineral station planet}
-				{name:beta  ,ref:1, x:200, 	y:120,	faction:star league,	challenge:5,	image:planet-1,	summary:abbandon planet}
-				{name:gamma ,ref:2, x:300, 	y:150,	faction:star league,	challenge:5,	image:planet-2,	summary:capital planet}
-				{name:delta ,ref:3, x:320, 	y:80,	faction:star league,	challenge:5,	image:planet-3,	summary:prigion planet}
-				{name:pi 	,ref:4, x:420, 	y:110,	faction:empire,			challenge:5,	image:planet-4,	summary:market planet}
-				{name:bacta ,ref:5, x:540, 	y:70,	faction:empire,			challenge:5,	image:planet-5,	summary:abbandon planet}
-				{name:pico  ,ref:6, x:80, 	y:200,	faction:republic,		challenge:5,	image:planet-6,	summary:tomb planet}
-				{name:gul	,ref:7, x:690, 	y:66,	faction:republic,		challenge:5,	image:planet-7,	summary:capital planet}
+				{name:alfa  ,ref:0, x:70, 	y:75,	factionRef:0,	challenge:5,	image:planet-0,	summary:mineral station planet}
+				{name:beta  ,ref:1, x:200, 	y:120,	factionRef:0,	challenge:5,	image:planet-1,	summary:abbandon planet}
+				{name:gamma ,ref:2, x:300, 	y:150,	factionRef:0,	challenge:5,	image:planet-2,	summary:capital planet}
+				{name:delta ,ref:3, x:320, 	y:80,	factionRef:0,	challenge:5,	image:planet-3,	summary:prigion planet}
+				{name:pi 	,ref:4, x:420, 	y:110,	factionRef:1,	challenge:5,	image:planet-4,	summary:market planet}
+				{name:bacta ,ref:5, x:540, 	y:70,	factionRef:1,	challenge:5,	image:planet-5,	summary:abbandon planet}
+				{name:pico  ,ref:6, x:80, 	y:200,	factionRef:2,	challenge:5,		image:planet-6,	summary:tomb planet}
+				{name:gul	,ref:7, x:690, 	y:66,	factionRef:2,	challenge:5,	image:planet-7,	summary:capital planet}
 			],
 	routes:[
 			{refA:0, refB:1}

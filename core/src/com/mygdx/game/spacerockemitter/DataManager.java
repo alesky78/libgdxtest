@@ -56,10 +56,9 @@ public class DataManager {
 		factions = json.fromJson(ArrayList.class, Gdx.files.internal("spacerockemitter/data/data_faction.json"));
 
 		//start the game		
-		
-		//generate first contract
 		for (PlanetData planet :  hiperSpaceMap.getPlanets()) {
-			makeNewContracts(planet);
+			planet.faction = findFaction(planet.getFactionRef());	//link the faction
+			makeNewContracts(planet);								//generate first contract
 		}
 		
 		refActualPlanet = refStartPlanet;
@@ -124,8 +123,16 @@ public class DataManager {
 			planet.contracts.add(contract);
 			
 		}
-		
-				
+					
+	}
+	
+	public FactionData findFaction(int ref) {
+		for (FactionData factionData : factions) {
+			if(factionData.ref == ref) {
+				return factionData;
+			}
+		}
+		return null;
 	}
 	
 

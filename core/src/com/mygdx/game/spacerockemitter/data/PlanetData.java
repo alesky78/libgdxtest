@@ -3,15 +3,18 @@ package com.mygdx.game.spacerockemitter.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.utils.Json;
+
 public class PlanetData {
 
 	public int ref;
 	public String name;
 	public float x,y;
-	public String faction;
 	public int challenge;
 	public String summary;
-	public String image;	
+	public String image;
+	public int factionRef;
+	public FactionData faction;	
 
 	//contracts data
 	public int contractGenerationDay;
@@ -23,13 +26,12 @@ public class PlanetData {
 		contracts = new ArrayList<ContractData>();
 	}
 	
-
-	public String getFaction() {
-		return faction;
+	public int getFactionRef() {
+		return factionRef;
 	}
 
-	public void setFaction(String faction) {
-		this.faction = faction;
+	public void setFactionRef(int factionRef) {
+		this.factionRef = factionRef;
 	}
 
 	public int getChallenge() {
@@ -106,5 +108,32 @@ public class PlanetData {
 		this.contractGenerationDay = contractGenerationDay;
 	}
 	
+	public FactionData getFaction() {
+		return faction;
+	}
+
+	public void setFaction(FactionData faction) {
+		this.faction = faction;
+	}	
 		
+	
+	public static void main(String[] args) {
+		PlanetData data = new PlanetData();
+		
+		data.ref = 1;
+		data.name = "name";
+		data.x = 1;
+		data.y = 1;
+		data.challenge = 1;
+		data.summary = "summary";
+		data.image = "immage";
+		data.factionRef = 1;
+	
+		Json json = new Json();
+		System.out.println(json.prettyPrint(data));
+		System.out.println(json.toJson(data));
+		
+		
+	}
+	
 }

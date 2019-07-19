@@ -326,7 +326,7 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		planetImage = new Image(new TextureRegionDrawable(texture.findRegion(target.getPlanetData().getImage())));
 
 		labelPlanetName.setText(target.getPlanetData().getName());
-		labelFactionName.setText(target.getPlanetData().getFaction());
+		labelFactionName.setText(target.getPlanetData().faction.name);	//TODO use the immage of the faction
 		labelChalleng.setText(target.getPlanetData().getChallenge());		
 		labelSummary.setText(target.getPlanetData().getSummary());
 		labelDistance.setText(game.dataManager.getDaysOfTrip(calculateDistance())+"");
