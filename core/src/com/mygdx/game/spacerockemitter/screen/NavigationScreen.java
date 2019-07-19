@@ -82,6 +82,7 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 	private TextButton backButton;	
 	private Window window;
 	private Image planetImage;
+	private Image factionBadge;
 	private Label labelPlanetName;
 	private Label labelFactionName;
 	private Label labelSummary;	
@@ -325,11 +326,16 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		TextureAtlas texture = game.assetManager.get(AssetCatalog.TEXTURE_ATLAS_PLANETS);
 		planetImage = new Image(new TextureRegionDrawable(texture.findRegion(target.getPlanetData().getImage())));
 
+		texture = game.assetManager.get(AssetCatalog.TEXTURE_ATLAS_FACTION_BADGE);
+		factionBadge = new Image(new TextureRegionDrawable(texture.findRegion(target.getPlanetData().getFaction().imageBadge)));
+		
 		labelPlanetName.setText(target.getPlanetData().getName());
-		labelFactionName.setText(target.getPlanetData().faction.name);	//TODO use the immage of the faction
+		labelFactionName.setText(target.getPlanetData().faction.name);
+
+		
 		labelChalleng.setText(target.getPlanetData().getChallenge());		
 		labelSummary.setText(target.getPlanetData().getSummary());
-		labelDistance.setText(game.dataManager.getDaysOfTrip(calculateDistance())+"");
+		labelDistance.setText(game.dataManager.getDaysOfTrip(calculateDistance())+" days");
 		
 
 		//planet and name
@@ -338,9 +344,9 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		descTable.add(planetImage);
 		descTable.add(labelPlanetName);
 		descTable.row();
-		descTable.add().height(30);      
+		descTable.add().height(15);      
 		descTable.row();		
-		descTable.add( game.uiManager.getLabelDefault("Faction:")).left();
+		descTable.add( factionBadge);
 		descTable.add(labelFactionName);
 		descTable.row();
 		descTable.add(game.uiManager.getLabelDefault("Challeng:")).left();

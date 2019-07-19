@@ -48,30 +48,27 @@ public class OrbitScreen extends BaseScreen {
 		TextureAtlas texture = game.assetManager.get(AssetCatalog.TEXTURE_ATLAS_PLANETS);
 		Image planetImage = new Image(new TextureRegionDrawable(texture.findRegion(game.dataManager.getActualPlanet().getImage())));
 		Label labelPlanetName = game.uiManager.getLabelDefault(game.dataManager.getActualPlanet().name);
-		Label labelFactionName = game.uiManager.getLabelDefault(game.dataManager.getActualPlanet().faction.name);	//TODO use the immage of the faction
+		Label labelFactionName = game.uiManager.getLabelDefault(game.dataManager.getActualPlanet().faction.name);
+		Image factionBadge = new Image(game.assetManager.get(AssetCatalog.TEXTURE_ATLAS_FACTION_BADGE).findRegion(game.dataManager.getActualPlanet().faction.imageBadge));
 		Label actualDay = game.uiManager.getLabelDefault("actual day: "+game.dataManager.actualDay);		
 		
 		//prepare the table
 		uiTable.pad(5);
 		uiTable.setBackground(background);
+		uiTable.row();		
+		uiTable.add().width(200);
+		uiTable.add(actualDay).center();
+		uiTable.add().width(200);		
 		uiTable.row();
 		uiTable.add().colspan(3).height(200).expandX();
 		uiTable.row();		
 		uiTable.add(navigation).left().width(200);
 		uiTable.add(planetImage).center();
-		uiTable.add().width(200);
-		uiTable.row();
-		uiTable.add();
-		uiTable.add(labelPlanetName).center();
-		uiTable.add().width(200);		
+		uiTable.add(labelPlanetName);		
 		uiTable.row();
 		uiTable.add(findJob).left().width(200);
-		uiTable.add(labelFactionName).center();
-		uiTable.add().width(200);		
-		uiTable.row();
-		uiTable.add().width(200);
-		uiTable.add(actualDay).center();
-		uiTable.add().width(200);		
+		uiTable.add(factionBadge).center();
+		uiTable.add(labelFactionName);		
 		uiTable.row();				
 		uiTable.add().colspan(3).expandY();
 		

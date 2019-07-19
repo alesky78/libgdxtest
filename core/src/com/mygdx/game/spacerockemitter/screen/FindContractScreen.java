@@ -3,6 +3,7 @@ package com.mygdx.game.spacerockemitter.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -27,7 +28,9 @@ public class FindContractScreen extends BaseScreen {
 	//contract details widget
 	private Label contractType;
 	private Label contractPayment;
-	private Label contractChalleng;		
+	private Label contractChalleng;
+	private Label contractFactionName;			
+	private Image contractFactionBadge;
 	private Image contractMissionImage;
 	private TextButton accept; 
 	
@@ -39,6 +42,10 @@ public class FindContractScreen extends BaseScreen {
 	@Override
 	protected void create() {
 
+		//regenerate the data
+		game.dataManager.generateContractsIfNeed(game.dataManager.getActualPlanet());
+		
+		
 		//table composition
 
 		TextButton back = game.uiManager.getTextButon("<<");
@@ -58,6 +65,7 @@ public class FindContractScreen extends BaseScreen {
 		Table scrollTable = new Table();
 		ScrollPane scroller =  game.uiManager.getScrollPane(scrollTable);
 		scroller.setFadeScrollBars(false);
+		
 		
 		for (ContractData contract : game.dataManager.getActualPlanet().contracts) {
 			scrollTable.add(buildContractCard(contract)).left().pad(5, 0, 5, 0);
@@ -105,7 +113,6 @@ public class FindContractScreen extends BaseScreen {
 		Table contractTable = new Table();
 		contractTable.setTouchable(Touchable.enabled); 
 		
-		//TODO change the badge using the faction in the contract contract.faction
 		TextureAtlas texture = game.assetManager.get(AssetCatalog.TEXTURE_ATLAS_FACTION_BADGE);
 		Image badgeImage =  new Image(new TextureRegionDrawable(texture.findRegion(contract.faction.imageBadge) ));
 
@@ -133,12 +140,17 @@ public class FindContractScreen extends BaseScreen {
 	
 	
 	private Table createContractDetail() {
+		
 		Table contractTable = new Table();
 		
 		contractType = game.uiManager.getLabelDefault("");
 		contractPayment = game.uiManager.getLabelDefault("");	
 		contractChalleng = game.uiManager.getLabelDefault("");
+		contractFactionName = game.uiManager.getLabelDefault("");
+		contractFactionBadge = new Image();
 		contractMissionImage = new Image();
+
+		
 			
 		Table title = new Table();
 		title.add(contractType).left().expandX().pad(5, 0, 5, 0);
@@ -147,8 +159,11 @@ public class FindContractScreen extends BaseScreen {
 		title.row();
 		title.add(contractChalleng).left().expandX().pad(5, 0, 5, 0);
 		title.row();		
+		title.add(contractFactionName).left().expandX().pad(5, 0, 5, 0);
+		title.row();
+		title.add(contractFactionBadge).left().expandX().pad(5, 0, 5, 0);
+		title.row();				
 		
-
 		accept = game.uiManager.getTextButon("accept");
 		accept.setVisible(false);
 		accept.addListener(new InputListener() {
@@ -175,11 +190,13 @@ public class FindContractScreen extends BaseScreen {
 	 */
 	private void refreshContractDetail(ContractData contract) {
 
-		//TODO should be created based on the contract types
-		Texture mission = new Texture(Gdx.files.internal("spacerockemitter/mission-asteroid.png"));
+		Texture mission = new Texture(Gdx.files.internal("spacerockemitter/mission-asteroid.png"));			//TODO the mission immage should be created based on the contract types
 		contractMissionImage.setDrawable(new TextureRegionDrawable(mission));
 		contractMissionImage.setSize(mission.getWidth(), mission.getHeight());
 
+		TextureRegion badge =  game.assetManager.get(AssetCatalog.TEXTURE_ATLAS_FACTION_BADGE).findRegion(contract.faction.imageBadge);
+		contractFactionBadge.setDrawable(new TextureRegionDrawable(badge));
+		
 		contractType.setText("type:"+contract.type);
 		contractPayment.setText("payment:"+contract.payment);
 		contractChalleng.setText("challeng:"+contract.challenge);

@@ -18,7 +18,7 @@ public class FunctionUtils {
 	 * 1 where x = 0.5
 	 * 0 where x = 1
 	 * 
-	 * TODO we could had the second field pow that change the curve
+	 * TODO se aggiunggo un secondo campo per calcolare la potenza posso creare curve spike o tendenti a rettangoli
 	 * for value > 1  the curve tend to become a pick in the 0.5  
 	 * for value < 1  the curve tend to become a rectangle where the value is 0.5 wherever less that the margins where is always 0
 	 * 

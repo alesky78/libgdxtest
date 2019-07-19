@@ -97,7 +97,7 @@ public class DataManager {
 	 * 
 	 * @param planet
 	 */
-	public void generateContracts(PlanetData planet) {
+	public void generateContractsIfNeed(PlanetData planet) {
 		if(actualDay-planet.contractGenerationDay > contractRegeneartionDay) {
 			makeNewContracts(planet);
 		}				
@@ -117,7 +117,9 @@ public class DataManager {
 			index = MathUtils.random(1, factions.size()) - 1;
 			contract.faction = factions.get(index);
 			contract.challenge = MathUtils.random(1, planet.getChallenge());
-			contract.payment = 1000 * contract.challenge;	//TODO i tipi di missioni dovrebbero essere configurati con i loro parametri: pagamenti, tipo etc il pagamento deve risentire della relazione con la fazione
+			
+			//TODO i tipi di missioni dovrebbero essere configurati con i loro parametri: pagamenti, tipo etc il pagamento deve risentire della relazione con la fazione
+			contract.payment = 1000 * contract.challenge;	
 			contract.type = 0;
 			
 			planet.contracts.add(contract);
