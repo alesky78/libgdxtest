@@ -5,9 +5,9 @@ import java.util.List;
 
 public class PlanetData {
 
+	public int ref;
 	public String name;
 	public float x,y;
-	public int ref;
 	public String faction;
 	public int challenge;
 	public String summary;

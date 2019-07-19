@@ -34,14 +34,6 @@ public class OrbitScreen extends BaseScreen {
 				return true;
 			}
 		});		
-
-		TextButton chooseShip = game.uiManager.getTextButon("Choose Ship");
-		chooseShip.addListener(new InputListener() {
-			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				game.setScreen( new ChooseShipScreen(game) );	
-				return true;
-			}
-		});		
 		
 		TextButton findJob = game.uiManager.getTextButon("Find Contract");
 		findJob.addListener(new InputListener() {
@@ -68,7 +60,7 @@ public class OrbitScreen extends BaseScreen {
 		uiTable.add(planetImage).center();
 		uiTable.add().width(200);
 		uiTable.row();
-		uiTable.add(chooseShip).left().width(200);
+		uiTable.add();
 		uiTable.add(labelPlanetName).center();
 		uiTable.add().width(200);		
 		uiTable.row();

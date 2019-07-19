@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -38,7 +39,6 @@ public class FindContractScreen extends BaseScreen {
 
 		//table composition
 
-		//COLUMNS 1
 		TextButton back = game.uiManager.getTextButon("<<");
 		back.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -47,42 +47,39 @@ public class FindContractScreen extends BaseScreen {
 			}
 		});
 
-		//COLUMNS 2
-		Table contracts = new Table();
 
 		Label descContract = game.uiManager.getLabelDefault("available contract");
 		descContract.setAlignment(Align.center);
 		descContract.setWrap(true);
 		
+		//scrolling part
 		Table scrollTable = new Table();
-		
-		
-		
-		for (ContractData contract : game.dataManager.getActualPlanet().contracts) {
-			scrollTable.add(buildContractCard(contract));
-			scrollTable.row();				
-		}
-
-		
 		ScrollPane scroller =  game.uiManager.getScrollPane(scrollTable);
 		scroller.setFadeScrollBars(false);
-
-		Table detailContrac = createContractDetail();
 		
-		//compose  2
+		for (ContractData contract : game.dataManager.getActualPlanet().contracts) {
+			scrollTable.add(buildContractCard(contract)).left().pad(5, 0, 5, 0);
+			scrollTable.row();				
+		}
+		
+
+		//detail contract part
+		Table detailContractTable = createContractDetail();
+		
+		//full contract table
+		Table contracts = new Table();		
 		contracts.row();		
 		contracts.add(descContract);
 		contracts.add();
 		contracts.row();
-		contracts.add(scroller).width(400).height(500).padRight(5);
-		contracts.add(detailContrac).left().growX();
+		contracts.add(scroller).width(350).height(500).padRight(5);
+		contracts.add(detailContractTable).left().growX();
 
-
-
+		
 		uiTable.pad(5);
 		uiTable.add(back).top().left().expandX();
 		uiTable.row();
-		uiTable.add(contracts).left().growX();
+		uiTable.add(contracts).left().expandX();
 
 
 		if(MAIN_SCENE_DEBUG) {
@@ -104,21 +101,22 @@ public class FindContractScreen extends BaseScreen {
 	 */
 	private Table buildContractCard(ContractData contract) {
 		Table contractTable = new Table();
+		contractTable.setTouchable(Touchable.enabled); 
 		
 		//TODO change the badge using the faction in the contract contract.faction
 		Image badgeImage = new Image(new TextureRegionDrawable(new Texture(Gdx.files.internal("spacerockemitter/badge-1.png"))));
 
 		Table title = new Table();
+		title.row();		
 		title.add(game.uiManager.getLabelDefault(contract.type+"")).left();
 		title.row();
 		title.add(game.uiManager.getLabelDefault("payment: "+contract.payment)).left();
 		
-		contractTable.add(badgeImage).left();
+		contractTable.add(badgeImage);
 		contractTable.add(title);
-		contractTable.add(game.uiManager.getLabelTitle(contract.challenge+"")).right();
-		contractTable.pad(5, 0, 5, 0);
+		contractTable.add(game.uiManager.getLabelTitle(contract.challenge+"")).expandX().right();
 		
-		//contract selected for detail
+		//contract selected for detail		
 		contractTable.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				refreshContractDetail(contract);
@@ -152,6 +150,7 @@ public class FindContractScreen extends BaseScreen {
 		accept.setVisible(false);
 		accept.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				game.setScreen( new ChooseShipScreen(game) );	
 				return true;
 			}
 		});
