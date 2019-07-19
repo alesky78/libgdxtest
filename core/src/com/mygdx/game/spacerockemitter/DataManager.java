@@ -21,15 +21,16 @@ public class DataManager {
 	public int contractRegeneartionDay = 30;
 	public int minContract = 1;	
 	public int maxContract = 5;	
+	public int refStartPlanet = 1;	
 
 	
 	//game session data
 	public int actualDay;
+	public int refActualPlanet;
 	
 	
 	//Model data
 	public HiperSpaceMapData hiperSpaceMap;
-	public PlanetData actualPlanet;	//TODO this must be a reference to the name other way when we save teh game we save this object
 	
 	
 	public DataManager() {
@@ -55,13 +56,32 @@ public class DataManager {
 			makeNewContracts(planet);
 		}
 		
-		//TODO this parameter should be configured in the start new game logic
-		actualPlanet = hiperSpaceMap.getPlanets().get(0);
+		refActualPlanet = refStartPlanet;
 		
 		
 	}
 
 
+	
+	/**
+	 * get the actual planet
+	 * 
+	 */
+	public PlanetData getActualPlanet() {
+		for (PlanetData planet  : hiperSpaceMap.getPlanets()) {
+			if(planet.ref == refActualPlanet ) {
+				return planet;
+			}
+		}
+		
+		return null;
+	}
+
+	public void setActualPlanet(PlanetData planet) {
+		refActualPlanet = planet.getRef();
+	}
+	
+	
 	/**
 	 * generate the new contract if it is required
 	 * 

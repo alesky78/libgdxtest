@@ -49,7 +49,7 @@ public class FindContractScreen extends BaseScreen {
 		
 		
 		
-		for (ContractData contract : game.dataManager.actualPlanet.contracts) {
+		for (ContractData contract : game.dataManager.getActualPlanet().contracts) {
 			scrollTable.add(buildContractCard(contract));
 			scrollTable.row();				
 		}

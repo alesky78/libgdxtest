@@ -203,7 +203,7 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		//add the planets and identify the actual one
 		for (Planet planet2 : planets) {
 			mainStage.addActor(planet2);
-			if(planet2.refIndex == game.dataManager.actualPlanet.ref ) {
+			if(planet2.refIndex == game.dataManager.getActualPlanet().ref ) {
 				actualPlanet = planet2;
 			}
 
@@ -261,8 +261,7 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 				
 				//set the actual the new actual planet in the screen and in the dataManager
 				actualPlanet = selectedPlanet;
-				game.dataManager.actualPlanet = selectedPlanet.getPlanetData();
-				
+				game.dataManager.setActualPlanet(selectedPlanet.getPlanetData());
 
 				
 				agent.setPath(path);

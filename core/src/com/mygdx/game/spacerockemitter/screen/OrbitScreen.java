@@ -54,9 +54,9 @@ public class OrbitScreen extends BaseScreen {
 		
 		//planet info
 		TextureAtlas texture = game.assetManager.get(AssetCatalog.TEXTURE_ATLAS_PLANETS);
-		Image planetImage = new Image(new TextureRegionDrawable(texture.findRegion(game.dataManager.actualPlanet.getImage())));
-		Label labelPlanetName = game.uiManager.getLabelDefault(game.dataManager.actualPlanet.name);
-		Label labelFactionName = game.uiManager.getLabelDefault(game.dataManager.actualPlanet.faction);
+		Image planetImage = new Image(new TextureRegionDrawable(texture.findRegion(game.dataManager.getActualPlanet().getImage())));
+		Label labelPlanetName = game.uiManager.getLabelDefault(game.dataManager.getActualPlanet().name);
+		Label labelFactionName = game.uiManager.getLabelDefault(game.dataManager.getActualPlanet().faction);
 		
 		//prepare the table
 		uiTable.pad(5);
