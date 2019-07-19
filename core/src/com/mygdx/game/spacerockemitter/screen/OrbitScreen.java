@@ -49,6 +49,7 @@ public class OrbitScreen extends BaseScreen {
 		Image planetImage = new Image(new TextureRegionDrawable(texture.findRegion(game.dataManager.getActualPlanet().getImage())));
 		Label labelPlanetName = game.uiManager.getLabelDefault(game.dataManager.getActualPlanet().name);
 		Label labelFactionName = game.uiManager.getLabelDefault(game.dataManager.getActualPlanet().faction);
+		Label actualDay = game.uiManager.getLabelDefault("actual day: "+game.dataManager.actualDay);		
 		
 		//prepare the table
 		uiTable.pad(5);
@@ -67,7 +68,11 @@ public class OrbitScreen extends BaseScreen {
 		uiTable.add(findJob).left().width(200);
 		uiTable.add(labelFactionName).center();
 		uiTable.add().width(200);		
-		uiTable.row();		
+		uiTable.row();
+		uiTable.add().width(200);
+		uiTable.add(actualDay).center();
+		uiTable.add().width(200);		
+		uiTable.row();				
 		uiTable.add().colspan(3).expandY();
 		
 		

@@ -21,7 +21,8 @@ public class DataManager {
 	public int contractRegeneartionDay = 30;
 	public int minContract = 1;	
 	public int maxContract = 5;	
-	public int refStartPlanet = 1;	
+	public int refStartPlanet = 1;
+	public float dayUnitDistance = 0.1f;		//used by the navigation to calculate the amount of day passed
 
 	
 	//game session data
@@ -80,7 +81,12 @@ public class DataManager {
 	public void setActualPlanet(PlanetData planet) {
 		refActualPlanet = planet.getRef();
 	}
+
 	
+	public int getDaysOfTrip(int distance) {
+
+		return (int)(distance*dayUnitDistance);
+	}
 	
 	/**
 	 * generate the new contract if it is required

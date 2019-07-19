@@ -39,7 +39,7 @@ public class PlanetGraph implements IndexedGraph<Planet> {
 	}
 	
 
-	public GraphPath<Planet> findPath(Planet start, Planet goal){
+	public GraphPath<Planet> findPlanetsPath(Planet start, Planet goal){
 				
 		GraphPath<Planet> planetPath = new DefaultGraphPath<>();
 		new IndexedAStarPathFinder<>(this).searchNodePath(start, goal, cityHeuristic, planetPath);
@@ -47,6 +47,13 @@ public class PlanetGraph implements IndexedGraph<Planet> {
 		return planetPath;
 	}
 	
+	public GraphPath<Connection<Planet>> findRoutesPath(Planet start, Planet goal){
+		
+		GraphPath<Connection<Planet>> routePath = new DefaultGraphPath<>();
+		new IndexedAStarPathFinder<>(this).searchConnectionPath(start, goal, cityHeuristic, routePath);
+			
+		return routePath;
+	}	
 
 	/**
 	 * extremely important of the algorithm will go in exception

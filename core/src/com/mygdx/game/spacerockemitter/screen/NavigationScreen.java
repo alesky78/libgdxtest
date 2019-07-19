@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -56,7 +57,9 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 	//screen data
 	private PlanetAgent agent;
 	private PlanetGraph pathFinder;
-	private GraphPath<Planet> path;
+	private GraphPath<Planet> planetsPath;
+	private GraphPath<Connection<Planet>> routesPath;	
+	
 	private List<Planet> planets;
 	private List<Route> routes;
 
@@ -83,6 +86,7 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 	private Label labelFactionName;
 	private Label labelSummary;	
 	private Label labelChalleng;
+	private Label labelDistance;	
 	private TextButton goButton;
 	private TextButton closeButton;
 
@@ -243,6 +247,7 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		labelFactionName = game.uiManager.getLabelDefault("");
 		labelSummary = game.uiManager.getLabelDefault("");
 		labelChalleng = game.uiManager.getLabelDefault("");
+		labelDistance = game.uiManager.getLabelDefault("");
 
 		goButton = game.uiManager.getTextButon("warp");
 		goButton.addListener(new InputListener() {
@@ -253,10 +258,10 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 			public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 
 				agentArriveDestination = false;
-				path = pathFinder.findPath(actualPlanet, selectedPlanet);
-				highLightsRoute(path, actualPlanet);
+				planetsPath = pathFinder.findPlanetsPath(actualPlanet, selectedPlanet);
+				highLightsRoute(planetsPath, actualPlanet);
 
-				//TODO calculate and add the day that are passed here
+				game.dataManager.actualDay += game.dataManager.getDaysOfTrip(calculateDistance()); 
 				
 				
 				//set the actual the new actual planet in the screen and in the dataManager
@@ -264,7 +269,7 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 				game.dataManager.setActualPlanet(selectedPlanet.getPlanetData());
 
 				
-				agent.setPath(path);
+				agent.setPath(planetsPath);
 				window.setVisible(false);
 				gamePhase = PHASE_TRAVEL;
 
@@ -323,7 +328,7 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		labelPlanetName.setText(target.getPlanetData().getName());
 		labelFactionName.setText(target.getPlanetData().getFaction());
 		labelSummary.setText(target.getPlanetData().getSummary());
-		labelChalleng.setText(target.getPlanetData().getChallenge()+"");
+		labelDistance.setText(game.dataManager.getDaysOfTrip(calculateDistance())+"");
 
 		//planet and name
 		descTable.add().height(30);
@@ -338,6 +343,9 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		descTable.row();
 		descTable.add(game.uiManager.getLabelDefault("Challeng:")).left();
 		descTable.add(labelChalleng);
+		descTable.row();
+		descTable.add(game.uiManager.getLabelDefault("Distance:")).left();
+		descTable.add(labelDistance);		
 		descTable.row();
 		descTable.add().height(30);      
 		descTable.row();	
@@ -384,6 +392,22 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		}
 	}
 
+	/**
+	 * every time that a new planet is selected {@link PlanetListner#touchDown(InputEvent, float, float, int, int)}
+	 * we refresh the route then the calculation is always correct 
+	 * 
+	 */
+	private int calculateDistance() {
+		
+		int totalCost = 0;
+		
+		for (Connection<Planet> connection : routesPath) {
+			totalCost += connection.getCost();
+		}
+		
+		
+		return totalCost;
+	}
 
 	@Override
 	protected void update(float dt) {
@@ -541,6 +565,8 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
  
 			if(agentArriveDestination) {	//this event work only if the agent if not moving
 				selectedPlanet = (Planet)ev.getListenerActor();
+				routesPath  = pathFinder.findRoutesPath(actualPlanet, selectedPlanet); //calculate the new route then we calcuate correctly the cost
+				
 				prepareWindow(selectedPlanet);
 				window.setVisible(true);
 			}
