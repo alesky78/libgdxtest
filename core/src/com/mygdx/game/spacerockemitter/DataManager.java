@@ -61,7 +61,7 @@ public class DataManager {
 		//start the game		
 		for (PlanetData planet :  hiperSpaceMap.getPlanets()) {
 			planet.faction = findFaction(planet.getFactionRef());	//link the faction
-			makeNewContracts(planet);								//generate first contract
+			makeNewContracts(planet);								//generate first contract	//TODO in contratti non possono essere salvati nel data model altrimentri non puoi salvarli con i dati di sessione della partita!!! rifattorizzare un contenitore per i contratti
 		}
 		
 		refActualPlanet = refStartPlanet;
