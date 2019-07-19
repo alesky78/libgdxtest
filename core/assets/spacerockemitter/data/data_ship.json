@@ -1,0 +1,30 @@
+[
+
+	{class:com.mygdx.game.spacerockemitter.data.ShipData,
+	 	ref:0,
+	 	name:xj-32,
+	 	shipTex:ship-0,
+	 	maxSpeed:200,
+	 	acceleration:180,
+	 	deceleration:200
+	 },
+
+	{class:com.mygdx.game.spacerockemitter.data.ShipData,
+	 	ref:1,
+	 	name:cobra-mk1,
+	 	shipTex:ship-1,
+	 	maxSpeed:100,
+	 	acceleration:200,
+	 	deceleration:150
+	 },
+
+	{class:com.mygdx.game.spacerockemitter.data.ShipData,
+	 	ref:2,
+	 	name:name,
+	 	shipTex:ship-2,
+	 	maxSpeed:150,
+	 	acceleration:250,
+	 	deceleration:220
+	 },	 	
+	 	
+]

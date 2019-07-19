@@ -9,6 +9,7 @@ import com.mygdx.game.spacerockemitter.data.ContractData;
 import com.mygdx.game.spacerockemitter.data.FactionData;
 import com.mygdx.game.spacerockemitter.data.HiperSpaceMapData;
 import com.mygdx.game.spacerockemitter.data.PlanetData;
+import com.mygdx.game.spacerockemitter.data.ShipData;
 
 /**
  * this class collect all the data of the game
@@ -35,7 +36,8 @@ public class DataManager {
 	
 	//Model data
 	public HiperSpaceMapData hiperSpaceMap;
-	public ArrayList<FactionData> factions;	
+	public ArrayList<FactionData> factions;
+	public ArrayList<ShipData> ships;		
 	
 	
 	public DataManager() {
@@ -54,6 +56,7 @@ public class DataManager {
 		//load data
 		hiperSpaceMap = json.fromJson(HiperSpaceMapData.class, Gdx.files.internal("spacerockemitter/data/data_hiperspace.json"));
 		factions = json.fromJson(ArrayList.class, Gdx.files.internal("spacerockemitter/data/data_faction.json"));
+		ships  = json.fromJson(ArrayList.class, Gdx.files.internal("spacerockemitter/data/data_ship.json"));
 
 		//start the game		
 		for (PlanetData planet :  hiperSpaceMap.getPlanets()) {
