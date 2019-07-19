@@ -23,7 +23,7 @@ public class ChooseShipScreen extends BaseScreen {
 	
 	private Texture backgroundTxt;
 	
-	private SpaceShip[] spaceShips;
+	private SpaceShip[] spaceShips;	//TODO devo usare lo ship model
 	private int SpaceShipsIndex = 0;
 	
 	private Label name;	
@@ -160,6 +160,7 @@ public class ChooseShipScreen extends BaseScreen {
 			 
 			
 			if(PHASE_TIMER > 2){
+				//passare lo ship model invece che uno ship actor
 				DestoryAsteroidLevel tl = new DestoryAsteroidLevel(game,spaceShips[SpaceShipsIndex]);
 				game.setScreen( tl );
 

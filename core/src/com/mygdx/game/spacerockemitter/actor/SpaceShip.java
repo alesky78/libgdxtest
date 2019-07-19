@@ -22,6 +22,7 @@ public class SpaceShip extends Group {
 	public static final float MAX_ACCELEATION = 250; 	
 	public static final float MAX_DECELERATION = 250;	
 
+	//TODO devo passare lo ship model del game manager come parametro e non i valori stessi
 	public SpaceShip(String name,float maxSpeed, float acceleration, float deceleration, Texture shipTex, AssetManager assetManager){
 
 		setName(name);
