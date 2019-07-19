@@ -20,6 +20,15 @@ public class FindContractScreen extends BaseScreen {
 	private final boolean MAIN_SCENE_DEBUG = false;
 	private final boolean UI_TABLE_DEBUG = true;	
 
+	
+	//contract details widget
+	private Label contractType;
+	private Label contractPayment;
+	private Label contractChalleng;		
+	private Image contractMissionImage;
+	private TextButton accept; 
+	
+	
 	public FindContractScreen(SpaceRockEmitterGame g) {
 		super(g);
 	}
@@ -58,15 +67,14 @@ public class FindContractScreen extends BaseScreen {
 		ScrollPane scroller =  game.uiManager.getScrollPane(scrollTable);
 		scroller.setFadeScrollBars(false);
 
-		//the datail of the contract selected
-		Table detailContrac = buildContractDetail();
+		Table detailContrac = createContractDetail();
 		
 		//compose  2
 		contracts.row();		
 		contracts.add(descContract);
 		contracts.add();
 		contracts.row();
-		contracts.add(scroller).width(350).height(500).padRight(5);
+		contracts.add(scroller).width(400).height(500).padRight(5);
 		contracts.add(detailContrac).left().growX();
 
 
@@ -101,18 +109,19 @@ public class FindContractScreen extends BaseScreen {
 		Image badgeImage = new Image(new TextureRegionDrawable(new Texture(Gdx.files.internal("spacerockemitter/badge-1.png"))));
 
 		Table title = new Table();
-		title.add(game.uiManager.getLabelDefault(contract.name)).left();
+		title.add(game.uiManager.getLabelDefault(contract.type+"")).left();
 		title.row();
 		title.add(game.uiManager.getLabelDefault("payment: "+contract.payment)).left();
 		
-		contractTable.add(badgeImage);
+		contractTable.add(badgeImage).left();
 		contractTable.add(title);
-		contractTable.add(game.uiManager.getLabelTitle(contract.challenge+""));
+		contractTable.add(game.uiManager.getLabelTitle(contract.challenge+"")).right();
 		contractTable.pad(5, 0, 5, 0);
 		
 		//contract selected for detail
 		contractTable.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				refreshContractDetail(contract);
 				return true;
 			}
 		});
@@ -120,32 +129,34 @@ public class FindContractScreen extends BaseScreen {
 		return contractTable;
 	}
 
-	/**
-	 * create the Contract Widget to add in the scroll part
-	 * 
-	 * @return
-	 */
-	private Table buildContractDetail() {
+	
+	
+	private Table createContractDetail() {
 		Table contractTable = new Table();
 		
-		Image badgeImage = new Image(new TextureRegionDrawable(new Texture(Gdx.files.internal("spacerockemitter/mission-asteroid.png"))));
-		
+		contractType = game.uiManager.getLabelDefault("");
+		contractPayment = game.uiManager.getLabelDefault("");	
+		contractChalleng = game.uiManager.getLabelDefault("");
+		contractMissionImage = new Image();
+			
 		Table title = new Table();
-		title.add(game.uiManager.getLabelDefault("asterodi destroy")).left().expandX().pad(5, 0, 5, 0);
+		title.add(contractType).left().expandX().pad(5, 0, 5, 0);
 		title.row();
-		title.add(game.uiManager.getLabelDefault("payment: 1000k")).left().expandX().pad(5, 0, 5, 0);
+		title.add(contractPayment).left().expandX().pad(5, 0, 5, 0);
 		title.row();
-		title.add(game.uiManager.getLabelDefault("description")).left().expand().pad(5, 0, 5, 0);
+		title.add(contractChalleng).left().expandX().pad(5, 0, 5, 0);
+		title.row();		
+		
 
-		TextButton accept = game.uiManager.getTextButon("accept");
+		accept = game.uiManager.getTextButon("accept");
+		accept.setVisible(false);
 		accept.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("accept contract");
 				return true;
 			}
 		});
 		
-		contractTable.add(badgeImage).pad(5, 0, 5, 0).left().expandX();
+		contractTable.add(contractMissionImage).pad(5, 0, 5, 0).left().expandX();
 		contractTable.row();
 		contractTable.add(title).left().expandX();
 		contractTable.row();		
@@ -153,6 +164,26 @@ public class FindContractScreen extends BaseScreen {
 	
 		
 		return contractTable;
+	}
+	
+	/**
+	 * create the Contract Widget to add in the scroll part
+	 * 
+	 * @return
+	 */
+	private void refreshContractDetail(ContractData contract) {
+
+		//TODO should be created based on the contract types
+		Texture mission = new Texture(Gdx.files.internal("spacerockemitter/mission-asteroid.png"));
+		contractMissionImage.setDrawable(new TextureRegionDrawable(mission));
+		contractMissionImage.setSize(mission.getWidth(), mission.getHeight());
+
+		contractType.setText("type:"+contract.type);
+		contractPayment.setText("payment:"+contract.payment);
+		contractChalleng.setText("challeng:"+contract.challenge);
+		
+		accept.setVisible(true);
+		
 	}
 
 	

@@ -105,7 +105,6 @@ public class DataManager {
 			//TODO generate properly the contract and not by static data
 			
 			contract = new ContractData();
-			contract.name = "contract "+i;
 			contract.faction = planet.getFaction();
 			contract.challenge = MathUtils.random(1, planet.getChallenge());
 			contract.payment = 1000 * contract.challenge;
