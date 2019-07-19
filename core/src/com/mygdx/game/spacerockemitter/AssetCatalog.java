@@ -72,6 +72,7 @@ public class AssetCatalog {
 	//TEXTURE ATLAS
 	//////////////////////
 	public static AssetDescriptor<TextureAtlas> TEXTURE_ATLAS_PLANETS;
+	public static AssetDescriptor<TextureAtlas> TEXTURE_ATLAS_FACTION_BADGE;	
 	
 	//////////////////////
 	//PARTICLE EFFECT
@@ -133,7 +134,7 @@ public class AssetCatalog {
 		
 		//texture atlas
 		TEXTURE_ATLAS_PLANETS = new AssetDescriptor<>("spacerockemitter/packPlanets.atlas", TextureAtlas.class);
-		
+		TEXTURE_ATLAS_FACTION_BADGE = new AssetDescriptor<>("spacerockemitter/packFactionBadge.atlas", TextureAtlas.class);
 		
 		//particle
 		ParticleEffectLoader.ParticleEffectParameter particleParam = new ParticleEffectLoader.ParticleEffectParameter();
@@ -204,6 +205,7 @@ public class AssetCatalog {
 		
 		//load texture atlas
 		assetManager.load(TEXTURE_ATLAS_PLANETS);
+		assetManager.load(TEXTURE_ATLAS_FACTION_BADGE);		
 		
 		//load particle effects
 		assetManager.load(PARTICLE_THRUSTER);

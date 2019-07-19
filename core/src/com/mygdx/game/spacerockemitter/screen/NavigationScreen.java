@@ -327,8 +327,10 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 
 		labelPlanetName.setText(target.getPlanetData().getName());
 		labelFactionName.setText(target.getPlanetData().getFaction());
+		labelChalleng.setText(target.getPlanetData().getChallenge());		
 		labelSummary.setText(target.getPlanetData().getSummary());
 		labelDistance.setText(game.dataManager.getDaysOfTrip(calculateDistance())+"");
+		
 
 		//planet and name
 		descTable.add().height(30);

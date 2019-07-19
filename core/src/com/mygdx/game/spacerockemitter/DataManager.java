@@ -1,9 +1,12 @@
 package com.mygdx.game.spacerockemitter;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.spacerockemitter.data.ContractData;
+import com.mygdx.game.spacerockemitter.data.FactionData;
 import com.mygdx.game.spacerockemitter.data.HiperSpaceMapData;
 import com.mygdx.game.spacerockemitter.data.PlanetData;
 
@@ -32,6 +35,7 @@ public class DataManager {
 	
 	//Model data
 	public HiperSpaceMapData hiperSpaceMap;
+	public ArrayList<FactionData> factions;	
 	
 	
 	public DataManager() {
@@ -47,8 +51,9 @@ public class DataManager {
 
 		Json json = new Json();	
 
-		//hiperspace data
+		//load data
 		hiperSpaceMap = json.fromJson(HiperSpaceMapData.class, Gdx.files.internal("spacerockemitter/data/data_hiperspace.json"));
+		factions = json.fromJson(ArrayList.class, Gdx.files.internal("spacerockemitter/data/data_faction.json"));
 
 		//start the game		
 		
@@ -107,13 +112,13 @@ public class DataManager {
 		//generate it
 		int amount = MathUtils.random(minContract, maxContract);
 		ContractData contract;
+		int index = 0;
 		for (int i = 0; i < amount; i++) {
-			//TODO generate properly the contract and not by static data
-			
-			contract = new ContractData();
-			contract.faction = planet.getFaction();
+			contract = new ContractData();			
+			index = MathUtils.random(1, factions.size()) - 1;
+			contract.faction = factions.get(index);
 			contract.challenge = MathUtils.random(1, planet.getChallenge());
-			contract.payment = 1000 * contract.challenge;
+			contract.payment = 1000 * contract.challenge;	//TODO i tipi di missioni dovrebbero essere configurati con i loro parametri: pagamenti, tipo etc il pagamento deve risentire della relazione con la fazione
 			contract.type = 0;
 			
 			planet.contracts.add(contract);

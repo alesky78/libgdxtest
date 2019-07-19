@@ -1,0 +1,17 @@
+[
+	{class:com.mygdx.game.spacerockemitter.data.FactionData,
+		ref:0,
+		name:star league,
+		imageBadge:faction-badge-1},
+	
+	{class:com.mygdx.game.spacerockemitter.data.FactionData,
+		ref:1,
+		name:empire,
+		imageBadge:faction-badge-2},
+		
+	{class:com.mygdx.game.spacerockemitter.data.FactionData,
+		ref:2,
+		name:republic,
+		imageBadge:faction-badge-3}
+		
+]

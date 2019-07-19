@@ -7,4 +7,13 @@ public class FactionData {
 	public String imageBadge;
 	
 	
+	
+	public FactionData() {
+		super();
+	}
+
+
+
+
+	
 }

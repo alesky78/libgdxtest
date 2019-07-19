@@ -2,6 +2,7 @@ package com.mygdx.game.spacerockemitter.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 import com.mygdx.game.spacerockemitter.data.ContractData;
 
@@ -104,7 +106,8 @@ public class FindContractScreen extends BaseScreen {
 		contractTable.setTouchable(Touchable.enabled); 
 		
 		//TODO change the badge using the faction in the contract contract.faction
-		Image badgeImage = new Image(new TextureRegionDrawable(new Texture(Gdx.files.internal("spacerockemitter/badge-1.png"))));
+		TextureAtlas texture = game.assetManager.get(AssetCatalog.TEXTURE_ATLAS_FACTION_BADGE);
+		Image badgeImage =  new Image(new TextureRegionDrawable(texture.findRegion(contract.faction.imageBadge) ));
 
 		Table title = new Table();
 		title.row();		
