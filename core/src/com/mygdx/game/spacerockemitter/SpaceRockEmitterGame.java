@@ -30,7 +30,6 @@ public class SpaceRockEmitterGame extends Game {
 		
 		//load the game business data
 		dataManager = new DataManager();
-		dataManager.load();
 		
 		//start the main screen here
 		StartScreen scene = new StartScreen(this);

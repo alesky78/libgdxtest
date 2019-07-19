@@ -256,9 +256,14 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 				path = pathFinder.findPath(actualPlanet, selectedPlanet);
 				highLightsRoute(path, actualPlanet);
 
+				//TODO calculate and add the day that are passed here
+				
+				
 				//set the actual the new actual planet in the screen and in the dataManager
 				actualPlanet = selectedPlanet;
 				game.dataManager.actualPlanet = selectedPlanet.getPlanetData();
+				
+
 				
 				agent.setPath(path);
 				window.setVisible(false);

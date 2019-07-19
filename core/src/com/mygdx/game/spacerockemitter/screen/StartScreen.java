@@ -56,6 +56,7 @@ public class StartScreen extends BaseScreen {
 		final TextButton startGame = game.uiManager.getTextButon("start new game");
 		startGame.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				game.dataManager.startNewGame();
 				return true;
 			}
 

@@ -2,7 +2,6 @@ package com.mygdx.game.spacerockemitter.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
+import com.mygdx.game.spacerockemitter.data.ContractData;
 
 public class FindContractScreen extends BaseScreen {
 
@@ -34,7 +33,7 @@ public class FindContractScreen extends BaseScreen {
 		TextButton back = game.uiManager.getTextButon("<<");
 		back.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("bottone premuto");
+				game.setScreen( new OrbitScreen(game) );
 				return true;
 			}
 		});
@@ -48,10 +47,13 @@ public class FindContractScreen extends BaseScreen {
 		
 		Table scrollTable = new Table();
 		
-		for (int i = 0; i < 10; i++) {
-			scrollTable.add(buildContractCard());
-			scrollTable.row();	
+		
+		
+		for (ContractData contract : game.dataManager.actualPlanet.contracts) {
+			scrollTable.add(buildContractCard(contract));
+			scrollTable.row();				
 		}
+
 		
 		ScrollPane scroller =  game.uiManager.getScrollPane(scrollTable);
 		scroller.setFadeScrollBars(false);
@@ -92,25 +94,25 @@ public class FindContractScreen extends BaseScreen {
 	 * 
 	 * @return
 	 */
-	private Table buildContractCard() {
+	private Table buildContractCard(ContractData contract) {
 		Table contractTable = new Table();
 		
+		//TODO change the badge using the faction in the contract contract.faction
 		Image badgeImage = new Image(new TextureRegionDrawable(new Texture(Gdx.files.internal("spacerockemitter/badge-1.png"))));
 
 		Table title = new Table();
-		title.add(game.uiManager.getLabelDefault("Name")).left();
+		title.add(game.uiManager.getLabelDefault(contract.name)).left();
 		title.row();
-		title.add(game.uiManager.getLabelDefault("payment: 1000k")).left();
+		title.add(game.uiManager.getLabelDefault("payment: "+contract.payment)).left();
 		
 		contractTable.add(badgeImage);
 		contractTable.add(title);
-		contractTable.add(game.uiManager.getLabelTitle("5"));
+		contractTable.add(game.uiManager.getLabelTitle(contract.challenge+""));
 		contractTable.pad(5, 0, 5, 0);
 		
 		//contract selected for detail
 		contractTable.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("tabella premuto");
 				return true;
 			}
 		});

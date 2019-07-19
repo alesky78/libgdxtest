@@ -1,5 +1,8 @@
 package com.mygdx.game.spacerockemitter.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlanetData {
 
 	public String name;
@@ -9,21 +12,17 @@ public class PlanetData {
 	public int challenge;
 	public String summary;
 	public String image;	
+
+	//contracts data
+	public int contractGenerationDay;
+	public List<ContractData> contracts; 
 	
 	public PlanetData() {
 		super();
+		contractGenerationDay = 0;
+		contracts = new ArrayList<ContractData>();
 	}
 	
-	public PlanetData(String name, float x, float y, int ref, String faction, int challenge, String summary) {
-		super();
-		this.name = name;
-		this.x = x;
-		this.y = y;
-		this.ref = ref;
-		this.faction = faction;
-		this.challenge = challenge;
-		this.summary = summary;
-	}
 
 	public String getFaction() {
 		return faction;
@@ -88,7 +87,24 @@ public class PlanetData {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
+
+	public List<ContractData> getContracts() {
+		return contracts;
+	}
+
+	public void setContracts(List<ContractData> contracts) {
+		this.contracts = contracts;
+	}
+
+
+	public int getContractGenerationDay() {
+		return contractGenerationDay;
+	}
+
+
+	public void setContractGenerationDay(int contractGenerationDay) {
+		this.contractGenerationDay = contractGenerationDay;
+	}
 	
 		
 }
