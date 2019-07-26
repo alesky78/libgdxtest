@@ -28,6 +28,10 @@ public class DataManager {
 	public int refStartPlanet = 1;
 	public float dayUnitDistance = 0.1f;		//used by the navigation to calculate the amount of day passed
 
+	//TODO how we manage the static config may benot
+	public static final float MAX_SPEED = 250;
+	public static final float MAX_ACCELEATION = 250; 	
+	public static final float MAX_DECELERATION = 250;	
 	
 	//game session data
 	public int actualDay;

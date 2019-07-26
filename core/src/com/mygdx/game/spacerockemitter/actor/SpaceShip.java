@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mygdx.game.spacerockemitter.ActorCoordinateUtils;
 import com.mygdx.game.spacerockemitter.AssetCatalog;
+import com.mygdx.game.spacerockemitter.DataManager;
 import com.mygdx.game.spacerockemitter.SpatialHashGrid;
+import com.mygdx.game.spacerockemitter.data.ShipData;
 
 
 public class SpaceShip extends Group {
@@ -18,14 +20,9 @@ public class SpaceShip extends Group {
 	private ThrusterActor thruster;
 	private Shield shield;		
 
-	public static final float MAX_SPEED = 250;
-	public static final float MAX_ACCELEATION = 250; 	
-	public static final float MAX_DECELERATION = 250;	
+	public SpaceShip(ShipData shipData, Texture shipTex, AssetManager assetManager){
 
-	//TODO devo passare lo ship model del game manager come parametro e non i valori stessi
-	public SpaceShip(String name,float maxSpeed, float acceleration, float deceleration, Texture shipTex, AssetManager assetManager){
-
-		setName(name);
+		setName(shipData.name);
 
 		//thruster data
 		thruster = new ThrusterActor();
@@ -35,9 +32,11 @@ public class SpaceShip extends Group {
 
 		//shipPhysic data
 		ship = new PhysicsActor();
-		ship.setMaxSpeed(MathUtils.clamp(maxSpeed, 50, MAX_SPEED));
-		ship.setAcceleration(MathUtils.clamp(acceleration, 50, MAX_ACCELEATION));
-		ship.setDeceleration(MathUtils.clamp(deceleration, 50, MAX_DECELERATION));
+		ship.setMaxSpeed(MathUtils.clamp(shipData.maxSpeed, 50, DataManager.MAX_SPEED));
+		ship.setAcceleration(MathUtils.clamp(shipData.acceleration, 50, DataManager.MAX_ACCELEATION));
+		ship.setDeceleration(MathUtils.clamp(shipData.deceleration, 50, DataManager.MAX_DECELERATION));
+		
+		//TODO we have to work wiht the texture atlas and not whit the single texture, remove it from the input parameters of the constructor 
 		ship.setTexture(shipTex);
 		ship.setOriginCenter();
 		ship.assignEllipseBoundary();	
@@ -162,15 +161,15 @@ public class SpaceShip extends Group {
 	///////////////////////////////////////////////
 
 	public float getSpeedRatio(){
-		return ship.getMaxSpeed()/MAX_SPEED;
+		return ship.getMaxSpeed()/DataManager.MAX_SPEED;
 	}
 
 	public float getAccelerationRatio(){
-		return ship.getAcceleration()/MAX_ACCELEATION;
+		return ship.getAcceleration()/DataManager.MAX_ACCELEATION;
 	}
 
 	public float getDecelerationRatio(){
-		return ship.getDeceleration()/MAX_DECELERATION;
+		return ship.getDeceleration()/DataManager.MAX_DECELERATION;
 	}
 
 	public TextureRegion getTextureRegion() {

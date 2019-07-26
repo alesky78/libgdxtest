@@ -44,15 +44,16 @@ public class ChooseShipScreen extends BaseScreen {
 		
 		//create all the ship here
 		Texture shipTex = null;
-		
+				
+		//TODO quando ho introdotto la texutre atlas per le shipt posso iterare per le ship e non chiamare piu una specifica texture
 		shipTex = game.assetManager.get(AssetCatalog.TEXTURE_SHIP_0);
-		spaceShips[0] = new SpaceShip("xj-32", 200, 180, 200, shipTex, game.assetManager);
+		spaceShips[0] = new SpaceShip(game.dataManager.ships.get(0), shipTex, game.assetManager);
 		
 		shipTex = game.assetManager.get(AssetCatalog.TEXTURE_SHIP_1);;
-		spaceShips[1] = new SpaceShip("cobra-mk1", 100, 200, 150, shipTex, game.assetManager);		
+		spaceShips[1] = new SpaceShip(game.dataManager.ships.get(1), shipTex, game.assetManager);		
 		
 		shipTex = game.assetManager.get(AssetCatalog.TEXTURE_SHIP_2);
-		spaceShips[2] = new SpaceShip("vertex-xt2", 150, 250, 220, shipTex, game.assetManager);		
+		spaceShips[2] = new SpaceShip(game.dataManager.ships.get(2), shipTex, game.assetManager);		
 		
 		//create all the UI elements		
 		Label title = game.uiManager.getLabelTitle("Choose ship");	
