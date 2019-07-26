@@ -20,7 +20,7 @@
 
 	{class:com.mygdx.game.spacerockemitter.data.ShipData,
 	 	ref:2,
-	 	name:name,
+	 	name:plateus,
 	 	shipTex:spaceship-2,
 	 	maxSpeed:150,
 	 	acceleration:250,
