@@ -1,0 +1,27 @@
+
+packSpaceShip.png
+size: 256,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+spaceship-0
+  rotate: false
+  xy: 162, 36
+  size: 48, 64
+  orig: 48, 64
+  offset: 0, 0
+  index: -1
+spaceship-1
+  rotate: false
+  xy: 96, 2
+  size: 64, 98
+  orig: 64, 98
+  offset: 0, 0
+  index: -1
+spaceship-2
+  rotate: false
+  xy: 2, 28
+  size: 92, 72
+  orig: 92, 72
+  offset: 0, 0
+  index: -1

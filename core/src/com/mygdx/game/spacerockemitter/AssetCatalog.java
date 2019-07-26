@@ -56,9 +56,6 @@ public class AssetCatalog {
 	public static AssetDescriptor<Texture> TEXTURE_HYPERSPACE_PLANET_SELECT;
 	public static AssetDescriptor<Texture> TEXTURE_HYPERSPACE_ROUTE;
 	public static AssetDescriptor<Texture> TEXTURE_HYPERSPACE_ROUTE_SELECT;			
-	public static AssetDescriptor<Texture> TEXTURE_SHIP_0;		
-	public static AssetDescriptor<Texture> TEXTURE_SHIP_1;
-	public static AssetDescriptor<Texture> TEXTURE_SHIP_2;
 	public static AssetDescriptor<Texture> TEXTURE_SHIP_SHILED;		
 	public static AssetDescriptor<Texture> TEXTURE_SPOT_LIGHT;	
 	public static AssetDescriptor<Texture> TEXTURE_LASER;	
@@ -72,7 +69,8 @@ public class AssetCatalog {
 	//TEXTURE ATLAS
 	//////////////////////
 	public static AssetDescriptor<TextureAtlas> TEXTURE_ATLAS_PLANETS;
-	public static AssetDescriptor<TextureAtlas> TEXTURE_ATLAS_FACTION_BADGE;	
+	public static AssetDescriptor<TextureAtlas> TEXTURE_ATLAS_FACTION_BADGE;
+	public static AssetDescriptor<TextureAtlas> TEXTURE_ATLAS_SPACESHIPS;		
 	
 	//////////////////////
 	//PARTICLE EFFECT
@@ -120,9 +118,6 @@ public class AssetCatalog {
 		TEXTURE_HYPERSPACE_PLANET_SELECT = new AssetDescriptor<>("spacerockemitter/hyperspace_pianeta_select.png", Texture.class,textureParam);		
 		TEXTURE_HYPERSPACE_ROUTE = new AssetDescriptor<>("spacerockemitter/hyperspace_route.png", Texture.class,textureParam);
 		TEXTURE_HYPERSPACE_ROUTE_SELECT = new AssetDescriptor<>("spacerockemitter/hyperspace_route_selected.png", Texture.class,textureParam);
-		TEXTURE_SHIP_0 = new AssetDescriptor<>("spacerockemitter/spaceship-0.png", Texture.class,textureParam);
-		TEXTURE_SHIP_1 = new AssetDescriptor<>("spacerockemitter/spaceship-1.png", Texture.class,textureParam);
-		TEXTURE_SHIP_2 = new AssetDescriptor<>("spacerockemitter/spaceship-2.png", Texture.class,textureParam);
 		TEXTURE_SHIP_SHILED = new AssetDescriptor<>("spacerockemitter/shield.png", Texture.class,textureParam);
 		TEXTURE_SPOT_LIGHT = new AssetDescriptor<>("spacerockemitter/spotLight.png", Texture.class,textureParam);		
 		TEXTURE_LASER = new AssetDescriptor<>("spacerockemitter/laser.png", Texture.class,textureParam);		
@@ -135,6 +130,7 @@ public class AssetCatalog {
 		//texture atlas
 		TEXTURE_ATLAS_PLANETS = new AssetDescriptor<>("spacerockemitter/packPlanets.atlas", TextureAtlas.class);
 		TEXTURE_ATLAS_FACTION_BADGE = new AssetDescriptor<>("spacerockemitter/packFactionBadge.atlas", TextureAtlas.class);
+		TEXTURE_ATLAS_SPACESHIPS = new AssetDescriptor<>("spacerockemitter/packSpaceShip.atlas", TextureAtlas.class);
 		
 		//particle
 		ParticleEffectLoader.ParticleEffectParameter particleParam = new ParticleEffectLoader.ParticleEffectParameter();
@@ -191,9 +187,6 @@ public class AssetCatalog {
 		assetManager.load(TEXTURE_HYPERSPACE_PLANET_SELECT);		
 		assetManager.load(TEXTURE_HYPERSPACE_ROUTE);		
 		assetManager.load(TEXTURE_HYPERSPACE_ROUTE_SELECT);		
-		assetManager.load(TEXTURE_SHIP_0);
-		assetManager.load(TEXTURE_SHIP_1);
-		assetManager.load(TEXTURE_SHIP_2);
 		assetManager.load(TEXTURE_SHIP_SHILED);		
 		assetManager.load(TEXTURE_SPOT_LIGHT);		
 		assetManager.load(TEXTURE_LASER);		
@@ -205,7 +198,8 @@ public class AssetCatalog {
 		
 		//load texture atlas
 		assetManager.load(TEXTURE_ATLAS_PLANETS);
-		assetManager.load(TEXTURE_ATLAS_FACTION_BADGE);		
+		assetManager.load(TEXTURE_ATLAS_FACTION_BADGE);
+		assetManager.load(TEXTURE_ATLAS_SPACESHIPS);		
 		
 		//load particle effects
 		assetManager.load(PARTICLE_THRUSTER);

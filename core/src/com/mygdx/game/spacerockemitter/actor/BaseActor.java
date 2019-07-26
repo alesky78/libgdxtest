@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Intersector;
@@ -105,6 +106,15 @@ public class BaseActor extends Group implements SpatialHashGrid.GridIndexable{
 	public void setTextureRegion(TextureRegion t){ 
 		int w = t.getTexture().getWidth();
 		int h = t.getTexture().getHeight();
+		setWidth( w );
+		setHeight( h );
+		region = t;
+		setOriginCenter();
+	}	
+	
+	public void setTextureRegion(AtlasRegion t){ 
+		int w = t.packedWidth;
+		int h = t.packedHeight;
 		setWidth( w );
 		setHeight( h );
 		region = t;

@@ -1,7 +1,7 @@
 package com.mygdx.game.spacerockemitter.actor;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -20,7 +20,7 @@ public class SpaceShip extends Group {
 	private ThrusterActor thruster;
 	private Shield shield;		
 
-	public SpaceShip(ShipData shipData, Texture shipTex, AssetManager assetManager){
+	public SpaceShip(ShipData shipData, AssetManager assetManager){
 
 		setName(shipData.name);
 
@@ -36,8 +36,8 @@ public class SpaceShip extends Group {
 		ship.setAcceleration(MathUtils.clamp(shipData.acceleration, 50, DataManager.MAX_ACCELEATION));
 		ship.setDeceleration(MathUtils.clamp(shipData.deceleration, 50, DataManager.MAX_DECELERATION));
 		
-		//TODO we have to work wiht the texture atlas and not whit the single texture, remove it from the input parameters of the constructor 
-		ship.setTexture(shipTex);
+		AtlasRegion region = assetManager.get(AssetCatalog.TEXTURE_ATLAS_SPACESHIPS).findRegion(shipData.shipTex); 
+		ship.setTextureRegion(region);
 		ship.setOriginCenter();
 		ship.assignEllipseBoundary();	
 		ship.setType(ActorType.SHIP_BODY);
@@ -156,21 +156,11 @@ public class SpaceShip extends Group {
 		return shield.isActive();		
 	}	
 
+	
 	////////////////////////////////////////////////
 	//UI methods  
 	///////////////////////////////////////////////
 
-	public float getSpeedRatio(){
-		return ship.getMaxSpeed()/DataManager.MAX_SPEED;
-	}
-
-	public float getAccelerationRatio(){
-		return ship.getAcceleration()/DataManager.MAX_ACCELEATION;
-	}
-
-	public float getDecelerationRatio(){
-		return ship.getDeceleration()/DataManager.MAX_DECELERATION;
-	}
 
 	public TextureRegion getTextureRegion() {
 		return ship.getTextureRegion();

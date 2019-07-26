@@ -73,7 +73,6 @@ public class DataManager {
 		
 	}
 
-
 	
 	/**
 	 * get the actual planet
@@ -119,6 +118,18 @@ public class DataManager {
 		}
 		return null;
 	}
+	
+	public float getSpeedRatio(float speed){
+		return speed/DataManager.MAX_SPEED;
+	}
+
+	public float getAccelerationRatio(float acceleration){
+		return acceleration/DataManager.MAX_ACCELEATION;
+	}
+
+	public float getDecelerationRatio(float deceleration){
+		return deceleration/DataManager.MAX_DECELERATION;
+	}	
 	
 	private void makeNewContracts(PlanetData planet) {
 		

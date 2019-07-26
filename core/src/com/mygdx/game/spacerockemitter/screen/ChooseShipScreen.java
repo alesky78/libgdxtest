@@ -2,6 +2,7 @@ package com.mygdx.game.spacerockemitter.screen;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.spacerockemitter.AssetCatalog;
 import com.mygdx.game.spacerockemitter.SpaceRockEmitterGame;
 import com.mygdx.game.spacerockemitter.actor.SpaceShip;
+import com.mygdx.game.spacerockemitter.data.ShipData;
 
 public class ChooseShipScreen extends BaseScreen {
 
@@ -23,7 +25,7 @@ public class ChooseShipScreen extends BaseScreen {
 	
 	private Texture backgroundTxt;
 	
-	private SpaceShip[] spaceShips;	//TODO devo usare lo ship model
+	private ShipData[] spaceShips;
 	private int SpaceShipsIndex = 0;
 	
 	private Label name;	
@@ -40,20 +42,12 @@ public class ChooseShipScreen extends BaseScreen {
 	@Override
 	public void create() {
 
-		spaceShips = new SpaceShip[3];
+		spaceShips = new ShipData[game.dataManager.ships.size()];
 		
-		//create all the ship here
-		Texture shipTex = null;
-				
-		//TODO quando ho introdotto la texutre atlas per le shipt posso iterare per le ship e non chiamare piu una specifica texture
-		shipTex = game.assetManager.get(AssetCatalog.TEXTURE_SHIP_0);
-		spaceShips[0] = new SpaceShip(game.dataManager.ships.get(0), shipTex, game.assetManager);
-		
-		shipTex = game.assetManager.get(AssetCatalog.TEXTURE_SHIP_1);;
-		spaceShips[1] = new SpaceShip(game.dataManager.ships.get(1), shipTex, game.assetManager);		
-		
-		shipTex = game.assetManager.get(AssetCatalog.TEXTURE_SHIP_2);
-		spaceShips[2] = new SpaceShip(game.dataManager.ships.get(2), shipTex, game.assetManager);		
+		ShipData shipData;
+		for (int i = 0; i < spaceShips.length; i++) {
+			spaceShips[i] = game.dataManager.ships.get(i);
+		}
 		
 		//create all the UI elements		
 		Label title = game.uiManager.getLabelTitle("Choose ship");	
@@ -136,11 +130,15 @@ public class ChooseShipScreen extends BaseScreen {
 			SpaceShipsIndex = 0;
 		}
 		
-		name.setText(spaceShips[SpaceShipsIndex].getName());
-		shipImage.setDrawable(new TextureRegionDrawable(spaceShips[SpaceShipsIndex].getTextureRegion()));  
-		acceleartion.setValue(spaceShips[SpaceShipsIndex].getAccelerationRatio());
-		deceleration.setValue(spaceShips[SpaceShipsIndex].getDecelerationRatio());
-		speed.setValue(spaceShips[SpaceShipsIndex].getSpeedRatio());	
+		name.setText(spaceShips[SpaceShipsIndex].name);
+		acceleartion.setValue(game.dataManager.getAccelerationRatio(spaceShips[SpaceShipsIndex].acceleration));
+		deceleration.setValue(game.dataManager.getDecelerationRatio(spaceShips[SpaceShipsIndex].deceleration));
+		speed.setValue(game.dataManager.getSpeedRatio(spaceShips[SpaceShipsIndex].maxSpeed));		
+		
+		AtlasRegion region = game.assetManager.get(AssetCatalog.TEXTURE_ATLAS_SPACESHIPS).findRegion(spaceShips[SpaceShipsIndex].shipTex); 
+		
+		shipImage.setDrawable(new TextureRegionDrawable(region));  
+	
 		
 	}
 
@@ -161,8 +159,9 @@ public class ChooseShipScreen extends BaseScreen {
 			 
 			
 			if(PHASE_TIMER > 2){
-				//passare lo ship model invece che uno ship actor
-				DestoryAsteroidLevel tl = new DestoryAsteroidLevel(game,spaceShips[SpaceShipsIndex]);
+				//prepare the ship configured and send it
+				SpaceShip ship = new SpaceShip(spaceShips[SpaceShipsIndex], game.assetManager);
+				DestoryAsteroidLevel tl = new DestoryAsteroidLevel(game,ship);
 				game.setScreen( tl );
 
 			}
