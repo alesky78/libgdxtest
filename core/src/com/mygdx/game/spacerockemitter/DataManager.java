@@ -27,11 +27,9 @@ public class DataManager {
 	public int maxContract = 5;	
 	public int refStartPlanet = 1;
 	public float dayUnitDistance = 0.1f;		//used by the navigation to calculate the amount of day passed
-
-	//TODO how we manage the static config may benot
-	public static final float MAX_SPEED = 250;
-	public static final float MAX_ACCELEATION = 250; 	
-	public static final float MAX_DECELERATION = 250;	
+	public float maxSpeed = 250;
+	public float maxAcceleration = 250; 	
+	public float maxDeceleration = 250;	
 	
 	//game session data
 	public int actualDay;
@@ -120,15 +118,15 @@ public class DataManager {
 	}
 	
 	public float getSpeedRatio(float speed){
-		return speed/DataManager.MAX_SPEED;
+		return speed/maxSpeed;
 	}
 
 	public float getAccelerationRatio(float acceleration){
-		return acceleration/DataManager.MAX_ACCELEATION;
+		return acceleration/maxAcceleration;
 	}
 
 	public float getDecelerationRatio(float deceleration){
-		return deceleration/DataManager.MAX_DECELERATION;
+		return deceleration/maxDeceleration;
 	}	
 	
 	private void makeNewContracts(PlanetData planet) {

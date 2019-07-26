@@ -3,13 +3,11 @@ package com.mygdx.game.spacerockemitter.actor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.mygdx.game.spacerockemitter.ActorCoordinateUtils;
 import com.mygdx.game.spacerockemitter.AssetCatalog;
-import com.mygdx.game.spacerockemitter.DataManager;
 import com.mygdx.game.spacerockemitter.SpatialHashGrid;
 import com.mygdx.game.spacerockemitter.data.ShipData;
 
@@ -32,9 +30,9 @@ public class SpaceShip extends Group {
 
 		//shipPhysic data
 		ship = new PhysicsActor();
-		ship.setMaxSpeed(MathUtils.clamp(shipData.maxSpeed, 50, DataManager.MAX_SPEED));
-		ship.setAcceleration(MathUtils.clamp(shipData.acceleration, 50, DataManager.MAX_ACCELEATION));
-		ship.setDeceleration(MathUtils.clamp(shipData.deceleration, 50, DataManager.MAX_DECELERATION));
+		ship.setMaxSpeed(shipData.maxSpeed);
+		ship.setAcceleration(shipData.acceleration);
+		ship.setDeceleration(shipData.deceleration);
 		
 		AtlasRegion region = assetManager.get(AssetCatalog.TEXTURE_ATLAS_SPACESHIPS).findRegion(shipData.shipTex); 
 		ship.setTextureRegion(region);
