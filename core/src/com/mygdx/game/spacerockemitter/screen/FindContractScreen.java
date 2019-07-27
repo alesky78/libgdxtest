@@ -22,7 +22,7 @@ public class FindContractScreen extends BaseScreen {
 
 	// activate the graphic DEBUG
 	private final boolean MAIN_SCENE_DEBUG = false;
-	private final boolean UI_TABLE_DEBUG = true;	
+	private final boolean UI_TABLE_DEBUG = false;	
 
 	
 	//contract details widget
@@ -43,7 +43,7 @@ public class FindContractScreen extends BaseScreen {
 	protected void create() {
 
 		//regenerate the data
-		game.dataManager.generateContractsIfNeed(game.dataManager.getActualPlanet());
+		game.dataManager.generateContractsIfNeed(game.dataManager.refActualPlanet);
 		
 		
 		//table composition
@@ -67,7 +67,7 @@ public class FindContractScreen extends BaseScreen {
 		scroller.setFadeScrollBars(false);
 		
 		
-		for (ContractData contract : game.dataManager.getActualPlanet().contracts) {
+		for (ContractData contract : game.dataManager.findPlanetContractDataActualPlanet().contracts) {
 			scrollTable.add(buildContractCard(contract)).left().pad(5, 0, 5, 0);
 			scrollTable.row();				
 		}

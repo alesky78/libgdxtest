@@ -208,7 +208,7 @@ public class NavigationScreen extends BaseScreen implements PlanetAgent.ArriveLi
 		//add the planets and identify the actual one
 		for (Planet planet2 : planets) {
 			mainStage.addActor(planet2);
-			if(planet2.refIndex == game.dataManager.getActualPlanet().ref ) {
+			if(planet2.refIndex == game.dataManager.findActualPlanet().ref ) {
 				actualPlanet = planet2;
 			}
 
